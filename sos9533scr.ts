@@ -43,7 +43,7 @@ Omlet Arcade : https://omlet.gg/profile/sos9533
 
 
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = "true"
+let usewelcomemessage = true
 
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
 const welcomemessage = "§l§7환영합니다!"
@@ -52,7 +52,7 @@ const welcomemessage = "§l§7환영합니다!"
 
 
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
-let uselongnicknamekick = "true"
+let uselongnicknamekick = true
 
 //긴 닉네임 길이 (권장:30)
 const longnicknamekicklength = 30
@@ -95,7 +95,7 @@ const unmutecommand = "뮤트해제"
 
 
 //스폰 명령어 사용여부 (true/false)
-let usespawncommand = "true"
+let usespawncommand = true
 
 //스폰 명령어 (/빼고) - 일반유저 명령어
 const spawncommand = "스폰"
@@ -110,7 +110,7 @@ const spawncommandtitle = "§l§e스폰 이동 완료!"
 
 
 //기타 tp 명령어 사용여부 (true/false)
-let usestpcommand = "true"
+let usestpcommand = true
 
 //기타 tp 명령어 (/빼고) - 일반유저 명령어
 const tpcommand = "광산"
@@ -133,7 +133,7 @@ const tpcommandtitle = "§l§7광산 이동 완료!"
 
 
 //도배방지 사용여부 (true/false)
-let usechatcut = "true"
+let usechatcut = true
 
 //도배방지 장문방지 글자수 (권장:100)
 const chatcutmessagelength = 100
@@ -151,7 +151,7 @@ const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!"
 
 
 //§ 사용 막기 사용여부 (true/false)
-let useblockcolorword = "true"
+let useblockcolorword = true
 
 //§ 사용시 안내메시지 - §를 입력한 플레이어의 채팅창에 출력
 const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!"
@@ -198,7 +198,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     bedrockServer.executeCommand(`ability @a[name="${username}",tag=mute] mute true`, );
 
-    if (uselongnicknamekick === "true") {
+    if (uselongnicknamekick === true) {
         if (username.length > longnicknamekicklength) {
             serverInstance.disconnectClient(networkIdentifier, `${longnicknamekicktitle}`)
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m")
@@ -208,7 +208,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         }
     }
 
-    if (uselongnicknamekick === "false") {
+    if (uselongnicknamekick === false) {
         console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || 'UNKNOWN'}`)); 
     }
 });
@@ -222,7 +222,7 @@ events.networkDisconnected.on(networkIdentifier => {
 
 events.playerJoin.on((ev)=>{
     const username = ev.player.getName();
-    if (usewelcomemessage === "true") {
+    if (usewelcomemessage === true) {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`, );
     }
 });
@@ -260,7 +260,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     let time : any = {}
     const player = ni.getActor()!.getName()
 
-    if (usechatcut === "true") {
+    if (usechatcut === true) {
         
         if (ptr.message.length > chatcutmessagelength) {
             bedrockServer.executeCommand(`tellraw @a[name="${player}"] {"rawtext":[{"text":"${chatcutlongtitle}"}]}`, );
@@ -331,7 +331,7 @@ command.register(`${unmutecommand}`, "플레이어를 뮤트해제처리 합니�
     target: ActorWildcardCommandSelector
 });
 
-if (usespawncommand === "true") {
+if (usespawncommand === true) {
     command.register(`${spawncommand}`, "스폰으로 이동합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
@@ -348,7 +348,7 @@ if (usespawncommand === "true") {
     }, { })
 };
 
-if (usestpcommand === "true") {
+if (usestpcommand === true) {
     command.register(`${tpcommand}`, `${tpcommandexplanation}`).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
@@ -365,7 +365,7 @@ if (usestpcommand === "true") {
     }, { })
 };
 
-if (useblockcolorword === "true") {
+if (useblockcolorword === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
         if (ptr.message?.includes("§")) {
