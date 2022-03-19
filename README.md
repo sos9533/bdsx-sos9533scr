@@ -40,9 +40,6 @@ let usewelcomemessage = "true"
 > 아래와 같은 글자를 적는 부분에서는 ""를 사용합니다.
 
 ```ts
-//참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = "true"
-
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
 const welcomemessage = "§l§7환영합니다!"
 ```
