@@ -201,6 +201,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const cert = connreq.cert;
     const username = cert.getId();
     const xuid = cert.getXuid();
+    const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
 
