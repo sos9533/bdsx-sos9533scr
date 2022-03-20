@@ -50,12 +50,12 @@
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = true;
+let usewelcomemessage = true
 ```
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = false;
+let usewelcomemessage = false
 ```
 
 ---
@@ -64,12 +64,12 @@ let usewelcomemessage = false;
 
 ```ts
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-const welcomemessage = "§l§7환영합니다!";
+const welcomemessage = "§l§7환영합니다!"
 ```
 
 ```ts
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-const welcomemessage = "§l§7안녕하세요!!";
+const welcomemessage = "§l§7안녕하세요!!"
 ```
 
 ---
@@ -78,12 +78,12 @@ const welcomemessage = "§l§7안녕하세요!!";
 
 ```ts
 //긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 30;
+const longnicknamekicklength = 30
 ```
 
 ```ts
 //긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 50;
+const longnicknamekicklength = 50
 ```
 
 ---
@@ -92,10 +92,10 @@ const longnicknamekicklength = 50;
 
 ```ts
 //스폰 좌표 (x y z)
-const spawncoordinate = "0 10 0";
+const spawncoordinate = "0 10 0"
 ```
 
 ```ts
 //스폰 좌표 (x y z)
-const spawncoordinate = "100 5 100";
+const spawncoordinate = "100 5 100"
 ```
