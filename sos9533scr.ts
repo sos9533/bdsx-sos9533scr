@@ -12,20 +12,17 @@
 //  Made by sos9533
 
 
+// This code was created by a beginner. Plz dont laugh...
+
+
 /*
-  일반 유저분들이 편하게 bdsx를 사용할수 있도록 만들어본 
-  여러 간단한 기능들을 모아본 플러그인입니다. 
-  매우 초심자가 제작한 플러그인입니다. 보고 비웃지 말아주세요..
-  옴렛 초보 유저들을 대상으로 제작하였습니다.
-  
-  옴렛 유저일 경우에는 ip가 10.10.10.10으로 고정됩니다.
-  강퇴 명령어는 1회 강퇴입니다. 아무리 해도 다시 접속됩니다.
+    사용법, 적용법, 기능, 안내 (README.md)
+     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/README.md
 
-
-KakaoTalk OpenChat : https://open.kakao.com/me/sos9533
-Omlet Arcade : https://omlet.gg/profile/sos9533 
-  (Ctrl를 누른 상태로 링크를 클릭하면 바로 이동됩니다.)
-
+    저작권 안내 (LICENSE.md)
+     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/LICENSE.md
+    
+     ctrl를 누른 상태로 링크를 클릭하고 open을 클릭하면 바로 이동됩니다.
 */
 
 
@@ -63,6 +60,17 @@ const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여
 //긴 닉네임 강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
 const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다."
 
+
+
+
+//참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
+let usetoolboxkick = true
+
+//툴박스 강퇴 안내 메시지 - 전체 유저에게 출력
+const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다."
+
+//툴박스 강퇴 안내 메시지 - 툴박스 사용 플레이어의 화면에 출력
+const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다."
 
 
 
@@ -207,6 +215,15 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
             console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || 'UNKNOWN'}`)); 
         }
     }
+       
+    if (usetoolboxkick === true) {
+        if (DeviceModel?.includes(`samsung`)) {
+            serverInstance.disconnectClient(networkIdentifier,`${toolboxkicktitle}`);
+            console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§7[§fSYSTEM§7]§r ${toolboxkickmessage}"}]}`, );
+        }
+    }   
+       
 
     if (uselongnicknamekick === false) {
         console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || 'UNKNOWN'}`)); 
