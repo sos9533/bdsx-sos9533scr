@@ -45,21 +45,27 @@
             └─ sos9533scr.ts
 ```
 
+또는
+
+1. bdsx.masster/plguin 파일에 모두 압축해제하여 넣습니다.
+
+2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔에 뜨면 정상 적용된겁니다.
+
 ## 사용법
 
 1. 위와같이 적용한 후 아래와 같이 sos9533scr.ts 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
-> 아래와 같은 사용여부를 선택할때는 "" 안에 true또는 false를 입력합니다.
+> 아래와 같은 사용여부를 선택할때는 ""를 제외하고 true또는 false를 입력합니다.
 > (true=네, false=아니요)
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = true;
+let usewelcomemessage = true
 ```
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = false;
+let usewelcomemessage = false
 ```
 
 ---
@@ -68,12 +74,12 @@ let usewelcomemessage = false;
 
 ```ts
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-const welcomemessage = "§l§7환영합니다!";
+const welcomemessage = "§l§7환영합니다!"
 ```
 
 ```ts
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-const welcomemessage = "§l§7안녕하세요!!";
+const welcomemessage = "§l§7안녕하세요!!"
 ```
 
 ---
@@ -82,12 +88,12 @@ const welcomemessage = "§l§7안녕하세요!!";
 
 ```ts
 //긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 30;
+const longnicknamekicklength = 30
 ```
 
 ```ts
 //긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 50;
+const longnicknamekicklength = 50
 ```
 
 ---
@@ -96,10 +102,10 @@ const longnicknamekicklength = 50;
 
 ```ts
 //스폰 좌표 (x y z)
-const spawncoordinate = "0 10 0";
+const spawncoordinate = "0 10 0"
 ```
 
 ```ts
 //스폰 좌표 (x y z)
-const spawncoordinate = "100 5 100";
+const spawncoordinate = "100 5 100"
 ```
