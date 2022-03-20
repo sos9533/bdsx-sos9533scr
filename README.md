@@ -44,11 +44,6 @@
             └─ package.json
             └─ sos9533scr.ts
 ```
-
-또는
-
-1. bdsx.masster/plguin 파일에 모두 압축해제하여 넣습니다.
-
 2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔에 뜨면 정상 적용된겁니다.
 
 ## 사용법
