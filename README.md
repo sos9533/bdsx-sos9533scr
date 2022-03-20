@@ -29,11 +29,21 @@
 
 ## 적용법
 
-1. bdsx-master파일에 index.ts와 sos9533scr를 압축해제하여 넣습니다.
+1. `bdsx/plugins` 디렉터리에 플러그인 폴더를 두세요.
 
-2. bdsx.bat을 작동시킵니다.
+예시)
 
-3. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔에 뜨면 정상 적용된겁니다.
+```
+└─bdsx
+    └─plugins
+        └─sos9533
+            └─ .gitignore
+            └─ .npmignore
+            └─ index.ts
+            └─ LICENSE.txt
+            └─ package.json
+            └─ sos9533scr.ts
+```
 
 ## 사용법
 
