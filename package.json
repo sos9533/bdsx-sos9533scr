@@ -1,0 +1,23 @@
+{
+  "name": "sos9533scr",
+  "version": "1.0.0",
+  "description": "sos9533scr by sos9533 (PAND)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sos9533/sos9533scr.git"
+  },
+  "keywords": [
+    "bdsx",
+    "omlet-arcade"
+  ],
+  "author": "sos9533",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sos9533/sos9533scr/issues"
+  },
+  "homepage": "https://github.com/sos9533/sos9533scr#readme"
+}
