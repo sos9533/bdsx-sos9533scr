@@ -24,18 +24,20 @@
    ㄴ 커스텀 tp명령어
 
 ㄴ 도배방지
+   ㄴ 장문방지
+   ㄴ 단타방지
 
 ㄴ § 사용 제한시키기
 ```
 
 ## 적용법
 
-1. `bdsx/plugins` 디렉터리에 플러그인 폴더를 두세요.
+1. `bdsx-master/plugins` 디렉터리에 플러그인 폴더를 두세요.
 
 예시)
 
 ```
-└─bdsx
+└─bdsx-master
     └─plugins
         └─sos9533
             └─ .gitignore
