@@ -40,7 +40,7 @@
 
 
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = true
+let usewelcomemessage = "true"
 
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
 const welcomemessage = "§l§7환영합니다!"
@@ -49,7 +49,7 @@ const welcomemessage = "§l§7환영합니다!"
 
 
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
-let uselongnicknamekick = true
+let uselongnicknamekick = "true"
 
 //긴 닉네임 길이 (권장:30)
 const longnicknamekicklength = 30
@@ -60,17 +60,6 @@ const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여
 //긴 닉네임 강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
 const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다."
 
-
-
-
-//참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
-let usetoolboxkick = true
-
-//툴박스 강퇴 안내 메시지 - 전체 유저에게 출력
-const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다."
-
-//툴박스 강퇴 안내 메시지 - 툴박스 사용 플레이어의 화면에 출력
-const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다."
 
 
 
@@ -103,7 +92,7 @@ const unmutecommand = "뮤트해제"
 
 
 //스폰 명령어 사용여부 (true/false)
-let usespawncommand = true
+let usespawncommand = "true"
 
 //스폰 명령어 (/빼고) - 일반유저 명령어
 const spawncommand = "스폰"
@@ -118,7 +107,7 @@ const spawncommandtitle = "§l§e스폰 이동 완료!"
 
 
 //기타 tp 명령어 사용여부 (true/false)
-let usestpcommand = true
+let usestpcommand = "true"
 
 //기타 tp 명령어 (/빼고) - 일반유저 명령어
 const tpcommand = "광산"
@@ -137,11 +126,23 @@ const tpcommandtitle = "§l§7광산 이동 완료!"
 
 /////////////////////////////////////////////////////////////////////
 
-//기타 설정
+//불법 프로그램 (핵) 방지
+
+
+//참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
+let usetoolboxkick = "true"
+
+//툴박스 강퇴 안내 메시지 - 전체 유저에게 출력
+const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다."
+
+//툴박스 강퇴 안내 메시지 - 툴박스 사용 플레이어의 화면에 출력
+const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다."
+
+
 
 
 //도배방지 사용여부 (true/false)
-let usechatcut = true
+let usechatcut = "true"
 
 //도배방지 장문방지 글자수 (권장:100)
 const chatcutmessagelength = 100
@@ -158,8 +159,24 @@ const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!"
 
 
 
+//안티크래셔 사용여부 (true/false) ----- Made By mdisprgm
+let useanticrasher = "true"
+
+//안티크래셔 강퇴 안내 메시지 - 강종 사용 플레이어의 화면에 출력 ----- Made By mdisprgm
+const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되어 서버에서 추방되셨습니다."
+
+//안티크래셔 오픈소스 출처 ( https://github.com/mdisprgm/bdsx-anticrasher )
+//해당 안티 크래셔 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+
+//기타기능
+
 //§ 사용 막기 사용여부 (true/false)
-let useblockcolorword = true
+let useblockcolorword = "true"
 
 //§ 사용시 안내메시지 - §를 입력한 플레이어의 채팅창에 출력
 const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!"
@@ -393,3 +410,85 @@ if (useblockcolorword === true) {
     })
 };
 
+
+const LAST = new Map<NetworkIdentifier, number>(); 
+const COUNT = new Map<NetworkIdentifier, number>(); 
+const DELAY_LIMIT = 3;
+
+function kick(target: NetworkIdentifier) {
+    serverInstance.disconnectClient(target, `${anticrasherkicktitle}`);
+}
+
+events.packetAfter(MinecraftPacketIds.Login).on(async (pkt, ni) => {
+    LAST.set(ni, 0);
+    COUNT.set(ni, 0);
+});
+
+events.networkDisconnected.on(async (ni) => {
+    LAST.delete(ni);
+    COUNT.delete(ni);
+
+});
+
+events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
+    if (useanticrasher === "true") {
+        if ([12, 26, 35, 42].includes(pkt.sound)) return;
+
+        if (Date.now() - LAST.get(ni)! < DELAY_LIMIT) {
+            const next = COUNT.get(ni)!;
+            COUNT.set(ni, next + 1);
+            if (next > 3) {
+                kick(ni);
+            }
+
+            return CANCEL;
+        }
+        COUNT.set(ni, 0);
+        LAST.set(ni, Date.now());
+    }
+});
+
+{
+    const FOOD_LAST = new Map<NetworkIdentifier, number>(); 
+    const FOOD_COUNT = new Map<NetworkIdentifier, number>(); 
+
+    events.packetBefore(MinecraftPacketIds.ActorEvent).on((pkt, ni) => {
+        if (useanticrasher === "ture") {
+            const action = pkt.event;
+            if (action !== ActorEventPacket.Events.EatingItem) return;
+
+            if (Date.now() - FOOD_LAST.get(ni)! < DELAY_LIMIT) {
+                const next = FOOD_COUNT.get(ni)!;
+                FOOD_COUNT.set(ni, next + 1);
+                if (next > 3) {
+                    kick(ni);
+                }
+
+                return CANCEL;
+            }
+            FOOD_COUNT.set(ni, 0);
+            FOOD_LAST.set(ni, Date.now());
+        }   
+    });
+}
+
+events.packetBefore(MinecraftPacketIds.PlayerAuthInput).on((pkt, ni) => {
+    if (useanticrasher === "ture") {
+        switch (true) {
+            case pkt.moveX > 1073741823:
+            case pkt.moveZ > 1073741823:
+            case pkt.pos.x > 1073741823:
+            case pkt.pos.y > 1073741823:
+            case pkt.pos.z > 1073741823:
+                kick(ni);
+                return CANCEL;
+            default:
+        }
+    }
+});
+
+try {
+    require("bdsx/../../example_and_test/vulnerabilities");
+} catch {
+    console.log("[sos9533scr - ANTI CRASHER] example_and_test/vulnerabilities 파일을 찾을수 없습니다!".red);
+}
