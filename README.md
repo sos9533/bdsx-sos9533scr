@@ -51,7 +51,7 @@
             └─ .gitignore
             └─ .npmignore
             └─ index.ts
-            └─ LICENSE.txt
+            └─ LICENSE
             └─ package.json
             └─ sos9533scr.ts
 ```
