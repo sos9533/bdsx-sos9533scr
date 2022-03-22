@@ -48,21 +48,6 @@ const welcomemessage = "§l§7환영합니다!"
 
 
 
-//참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
-let uselongnicknamekick = "true"
-
-//긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 30
-
-//긴 닉네임 강퇴 안내 메시지 - 전체 유저에게 출력
-const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다."
-
-//긴 닉네임 강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
-const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다."
-
-
-
-
 /////////////////////////////////////////////////////////////////////
 
 //관리자 명령어
@@ -141,6 +126,21 @@ const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 �
 
 
 
+//참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
+let uselongnicknamekick = "true"
+
+//긴 닉네임 길이 (권장:30)
+const longnicknamekicklength = 30
+
+//긴 닉네임 강퇴 안내 메시지 - 전체 유저에게 출력
+const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다."
+
+//긴 닉네임 강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
+const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다."
+
+
+
+
 //도배방지 사용여부 (true/false)
 let usechatcut = "true"
 
@@ -197,6 +197,7 @@ import { serverInstance } from "bdsx/bds/server";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { gray, green, red } from "colors";
+import { ActorEventPacket } from "bdsx/bds/packets"
 
 console.log("[","sos9533scr".yellow,"] allocated", " - sos9533".green);
 
@@ -224,7 +225,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     bedrockServer.executeCommand(`ability @a[name="${username}",tag=mute] mute true`, );
 
-    if (uselongnicknamekick === true) {
+    if (uselongnicknamekick === "true") {
         if (username.length > longnicknamekicklength) {
             serverInstance.disconnectClient(networkIdentifier, `${longnicknamekicktitle}`)
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m")
@@ -234,7 +235,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         }
     }
        
-    if (usetoolboxkick === true) {
+    if (usetoolboxkick === "true") {
         if (DeviceModel?.includes(`samsung`)) {
             serverInstance.disconnectClient(networkIdentifier,`${toolboxkicktitle}`);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m")
@@ -243,7 +244,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     }   
        
 
-    if (uselongnicknamekick === false) {
+    if (uselongnicknamekick === "false") {
         console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || 'UNKNOWN'}`)); 
     }
 });
@@ -257,7 +258,7 @@ events.networkDisconnected.on(networkIdentifier => {
 
 events.playerJoin.on((ev)=>{
     const username = ev.player.getName();
-    if (usewelcomemessage === true) {
+    if (usewelcomemessage === "true") {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`, );
     }
 });
@@ -295,7 +296,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     let time : any = {}
     const player = ni.getActor()!.getName()
 
-    if (usechatcut === true) {
+    if (usechatcut === "true") {
         
         if (ptr.message.length > chatcutmessagelength) {
             bedrockServer.executeCommand(`tellraw @a[name="${player}"] {"rawtext":[{"text":"${chatcutlongtitle}"}]}`, );
@@ -366,7 +367,7 @@ command.register(`${unmutecommand}`, "플레이어를 뮤트해제처리 합니�
     target: ActorWildcardCommandSelector
 });
 
-if (usespawncommand === true) {
+if (usespawncommand === "true") {
     command.register(`${spawncommand}`, "스폰으로 이동합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
@@ -383,7 +384,7 @@ if (usespawncommand === true) {
     }, { })
 };
 
-if (usestpcommand === true) {
+if (usestpcommand === "true") {
     command.register(`${tpcommand}`, `${tpcommandexplanation}`).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
@@ -400,7 +401,7 @@ if (usestpcommand === true) {
     }, { })
 };
 
-if (useblockcolorword === true) {
+if (useblockcolorword === "true") {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
         if (ptr.message?.includes("§")) {
