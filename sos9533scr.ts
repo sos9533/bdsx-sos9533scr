@@ -71,6 +71,18 @@ const unmutecommand = "뮤트해제"
 
 
 
+//영구밴 명령어 (/빼고) - 관리자 전용 명령어
+const bancommand = "밴"
+
+//밴 json 이름 (.json 포함)
+const banjsonname = "ban.json"
+
+//밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
+const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다."
+
+
+
+
 /////////////////////////////////////////////////////////////////////
 
 //일반인 명령어
@@ -106,6 +118,35 @@ const tpcoordinate = "100 10 100"
 //기타 tp 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
 const tpcommandtitle = "§l§7광산 이동 완료!"
 
+
+
+
+//기본템 명령어 사용여부 (true/false)
+let usebasicitemcommand = "true"
+
+//기본템 명령어 (/빼고) - 일반유저 명령어
+const basicitemcommand = "기본템"
+
+//처음 접속시 자동으로 기본템 지급 (true/false)
+let joingivebasicitem = "true"
+
+//아이템 1
+const basicitemA = "wooden_sword 1"
+//아이템 2
+const basicitemB = "wooden_axe 1"
+//아이템 3
+const basicitemC = "wooden_pickaxe 1"
+//아이템 4
+const basicitemD = "wooden_hoe 1"
+//아이템 5
+const basicitemE = "wooden_shovel 1"
+//아이템 6
+const basicitemF = "leather_chestplate 1"
+//아이템 7
+const basicitemG = "leather_leggings 1"
+//아이템 8
+const basicitemH = "cooked_beef 64"
+//(아이템 부분 비워놔도 버그 안남)
 
 
 
@@ -187,11 +228,12 @@ const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습
 /////////////////////////////////////////////////////////////////////
 
 
+import * as fs from 'fs'
 import { events } from "bdsx/event";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { bedrockServer } from "bdsx/launcher";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
-import { ActorWildcardCommandSelector, CommandPermissionLevel } from "bdsx/bds/command";
+import { ActorCommandSelector, ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { ServerPlayer } from "bdsx/bds/player";
 import { serverInstance } from "bdsx/bds/server";
 import { command } from "bdsx/command";
@@ -222,8 +264,6 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
-
-    bedrockServer.executeCommand(`ability @a[name="${username}",tag=mute] mute true`, );
 
     if (uselongnicknamekick === "true") {
         if (username.length > longnicknamekicklength) {
@@ -258,8 +298,25 @@ events.networkDisconnected.on(networkIdentifier => {
 
 events.playerJoin.on((ev)=>{
     const username = ev.player.getName();
+
     if (usewelcomemessage === "true") {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`, );
+    }
+
+    if (usebasicitemcommand = "true") {
+        if (joingivebasicitem = "true") {
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemA}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemB}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemC}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemD}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemE}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemF}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemG}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemH}`, );
+            bedrockServer.executeCommand(`tag @a[name="${username}",tag=!joinbasicitem] add joinbasicitem`, );
+        }
+    
+    bedrockServer.executeCommand(`ability @a[name="${username}",tag=mute] mute true`, );
     }
 });
 
@@ -344,6 +401,7 @@ command.register(`${mutecommand}`, "플레이어를 뮤트처리 합니다.", Co
                 bedrockServer.executeCommand(`ability @a[name="${username}"] mute true`, );
                 bedrockServer.executeCommand(`tag @a[name="${username}"] add mute`, );
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§f§l[§7Server§f] §7${username}§f님이 §c뮤트처리 §f되셨습니다."}]}`, );
+                console.log("\x1b[41m", `${username} Mute > [ Muted by ${origin.getName()} ]`, "\x1b[0m")
             }
         }
     }
@@ -360,12 +418,57 @@ command.register(`${unmutecommand}`, "플레이어를 뮤트해제처리 합니�
                 bedrockServer.executeCommand(`ability @a[name="${username}"] mute false`, );
                 bedrockServer.executeCommand(`tag @a[name="${username}"] remove mute`, );
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§f§l[§7Server§f] §7${username}§f님이 §a뮤트해제 §f되셨습니다."}]}`, );
+                console.log("\x1b[41m", `${username} UnMute > [ UnMuted by ${origin.getName()} ]`, "\x1b[0m")
             }
         }
     }
 }, {
     target: ActorWildcardCommandSelector
 });
+
+let ban: any = {};
+ban = JSON.parse(fs.readFileSync(banjsonname, "utf8")); 
+
+command.register(`${bancommand}`, "플레이어를 밴처리 합니다.", CommandPermissionLevel.Operator).overload((param, origin, output)=>{
+        for (const player of param.target.newResults(origin, ServerPlayer)) {
+            if (param.target !== undefined) {
+                const DeviceId = player.deviceId;
+                const ip = player.getNetworkIdentifier();
+                const username = player.getName();
+                const banObj = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
+                const target = param.target.newResults(origin)!;
+                const legnth = target.length;
+                for (let i = 0; i < legnth; i++) {
+                    banObj[DeviceId] = "BADED";
+                    fs.writeFileSync(banjsonname, JSON.stringify(banObj), 'utf8');
+                    updateban();
+                    serverInstance.disconnectClient(ip,`${bantitle}`);
+                    console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m")
+                }
+            }
+        
+    }
+}, {
+    target: ActorCommandSelector,
+});
+events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
+    const connreq = ptr.connreq;
+    if (connreq === null) return; 
+    const DeviceId = connreq.getDeviceId(); 
+
+    if (ban[DeviceId]?.includes("BADED")) {
+        serverInstance.disconnectClient(networkIdentifier,`${bantitle}`);
+    }
+});
+
+
+function updateban() {
+    try {
+        ban = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
+        return true;
+    } catch (err) {}
+    return false;
+}
 
 if (usespawncommand === "true") {
     command.register(`${spawncommand}`, "스폰으로 이동합니다.").overload((param, origin, output) => {
@@ -400,6 +503,31 @@ if (usestpcommand === "true") {
         }
     }, { })
 };
+
+if (usebasicitemcommand === "true") {
+    command.register(`${basicitemcommand}`, `기본템을 지급합니다.`).overload((param, origin, output) => {
+        const username = origin.getName();
+        const entity = origin.getEntity();
+
+        if (entity === null) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+
+        if (origin.as(ServerPlayer).isPlayer()) {
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemA}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemB}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemC}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemD}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemE}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemF}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemG}`, );
+            bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemH}`, );
+
+        }
+    }, { })
+};
+
 
 if (useblockcolorword === "true") {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
