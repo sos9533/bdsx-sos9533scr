@@ -39,7 +39,10 @@
 안티크래셔는 해당 코드를 사용하였습니다.
 [ [mdisprgm/bdsx-anticrasher] ](https://github.com/mdisprgm/bdsx-anticrasher)
 
-`( 해당 크래셔 방지 소스는 MIT 라이센스로써 저작권 표시 및 허가 표시를 소프트웨어의 모든 복제물 또는 중요한 부분에 기재하고 사용할수 있습니다. )`
+도배방지는 해당 코드를 사용하였습니다.
+[ [kdg7313/bdsx-script] ](https://github.com/kdg7313/bdsx-script)
+
+`( 위 오픈소스는 MIT 라이센스로써 저작권 표시 및 허가 표시를 소프트웨어의 모든 복제물 또는 중요한 부분에 기재하고 사용할수 있습니다. )`
 
 ## 적용법
 
