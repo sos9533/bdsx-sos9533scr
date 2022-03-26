@@ -11,7 +11,11 @@ const banjsonname = "ban.json"
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
 const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다."
 
-//플러그인 적용전에 bdsx-master/bedrock_server 위치에 ban.json 파일을 생성한후 안에 {}를 입력하세요.
+//밴 업대이트 명령어
+const updatebancommand = "밴업대이트"
+
+//밴 사용법 안내 (HowToUse_BAN.md)
+//     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/HowToUse_BAN.md
 ```
 2. 원하는대로 설정을 합니다.
 3. bdsx.bat을 실행하기 전에 `bdsx-master/bedrock_server` 위치에 우클릭을 하고 `새로만들기`를 클릭하고 `텍스트 문서`를 클릭합니다.
