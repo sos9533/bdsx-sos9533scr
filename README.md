@@ -53,7 +53,7 @@
 ```
 └─bdsx-master
     └─plugins
-        └─sos9533
+        └─sos9533scr-main
             └─ .gitignore
             └─ .npmignore
             └─ index.ts
