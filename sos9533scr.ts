@@ -197,6 +197,9 @@ const chatcutlongtitle = "§l§c채팅이 너무 깁니다!"
 //도배방지 단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
 const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!"
 
+//도배방지 오픈소스 출처 ( https://github.com/kdg7313/bdsx-script )
+//해당 도배방지 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
+
 
 
 
