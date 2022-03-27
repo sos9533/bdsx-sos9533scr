@@ -192,17 +192,24 @@ const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네
 //도배방지 사용여부 (true/false)
 let usechatcut = "true"
 
-//도배방지 장문방지 글자수 (권장:100)
+//일반채팅 도배방지-장문방지 글자수 (권장:100)
 const chatcutmessagelength = 100
 
-//도배방지 단타방지 시간 (권장:1000)
+//일반채팅 도배방지-단타방지 시간 (권장:1000)
 const chatcutmessagespeedtime = 1000
 
-//도배방지 장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
+//일반채팅 도배방지-장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
 const chatcutlongtitle = "§l§c채팅이 너무 깁니다!"
 
-//도배방지 단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
+//일반채팅 도배방지-단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
 const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!"
+
+
+//귓속말 도배방지-장문방지 (권장:30) (/w @a @e @e @e @e @e @e @e과 같은 방식으로 서버를 터트리는 방법이 있음)
+const wcutmessagelength = 30
+
+//귓속말 도배방지-장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
+const nowhispermessge = "§l§c귓속말을 이용한 강종을 막기위해 귓속말은 사용이 금지되어 있습니다!"
 
 //도배방지 오픈소스 출처 ( https://github.com/kdg7313/bdsx-script )
 //해당 도배방지 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
@@ -381,6 +388,36 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         }
     }
  });
+
+events.command.on((command, origin) => {
+    if (command.startsWith(`/w `)) {
+        if (command.length > wcutmessagelength) {
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+            return 0;
+        }
+    }
+
+    if (command.startsWith(`/tell `)) {
+        if (command.length > wcutmessagelength) {
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+            return 0;
+        }
+    }
+
+    if (command.startsWith(`/msg `)) {
+        if (command.length > wcutmessagelength) {
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+            return 0;
+        }
+    }
+
+    if (command.startsWith(`/me `)) {
+        if (command.length > wcutmessagelength) {
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+            return 0;
+        }
+    }
+});
 
 command.register("sos953"+"3scr","this server use sos9"+"533's plugin. Omlet Arcade : sos9"+"533", CommandPermissionLevel.Normal);
 command.register(`${kickcommand}`, "플레이어를 강퇴합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
