@@ -27,4 +27,4 @@ const updatebancommand = "밴업대이트"
 
 1. `bdsx-master/bedrock_server/ban.json`를 엽니다.
 2. `{"디바이스 아이디":"BANED"}` 와 같이 적혀있는 곳에서 밴을 해제할 플레이어의 디바이스 아이디 옆에 있는 BANED를 지우고 ctrl+s를 눌러 저장합니다.
-3. 서버를 재시작하거나 / 명령어를 사용하여 ban.json를 인게임에 적용합니다. 
+3. 서버를 재시작하거나 /밴업데이트 명령어를 사용하여 ban.json를 인게임에 적용합니다. 
