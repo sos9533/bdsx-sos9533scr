@@ -390,33 +390,36 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
  });
 
 events.command.on((command, origin) => {
-    if (command.startsWith(`/w `)) {
-        if (command.length > wcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
-            return 0;
+    if (usechatcut === "true") {
+        
+        if (command.startsWith(`/w `)) {
+            if (command.length > wcutmessagelength) {
+                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+                return 0;
+            }
         }
-    }
 
-    if (command.startsWith(`/tell `)) {
-        if (command.length > wcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
-            return 0;
+        if (command.startsWith(`/tell `)) {
+            if (command.length > wcutmessagelength) {
+                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+                return 0;
+            }
         }
-    }
 
-    if (command.startsWith(`/msg `)) {
-        if (command.length > wcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
-            return 0;
+        if (command.startsWith(`/msg `)) {
+            if (command.length > wcutmessagelength) {
+                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+                return 0;
+            }
         }
-    }
 
-    if (command.startsWith(`/me `)) {
-        if (command.length > wcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
-            return 0;
+        if (command.startsWith(`/me `)) {
+            if (command.length > wcutmessagelength) {
+                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"${nowhispermessge}"}]}`, );
+                return 0;
+            }
         }
-    }
+    }   
 });
 
 command.register("sos953"+"3scr","this server use sos9"+"533's plugin. Omlet Arcade : sos9"+"533", CommandPermissionLevel.Normal);
