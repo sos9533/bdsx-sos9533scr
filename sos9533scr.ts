@@ -80,8 +80,8 @@ const banjsonname = "ban.json"
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
 const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다."
 
-//밴 업대이트 명령어
-const updatebancommand = "밴업대이트"
+//밴 업데이트 명령어
+const updatebancommand = "밴업데이트"
 
 //밴 사용법 안내 (HowToUse_BAN.md)
 //     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/HowToUse_BAN.md
