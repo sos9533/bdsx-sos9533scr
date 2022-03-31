@@ -293,18 +293,18 @@ const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습
 /////////////////////////////////////////////////////////////////////
 
 
-import * as fs from 'fs'
-import { events } from "bdsx/event";
-import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { bedrockServer } from "bdsx/launcher";
-import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
-import { ActorCommandSelector, ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
-import { ServerPlayer } from "bdsx/bds/player";
-import { serverInstance } from "bdsx/bds/server";
-import { command } from "bdsx/command";
-import { BuildPlatform, CANCEL } from "bdsx/common";
-import { gray, green, red } from "colors";
+import { ActorCommandSelector, ActorWildcardCommandSelector, CommandPermissionLevel } from "bdsx/bds/command"
+import { NetworkIdentifier } from "bdsx/bds/networkidentifier"
+import { MinecraftPacketIds } from "bdsx/bds/packetids"
 import { ActorEventPacket } from "bdsx/bds/packets"
+import { ServerPlayer } from "bdsx/bds/player"
+import { serverInstance } from "bdsx/bds/server"
+import { command } from "bdsx/command"
+import { BuildPlatform, CANCEL } from "bdsx/common"
+import { events } from "bdsx/event"
+import { bedrockServer } from "bdsx/launcher"
+import { gray, green, red } from "colors"
+import * as fs from 'fs'
 
 console.log("[","sos9533scr".yellow,"] allocated", " - sos9533".green);
 
@@ -738,15 +738,14 @@ const LAST = new Map<NetworkIdentifier, number>();
 const COUNT = new Map<NetworkIdentifier, number>(); 
 const DELAY_LIMIT = 3;
 
-function kick(target: NetworkIdentifier) {
-    serverInstance.disconnectClient(target, `${anticrasherkicktitle}`);
+function kick(target: NetworkIdentifier, message = anticrasherkicktitle) {
+    serverInstance.disconnectClient(target, message);
 }
 
 events.packetAfter(MinecraftPacketIds.Login).on(async (pkt, ni) => {
     LAST.set(ni, 0);
     COUNT.set(ni, 0);
 });
-
 events.networkDisconnected.on(async (ni) => {
     LAST.delete(ni);
     COUNT.delete(ni);
