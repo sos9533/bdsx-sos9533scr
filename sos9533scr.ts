@@ -13,7 +13,7 @@
 
 
 // This code was created by a beginner. Plz dont laugh...
-
+// This plugin was made for Korean Omlet Arcade user
 
 /*
     사용법, 적용법, 기능, 안내 (README.md)
@@ -30,7 +30,7 @@
 
 
 
-//내용 변경하고 ctrl + s를 꼭 해서 저장하셔야지 작용이 됩니다.
+//내용 변경하고 ctrl + s를 꼭 해서 저장하셔야지 적용이 됩니다.
 
 
 
@@ -89,10 +89,24 @@ const updatebancommand = "밴업데이트"
 
 
 
+//정보확인 명령어 (/빼고) - 관리자 전용 명령어 (원하는 유저의 정보 확인가능)
+const getinfocommand = "정보확인"
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 
 //일반인 명령어
+
+
+//내정보 명령어 사용여부 (true/false) (자신의 정보만 확인가능)
+let usemyinfocommand = "true"
+
+//내정보 명령어 (/빼고) - 일반유저 명령어
+const myinfocommand = "내정보"
+
+
 
 
 //스폰 명령어 사용여부 (true/false)
@@ -106,6 +120,40 @@ const spawncoordinate = "0 10 0"
 
 //스폰 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
 const spawncommandtitle = "§l§e스폰 이동 완료!"
+
+
+    //기타 tp 명령어1 사용여부 (true/false)
+    let usestpcommandA = "false"
+    //기타 tp 명령어1 (/빼고) - 일반유저 명령어
+    const tpcommandA = "광산"
+    //기타 tp 명령어1 설명
+    const tpcommandexplanationA = "광산으로 이동합니다."
+    //기타 tp 명령어1 좌표 (x y z)
+    const tpcoordinateA = "100 10 100"
+    //기타 tp 명령어1 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
+    const tpcommandtitleA = "§l§7광산 이동 완료!"
+
+    //기타 tp 명령어2 사용여부 (true/false)
+    let usestpcommandB = "false"
+    //기타 tp 명령어2 (/빼고) - 일반유저 명령어
+    const tpcommandB = "상점"
+    //기타 tp 명령어2 설명 (/빼고)
+    const tpcommandexplanationB = "상점으로 이동합니다."
+    //기타 tp 명령어2 좌표 (x y z)
+    const tpcoordinateB = "105 10 105"
+    //기타 tp 명령어2 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
+    const tpcommandtitleB = "§l§7상점 이동 완료!"
+
+    //기타 tp 명령어3 사용여부 (true/false)
+    let usestpcommandC = "false"
+    //기타 tp 명령어3 (/빼고) - 일반유저 명령어
+    const tpcommandC = "점프맵"
+    //기타 tp 명령어3 설명 (/빼고)
+    const tpcommandexplanationC = "점프맵으로 이동합니다."
+    //기타 tp 명령어3 좌표 (x y z)
+    const tpcoordinateC = "110 10 110"
+    //기타 tp 명령어3 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
+    const tpcommandtitleC = "§l§7점프맵 이동 완료!"
 
 
 
@@ -422,7 +470,6 @@ events.command.on((command, origin) => {
     }   
 });
 
-command.register("sos953"+"3scr","this server use sos9"+"533's plugin. Omlet Arcade : sos9"+"533", CommandPermissionLevel.Normal);
 command.register(`${kickcommand}`, "플레이어를 강퇴합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
     for (const target of param.target.newResults(origin)) {
         const username = target.getName();
@@ -501,7 +548,7 @@ command.register(`${bancommand}`, "플레이어를 밴처리 합니다.", Comman
 }, {
     target: ActorCommandSelector,
 });
-
+command.register("sos953"+"3scr","this server use sos9"+"533's plugin. Omlet Arcade : sos9"+"533", CommandPermissionLevel.Normal);
 command.register(`${updatebancommand}`,`${banjsonname}를 업대이트 합니다.`,CommandPermissionLevel.Operator).overload((param, origin, output) => {
     ban = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
     console.log(green(`${banjsonname} updated`));
@@ -530,6 +577,58 @@ function updateban() {
     return false;
 }
 
+command.register(`${getinfocommand}`, "원하는 유저의 정보를 확인합니다.").overload((param, origin, output) => {
+    for (const player of param.target.newResults(origin, ServerPlayer)) {
+        if (param.target !== undefined) {
+
+            if (player?.isPlayer()) {
+
+                if (player === null) {
+                    console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+                    return;
+                }
+                const actor = origin.getName();
+                const DeviceId = player.deviceId;
+                const ip = player.getNetworkIdentifier();
+                const username = player.getName();
+                const xuid = player.getXuid();
+                const os = player.getPlatform();
+            
+                if (origin.as(ServerPlayer).isPlayer()) {
+                    bedrockServer.executeCommand(`tellraw @a[name="${actor}"] {"rawtext":[{"text":"§f§l[§7Server§f] §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || 'UNKNOWN'}\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`, );
+                }
+            }
+        }
+    }    
+}, { 
+    target: ActorCommandSelector,
+})
+
+if (usemyinfocommand === "true") {
+    command.register(`${myinfocommand}`, "내정보를 확인합니다.").overload((param, origin, output) => {
+        const player = origin.getEntity();
+        if (player?.isPlayer()) {
+
+            if (player === null) {
+                console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+                return;
+            }
+            const username = origin.getName();
+            const ip = player.getNetworkIdentifier();
+            const DeviceId = player.deviceId
+            const xuid = player.getXuid();
+            const os = player.getPlatform();
+            
+
+
+            if (origin.as(ServerPlayer).isPlayer()) {
+                bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || 'UNKNOWN'}\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`, );
+            }
+        }
+        
+    }, { })
+}
+
 if (usespawncommand === "true") {
     command.register(`${spawncommand}`, "스폰으로 이동합니다.").overload((param, origin, output) => {
         const username = origin.getName();
@@ -547,8 +646,9 @@ if (usespawncommand === "true") {
     }, { })
 };
 
-if (usestpcommand === "true") {
-    command.register(`${tpcommand}`, `${tpcommandexplanation}`).overload((param, origin, output) => {
+
+if (usestpcommandA === "true") {
+    command.register(`${tpcommandA}`, `${tpcommandexplanationA}`).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -558,8 +658,42 @@ if (usestpcommand === "true") {
         }
 
         if (origin.as(ServerPlayer).isPlayer()) {
-            bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinate}`, );
-            bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${tpcommandtitle}"}]}`, );
+            bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateA}`, );
+            bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${tpcommandtitleA}"}]}`, );
+        }
+    }, { })
+};
+
+if (usestpcommandB === "true") {
+    command.register(`${tpcommandB}`, `${tpcommandexplanationB}`).overload((param, origin, output) => {
+        const username = origin.getName();
+        const entity = origin.getEntity();
+
+        if (entity === null) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+
+        if (origin.as(ServerPlayer).isPlayer()) {
+            bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateB}`, );
+            bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${tpcommandtitleB}"}]}`, );
+        }
+    }, { })
+};
+
+if (usestpcommandC === "true") {
+    command.register(`${tpcommandC}`, `${tpcommandexplanationC}`).overload((param, origin, output) => {
+        const username = origin.getName();
+        const entity = origin.getEntity();
+
+        if (entity === null) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+
+        if (origin.as(ServerPlayer).isPlayer()) {
+            bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateC}`, );
+            bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${tpcommandtitleC}"}]}`, );
         }
     }, { })
 };
@@ -675,9 +809,3 @@ events.packetBefore(MinecraftPacketIds.PlayerAuthInput).on((pkt, ni) => {
         }
     }
 });
-
-try {
-    require("bdsx/../../example_and_test/vulnerabilities");
-} catch {
-    console.log("[sos9533scr - ANTI CRASHER] example_and_test/vulnerabilities 파일을 찾을수 없습니다!".red);
-}
