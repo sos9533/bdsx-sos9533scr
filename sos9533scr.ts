@@ -158,24 +158,6 @@ const spawncommandtitle = "§l§e스폰 이동 완료!"
 
 
 
-//기타 tp 명령어 사용여부 (true/false)
-let usestpcommand = "true"
-
-//기타 tp 명령어 (/빼고) - 일반유저 명령어
-const tpcommand = "광산"
-
-//기타 tp명령어 설명 (/빼고)
-const tpcommandexplanation = "광산으로 이동합니다."
-
-//기타 tp 좌표 (x y z)
-const tpcoordinate = "100 10 100"
-
-//기타 tp 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
-const tpcommandtitle = "§l§7광산 이동 완료!"
-
-
-
-
 //기본템 명령어 사용여부 (true/false)
 let usebasicitemcommand = "true"
 
