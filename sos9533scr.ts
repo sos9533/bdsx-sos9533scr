@@ -74,9 +74,6 @@ const unmutecommand = "뮤트해제"
 //영구밴 명령어 (/빼고) - 관리자 전용 명령어
 const bancommand = "밴"
 
-//밴 json 이름 (.json 포함)
-const banjsonname = "ban.json"
-
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
 const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다."
 
@@ -505,8 +502,18 @@ command.register(`${unmutecommand}`, "플레이어를 뮤트해제처리 합니�
     target: ActorWildcardCommandSelector
 });
 
+fs.open(`ban.json`, 'a+', function(err, fd) {
+    if (err) throw err;
+    try {
+        ban = JSON.parse(fs.readFileSync(`ban.json`, "utf8"));
+    } catch (err) {
+        fs.writeFileSync(`ban.json`, JSON.stringify({}), 'utf8');
+        console.log("[","sos9533scr".yellow,"]","Made 'ban.json'".gray," - sos9533".green);
+    }
+})
+
 let ban: any = {};
-ban = JSON.parse(fs.readFileSync(banjsonname, "utf8")); 
+ban = JSON.parse(fs.readFileSync(`ban.json`, "utf8")); 
 
 command.register(`${bancommand}`, "플레이어를 밴처리 합니다.", CommandPermissionLevel.Operator).overload((param, origin, output)=>{
         for (const player of param.target.newResults(origin, ServerPlayer)) {
@@ -514,12 +521,12 @@ command.register(`${bancommand}`, "플레이어를 밴처리 합니다.", Comman
                 const DeviceId = player.deviceId;
                 const ip = player.getNetworkIdentifier();
                 const username = player.getName();
-                const banObj = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
+                const banObj = JSON.parse(fs.readFileSync(`ban.json`, "utf8"));
                 const target = param.target.newResults(origin)!;
                 const legnth = target.length;
                 for (let i = 0; i < legnth; i++) {
                     banObj[DeviceId] = "BADED";
-                    fs.writeFileSync(banjsonname, JSON.stringify(banObj), 'utf8');
+                    fs.writeFileSync(`ban.json`, JSON.stringify(banObj), 'utf8');
                     updateban();
                     serverInstance.disconnectClient(ip,`${bantitle}`);
                     console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m")
@@ -531,12 +538,12 @@ command.register(`${bancommand}`, "플레이어를 밴처리 합니다.", Comman
     target: ActorCommandSelector,
 });
 command.register("sos953"+"3scr","this server use sos9"+"533's plugin. Omlet Arcade : sos9"+"533", CommandPermissionLevel.Normal);
-command.register(`${updatebancommand}`,`${banjsonname}를 업대이트 합니다.`,CommandPermissionLevel.Operator).overload((param, origin, output) => {
-    ban = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
-    console.log(green(`${banjsonname} updated`));
+command.register(`${updatebancommand}`,`ban.json를 업대이트 합니다.`,CommandPermissionLevel.Operator).overload((param, origin, output) => {
+    ban = JSON.parse(fs.readFileSync(`ban.json`, "utf8"));
+    console.log(green(`ban.json updated`));
 
     if (origin.as(ServerPlayer).isPlayer()) {
-        bedrockServer.executeCommand(`tellraw @a[name="${origin.getName()}"] {"rawtext":[{"text":"§f§l[§7Server§f] §7${banjsonname}이(가) 서버에 정상적으로 적용되었습니다."}]}`, );
+        bedrockServer.executeCommand(`tellraw @a[name="${origin.getName()}"] {"rawtext":[{"text":"§f§l[§7Server§f] §7ban.json이(가) 서버에 정상적으로 적용되었습니다."}]}`, );
     }
 }, {});
 
@@ -553,7 +560,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
 function updateban() {
     try {
-        ban = JSON.parse(fs.readFileSync(banjsonname, "utf8"));
+        ban = JSON.parse(fs.readFileSync(`ban.json`, "utf8"));
         return true;
     } catch (err) {}
     return false;
