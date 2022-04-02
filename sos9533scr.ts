@@ -151,6 +151,39 @@ const basicitemH = "cooked_beef 64";
 
 /////////////////////////////////////////////////////////////////////
 
+//칭호
+
+
+//칭호 사용여부
+let usechin = "true"
+
+//칭호 형식 설정
+//형식A     <칭호> <닉네임> : 채팅
+//형식B     <칭호> 닉네임 : 채팅
+//형식C     [칭호] <닉네임> : 채팅
+//형식D     [칭호] 닉네임 : 채팅
+let chinchatset = "A"
+
+//칭호 사용법 - " " 써야함
+//형식A     오피유저(커멘드)가 일반유저의 칭호 설정 - /칭호 (닉네임) "(칭호)"
+//형식B     모든유저가 자신의 칭호를 설정 - /칭호 "(칭호)"
+//형식C     모든유저가 UI를 사용하여 자신의 칭호를 설정 - /칭호  - (그 창같은거 나와서 칭호적는 칸 나오는거)
+let howusechin = "A"
+
+//칭호 명령어 (/빼고)
+const chincommand = "칭호"
+
+//칭호 명령어 설명
+const chincommandexplanation = "칭호를 설정합니다."
+
+//칭호 글자수 제한 (칭호 사용법 형식A 제외)
+const chinlength = 10
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+
 //불법 프로그램 (핵) 방지
 
 //참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
@@ -570,6 +603,13 @@ if (usespawncommand) {
     }, {});
 }
 
+events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni)=>{
+    if (ev.command == '/about') {
+        bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l[sos9533scr] §c본서버는 sos9533scr를 사용중이며 만약 /sos9533scr 명령어가 존재하지 않는다면 저작권법을 위반중인 서버입니다."}]}`, );
+        return CANCEL;
+    };
+});
+
 if (usestpcommandA) {
     command.register(tpcommandA, tpcommandexplanationA).overload((param, origin, output) => {
         const username = origin.getName();
@@ -710,4 +750,136 @@ if (useanticrasher) {
             default:
         }
     });
+}
+
+fs.open(`chin.json`, 'a+', function(err, fd) {
+    if (err) throw err;
+    try {
+        chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+    } catch (err) {
+        fs.writeFileSync(`chin.json`, JSON.stringify({}), 'utf8');
+        console.log("[","sos9533scr".yellow,"]","Made 'chin.json'".gray," - sos9533".green);
+    }
+})
+
+let chin: any = {};
+chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+ 
+function updatechin() {
+    try {
+        chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+        return true;
+    } catch (err) {}
+    return false;
+}
+
+events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+
+    if (useblockcolorword === "true") {
+        if (ptr.message?.includes("§")) {
+            bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"${blockcolorwordtitle}"}]}`, );
+            return CANCEL;
+        }
+    }
+
+    if (usechin === "true") {
+        let message = ptr.message.replace(/"/gi, `'`);
+        if (chinchatset === "A") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`, );
+        if (chinchatset === "B") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`, );
+        if (chinchatset === "C") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`, );
+        if (chinchatset === "D") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`, );
+        return CANCEL;
+    }
+
+});
+
+
+if (usechin === "true") {
+
+    if (howusechin === "A") {
+        command.register(`${chincommand}`, `${chincommandexplanation}`, CommandPermissionLevel.Operator).overload((params, origin, output) => {
+            if (params.prefix !== undefined && params.target !== undefined) {
+                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                const target = params.target.newResults(origin)!;
+                const prefix = params.prefix;
+                const legnth = target.length;
+
+                for (let i = 0; i < legnth; i++) {
+                    chinObj[origin.getName()] = prefix!.toString();
+                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
+                    updatechin();
+                    bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`, );
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§a해당유저에게 칭호가 적용됬습니다!"}]}`, );
+                }
+            }
+        },
+        {
+            target: ActorWildcardCommandSelector,
+            prefix: CxxString,
+        });
+    }
+
+    if (howusechin === "B") {
+        command.register(`${chincommand}`, `${chincommandexplanation}`, CommandPermissionLevel.Normal).overload((params, origin, output) => {
+            if (params.prefix !== undefined && origin.getEntity() !== undefined) {
+                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                const prefix = params.prefix;
+                if(prefix.length < chinlength) {
+                    chinObj[origin.getName()] = prefix!.toString();
+                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
+                    updatechin();
+                    bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`, );
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§a칭호가 적용됬습니다!"}]}`, );
+                } else {
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§c칭호가 너무 깁니다!"}]}`, );
+                    bedrockServer.executeCommand(`playsound random.orb @a[name="${origin.getName()}"]`, );
+                }
+            
+            }
+        },
+        {
+            prefix: CxxString
+        });
+    }
+
+    if (howusechin === "C") {
+        command.register(`${chincommand}`, `${chincommandexplanation}`).overload(async(params, origin, output)=>{
+            const actor = origin.getEntity();
+            if (actor === null) {
+                console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+                return;
+            }
+            const ni = actor.getNetworkIdentifier();
+
+            const res = await Form.sendTo(ni, {
+                type: 'custom_form',
+                title: '§l§0칭호',
+                content: [
+                    {
+                        type: 'input',
+                        text: '§l§7작성할 칭호를 적어주세요!',
+                        default: '§l§7일반인'
+                    }
+                ]
+            });
+            
+            if (res === null) return;
+
+            if(res[0].length < chinlength) {
+                chin[actor.getName()] = res[0]
+                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                const prefix = res[0];
+
+                if (res[0] !== undefined && actor.getName() !== undefined) {
+                    chinObj[actor.getName()] = prefix!.toString();
+                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
+                }
+                bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`, );
+                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§a칭호가 적용됬습니다!"}]}`, );
+            } else {
+                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§c칭호가 너무 깁니다!"}]}`, );
+                bedrockServer.executeCommand(`playsound random.orb @a[name="${actor.getName()}"]`, );
+            }
+        }, {});
+    }
 }
