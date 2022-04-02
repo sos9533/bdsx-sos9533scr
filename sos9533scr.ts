@@ -451,7 +451,7 @@ fs.open("ban.json", "a+", function (err, fd) {
 });
 
 let ban: any = {};
- JSON.parse(fs.readFileSync("ban.json", "utf8"));
+ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
 
 command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
@@ -514,20 +514,18 @@ command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.
         }
 
         for (const player of param.target.newResults(origin, ServerPlayer)) {
-            if (param.target !== undefined) {
-                const actor = origin.getName();
-                const DeviceId = player.deviceId;
-                const ip = player.getNetworkIdentifier();
-                const username = player.getName();
-                const xuid = player.getXuid();
-                const os = player.getPlatform();
+            const actor = origin.getName();
+            const DeviceId = player.deviceId;
+            const ip = player.getNetworkIdentifier();
+            const username = player.getName();
+            const xuid = player.getXuid();
+            const os = player.getPlatform();
 
-                bedrockServer.executeCommand(
-                    `tellraw @a[name="${actor}"] {"rawtext":[{"text":"§f§l[§7Server§f] §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
-                        BuildPlatform[os] || "UNKNOWN"
-                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`,
-                );
-            }
+            bedrockServer.executeCommand(
+                `tellraw @a[name="${actor}"] {"rawtext":[{"text":"§f§l[§7Server§f] §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
+                    BuildPlatform[os] || "UNKNOWN"
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`,
+            );
         }
     },
     {
