@@ -251,31 +251,31 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const cert = connreq.cert;
     const username = cert.getId();
     const xuid = cert.getXuid();
-    const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
+    const DeviceModel = connreq.getJsonValue()["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
 
     if (uselongnicknamekick) {
         if (username.length > longnicknamekicklength) {
-            serverInstance.disconnectClient(networkIdentifier, `${longnicknamekicktitle}`);
+            serverInstance.disconnectClient(networkIdentifier, longnicknamekicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§7[§fSYSTEM§7]§r ${longnicknamekickmessage}"}]}`);
         } else {
             console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
         }
+        return;
     }
 
     if (usetoolboxkick) {
-        if (DeviceModel?.includes(`samsung`)) {
-            serverInstance.disconnectClient(networkIdentifier, `${toolboxkicktitle}`);
+        if (DeviceModel.includes("samsung")) {
+            serverInstance.disconnectClient(networkIdentifier, toolboxkicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§7[§fSYSTEM§7]§r ${toolboxkickmessage}"}]}`);
         }
+        return;
     }
 
-    if (!uselongnicknamekick) {
-        console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
-    }
+    console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
 });
 
 events.networkDisconnected.on((networkIdentifier) => {
@@ -291,8 +291,8 @@ events.playerJoin.on((ev) => {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`);
     }
 
-    if (usebasicitemcommand === true) {
-        if (joingivebasicitem === true) {
+    if (usebasicitemcommand) {
+        if (joingivebasicitem) {
             bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemA}`);
             bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemB}`);
             bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemC}`);
@@ -314,7 +314,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     const seconds = today.getSeconds();
     const month = today.getMonth() + 1;
     const day = today.getDate();
-    const message = ptr.message.replace(/"/gi, `'`);
+    const message = ptr.message.replace(/"/g, "'");
     const username = ni.getActor()!.getName();
 
     console.log(gray(`[${month}/${day}/${hours}/${minutes}/${seconds}] <${username}> : ${message}`));
@@ -336,23 +336,23 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
     }
 });
 
+const time: Record<string, number> = {};
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-    let time: any = {};
-    const player = ni.getActor()!.getName();
+    const playername = ni.getActor()!.getName();
 
     if (usechatcut) {
         if (ptr.message.length > chatcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a[name="${player}"] {"rawtext":[{"text":"${chatcutlongtitle}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"${chatcutlongtitle}"}]}`);
             return CANCEL;
         }
 
-        if (time[player] === undefined) {
-            time[player] = new Date();
-        } else if (Number(new Date()) - time[player] < chatcutmessagespeedtime) {
-            bedrockServer.executeCommand(`tellraw @a[name="${player}"] {"rawtext":[{"text":"${chatcutspeedtitle}"}]}`);
+        if (time[playername] === undefined) {
+            time[playername] = Date.now();
+        } else if (Date.now() - time[playername] < chatcutmessagespeedtime) {
+            bedrockServer.executeCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"${chatcutspeedtitle}"}]}`);
             return CANCEL;
         } else {
-            time[player] = new Date();
+            time[playername] = Date.now();
         }
     }
 });
@@ -451,7 +451,7 @@ fs.open("ban.json", "a+", function (err, fd) {
 });
 
 let ban: any = {};
-ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
+ JSON.parse(fs.readFileSync("ban.json", "utf8"));
 
 command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
@@ -463,10 +463,10 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
             const target = param.target.newResults(origin)!;
             const legnth = target.length;
             for (let i = 0; i < legnth; i++) {
-                banObj[DeviceId] = "BADED";
+                banObj[DeviceId] = "BANNED";
                 fs.writeFileSync("ban.json", JSON.stringify(banObj), "utf8");
                 updateban();
-                serverInstance.disconnectClient(ip, `${bantitle}`);
+                serverInstance.disconnectClient(ip, bantitle);
                 console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m");
             }
         }
@@ -476,9 +476,9 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
     },
 );
 command.register("sos953" + "3scr", "this server use sos9" + "533's plugin. Omlet Arcade : sos9" + "533", CommandPermissionLevel.Normal);
-command.register(updatebancommand, `ban.json를 업대이트 합니다.`, CommandPermissionLevel.Operator).overload((param, origin, output) => {
+command.register(updatebancommand, "ban.json를 업대이트 합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
     ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
-    console.log(green(`ban.json updated`));
+    console.log(green("ban.json updated"));
 
     const entity = origin.getEntity();
     if (entity?.isPlayer()) {
@@ -494,7 +494,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const DeviceId = connreq.getDeviceId();
 
     if (ban[DeviceId]?.includes("BADED")) {
-        serverInstance.disconnectClient(networkIdentifier, `${bantitle}`);
+        serverInstance.disconnectClient(networkIdentifier, bantitle);
     }
 });
 
@@ -573,7 +573,7 @@ if (usespawncommand) {
 }
 
 if (usestpcommandA) {
-    command.register(tpcommandA, `${tpcommandexplanationA}`).overload((param, origin, output) => {
+    command.register(tpcommandA, tpcommandexplanationA).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -588,7 +588,7 @@ if (usestpcommandA) {
 }
 
 if (usestpcommandB) {
-    command.register(tpcommandB, `${tpcommandexplanationB}`).overload((param, origin, output) => {
+    command.register(tpcommandB, tpcommandexplanationB).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -603,7 +603,7 @@ if (usestpcommandB) {
 }
 
 if (usestpcommandC) {
-    command.register(tpcommandC, `${tpcommandexplanationC}`).overload((param, origin, output) => {
+    command.register(tpcommandC, tpcommandexplanationC).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
