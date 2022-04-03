@@ -656,7 +656,7 @@ if (usestpcommandC) {
     }, {});
 }
 command.register("sos9533scr","This Server use sos9533scr", CommandPermissionLevel.Normal).overload((param, origin, output) =>{
-    bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[§7sos9533scr§f] §c본서버는 sos9533scr를 사용중입니다. 다운로드 : https://github.com/sos9533/bdsx-sos9533scr / 제작자 : sos9533"}]}`, );
+    bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c본서버는 sos9533scr를 사용중입니다. 다운로드 : https://github.com/sos9533/bdsx-sos9533scr / 제작자 : sos9533"}]}`, );
 }, {});
 if (usebasicitemcommand) {
     command.register(basicitemcommand, `기본템을 지급합니다.`).overload((param, origin, output) => {
