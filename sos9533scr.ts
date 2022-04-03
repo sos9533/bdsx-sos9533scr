@@ -541,7 +541,7 @@ function updateban() {
     return false;
 }
 
-command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.").overload(
+command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
         if (!origin.getEntity()?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
