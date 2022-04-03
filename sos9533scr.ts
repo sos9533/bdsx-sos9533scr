@@ -264,7 +264,6 @@ import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString } from "bdsx/nativetype";
-import { form } from "blessed";
 import { gray, green, red } from "colors";
 import * as fs from "fs";
 
@@ -283,11 +282,12 @@ export const playerList = new Map<NetworkIdentifier, string>();
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const ip = networkIdentifier.getAddress();
     const connreq = ptr.connreq;
-    if (connreq === null) return;
+    if (connreq === null) return; // wrong client
     const cert = connreq.cert;
-    const username = cert.getId();
+    const DeviceId = connreq.getDeviceId();
     const xuid = cert.getXuid();
-    const DeviceModel = connreq.getJsonValue()["DeviceModel"];
+    const username = cert.getId();
+    const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
 
@@ -778,7 +778,7 @@ function updatechin() {
 
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
-    if (useblockcolorword === "true") {
+    if (useblockcolorword === true) {
         if (ptr.message?.includes("§")) {
             bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"${blockcolorwordtitle}"}]}`, );
             return CANCEL;
