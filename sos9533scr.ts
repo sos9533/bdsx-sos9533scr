@@ -153,31 +153,30 @@ const basicitemH = "cooked_beef 64";
 
 //칭호
 
-
 //칭호 사용여부
-let usechin = "true"
+let usechin: boolean = true;
 
 //칭호 형식 설정
 //형식A     <칭호> <닉네임> : 채팅
 //형식B     <칭호> 닉네임 : 채팅
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅
-let chinchatset = "A"
+let chinchatset = "A";
 
 //칭호 사용법 - " " 써야함
 //형식A     오피유저(커멘드)가 일반유저의 칭호 설정 - /칭호 (닉네임) "(칭호)"
 //형식B     모든유저가 자신의 칭호를 설정 - /칭호 "(칭호)"
 //형식C     모든유저가 UI를 사용하여 자신의 칭호를 설정 - /칭호  - (그 창같은거 나와서 칭호적는 칸 나오는거)
-let howusechin = "A"
+let howusechin = "A";
 
 //칭호 명령어 (/빼고)
-const chincommand = "칭호"
+const chincommand = "칭호";
 
 //칭호 명령어 설명
-const chincommandexplanation = "칭호를 설정합니다."
+const chincommandexplanation = "칭호를 설정합니다.";
 
 //칭호 글자수 제한 (칭호 사용법 형식A 제외)
-const chinlength = 10
+const chinlength = 10;
 
 
 
@@ -776,7 +775,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         }
     }
 
-    if (usechin === "true") {
+    if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
         if (chinchatset === "A") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`, );
         if (chinchatset === "B") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`, );
@@ -788,8 +787,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 });
 
 
-if (usechin === "true") {
-
+if (usechin === true) {
     if (howusechin === "A") {
         command.register(`${chincommand}`, `${chincommandexplanation}`, CommandPermissionLevel.Operator).overload((params, origin, output) => {
             if (params.prefix !== undefined && params.target !== undefined) {
