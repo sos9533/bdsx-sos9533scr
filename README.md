@@ -75,21 +75,21 @@
 ```
 2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔에 뜨면 정상 적용된겁니다.
 
-## 사용법
+## 설정법
 
 1. 위와같이 적용한 후 아래와 같이 sos9533scr.ts 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
-> 아래와 같은 사용여부를 선택할때는 ""를 포함하고 true또는 false를 입력합니다.
+> 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = "true"
+let usewelcomemessage: boolean = true;
 ```
 
 ```ts
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage = "false"
+let usewelcomemessage: boolean = false;
 ```
 
 ---
@@ -144,4 +144,13 @@ const spawncoordinate = "100 5 100"
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅
 let chinchatset = "A"
+```
+
+```ts
+//칭호 형식 설정
+//형식A     <칭호> <닉네임> : 채팅
+//형식B     <칭호> 닉네임 : 채팅
+//형식C     [칭호] <닉네임> : 채팅
+//형식D     [칭호] 닉네임 : 채팅
+let chinchatset = "D"
 ```
