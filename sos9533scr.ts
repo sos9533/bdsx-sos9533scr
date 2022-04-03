@@ -282,9 +282,8 @@ export const playerList = new Map<NetworkIdentifier, string>();
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const ip = networkIdentifier.getAddress();
     const connreq = ptr.connreq;
-    if (connreq === null) return; // wrong client
+    if (connreq === null) return;
     const cert = connreq.cert;
-    const DeviceId = connreq.getDeviceId();
     const xuid = cert.getXuid();
     const username = cert.getId();
     const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
