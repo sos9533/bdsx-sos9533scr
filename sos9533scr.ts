@@ -252,7 +252,8 @@ const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습
 
 /////////////////////////////////////////////////////////////////////
 
-import { CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
+import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
+import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { ActorEventPacket } from "bdsx/bds/packets";
@@ -262,6 +263,8 @@ import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
+import { CxxString } from "bdsx/nativetype";
+import { form } from "blessed";
 import { gray, green, red } from "colors";
 import * as fs from "fs";
 
