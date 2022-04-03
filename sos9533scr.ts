@@ -789,7 +789,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
 if (usechin === true) {
     if (howusechin === "A") {
-        command.register(`${chincommand}`, `${chincommandexplanation}`, CommandPermissionLevel.Operator).overload((params, origin, output) => {
+        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload((params, origin, output) => {
             if (params.prefix !== undefined && params.target !== undefined) {
                 const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
                 const target = params.target.newResults(origin)!;
@@ -812,7 +812,7 @@ if (usechin === true) {
     }
 
     if (howusechin === "B") {
-        command.register(`${chincommand}`, `${chincommandexplanation}`, CommandPermissionLevel.Normal).overload((params, origin, output) => {
+        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload((params, origin, output) => {
             if (params.prefix !== undefined && origin.getEntity() !== undefined) {
                 const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
                 const prefix = params.prefix;
@@ -835,7 +835,7 @@ if (usechin === true) {
     }
 
     if (howusechin === "C") {
-        command.register(`${chincommand}`, `${chincommandexplanation}`).overload(async(params, origin, output)=>{
+        command.register(chincommand, chincommandexplanation).overload(async(params, origin, output)=>{
             const actor = origin.getEntity();
             if (actor === null) {
                 console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
