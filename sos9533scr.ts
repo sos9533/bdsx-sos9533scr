@@ -178,9 +178,6 @@ const chincommandexplanation = "칭호를 설정합니다.";
 //칭호 글자수 제한 (칭호 사용법 형식A 제외)
 const chinlength = 10;
 
-
-
-
 /////////////////////////////////////////////////////////////////////
 
 //불법 프로그램 (핵) 방지
@@ -285,7 +282,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const cert = connreq.cert;
     const xuid = cert.getXuid();
     const username = cert.getId();
-    const DeviceModel = connreq.getJsonValue()!["DeviceModel"];
+    const deviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
 
@@ -297,16 +294,14 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         } else {
             console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
         }
-        return;
     }
 
     if (usetoolboxkick) {
-        if (DeviceModel.includes("samsung")) {
+        if (deviceModel.includes("samsung")) {
             serverInstance.disconnectClient(networkIdentifier, toolboxkicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
         }
-        return;
     }
 
     console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
@@ -603,11 +598,13 @@ if (usespawncommand) {
     }, {});
 }
 
-events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni)=>{
-    if (ev.command == '/about') {
-        bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c본서버는 sos9533scr를 사용중이며 만약 /sos9533scr 명령어가 존재하지 않는다면 MIT 라이센스를 위반중인 서버입니다."}]}`, );
+events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni) => {
+    if (ev.command == "/about") {
+        bedrockServer.executeCommand(
+            `tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c본서버는 sos9533scr를 사용중이며 만약 /sos9533scr 명령어가 존재하지 않는다면 MIT 라이센스를 위반중인 서버입니다."}]}`,
+        );
         return CANCEL;
-    };
+    }
 });
 
 if (usestpcommandA) {
@@ -654,8 +651,10 @@ if (usestpcommandC) {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleC}"}]}`);
     }, {});
 }
-command.register("sos9533scr","This Server use sos9533scr", CommandPermissionLevel.Normal).overload((param, origin, output) =>{
-    bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c본서버는 sos9533scr를 사용중입니다. 다운로드 : https://github.com/sos9533/bdsx-sos9533scr / 제작자 : sos9533"}]}`, );
+command.register("sos9533scr", "This Server use sos9533scr", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+    bedrockServer.executeCommand(
+        `tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c본서버는 sos9533scr를 사용중입니다. 다운로드 : https://github.com/sos9533/bdsx-sos9533scr / 제작자 : sos9533"}]}`,
+    );
 }, {});
 if (usebasicitemcommand) {
     command.register(basicitemcommand, `기본템을 지급합니다.`).overload((param, origin, output) => {
@@ -745,19 +744,19 @@ if (useanticrasher) {
     });
 }
 
-fs.open(`chin.json`, 'a+', function(err, fd) {
+fs.open(`chin.json`, "a+", function (err, fd) {
     if (err) throw err;
     try {
         chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
     } catch (err) {
-        fs.writeFileSync(`chin.json`, JSON.stringify({}), 'utf8');
-        console.log("[","sos9533scr".yellow,"]","Made 'chin.json'".gray," - sos9533".green);
+        fs.writeFileSync(`chin.json`, JSON.stringify({}), "utf8");
+        console.log("[", "sos9533scr".yellow, "]", "Made 'chin.json'".gray, " - sos9533".green);
     }
-})
+});
 
 let chin: any = {};
 chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
- 
+
 function updatechin() {
     try {
         chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
@@ -767,75 +766,81 @@ function updatechin() {
 }
 
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-
     if (useblockcolorword === true) {
         if (ptr.message?.includes("§")) {
-            bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`, );
+            bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
             return CANCEL;
         }
     }
 
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
-        if (chinchatset === "A") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`, );
-        if (chinchatset === "B") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`, );
-        if (chinchatset === "C") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`, );
-        if (chinchatset === "D") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`, );
+        if (chinchatset === "A")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        if (chinchatset === "B")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`);
+        if (chinchatset === "C")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        if (chinchatset === "D")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
-
 });
-
 
 if (usechin === true) {
     if (howusechin === "A") {
-        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload((params, origin, output) => {
-            if (params.prefix !== undefined && params.target !== undefined) {
-                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
-                const target = params.target.newResults(origin)!;
-                const prefix = params.prefix;
-                const legnth = target.length;
+        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload(
+            (params, origin, output) => {
+                if (params.prefix !== undefined && params.target !== undefined) {
+                    const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                    const target = params.target.newResults(origin)!;
+                    const prefix = params.prefix;
+                    const legnth = target.length;
 
-                for (let i = 0; i < legnth; i++) {
-                    chinObj[origin.getName()] = prefix!.toString();
-                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
-                    updatechin();
-                    bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`, );
-                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a해당유저에게 칭호가 적용됬습니다!"}]}`, );
+                    for (let i = 0; i < legnth; i++) {
+                        chinObj[origin.getName()] = prefix!.toString();
+                        fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
+                        updatechin();
+                        bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
+                        bedrockServer.executeCommand(
+                            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a해당유저에게 칭호가 적용됬습니다!"}]}`,
+                        );
+                    }
                 }
-            }
-        },
-        {
-            target: ActorWildcardCommandSelector,
-            prefix: CxxString,
-        });
+            },
+            {
+                target: ActorWildcardCommandSelector,
+                prefix: CxxString,
+            },
+        );
     }
 
     if (howusechin === "B") {
-        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload((params, origin, output) => {
-            if (params.prefix !== undefined && origin.getEntity() !== undefined) {
-                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
-                const prefix = params.prefix;
-                if(prefix.length < chinlength) {
-                    chinObj[origin.getName()] = prefix!.toString();
-                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
-                    updatechin();
-                    bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`, );
-                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`, );
-                } else {
-                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`, );
-                    bedrockServer.executeCommand(`playsound random.orb @a[name="${origin.getName()}"]`, );
+        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload(
+            (params, origin, output) => {
+                if (params.prefix !== undefined && origin.getEntity() !== undefined) {
+                    const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                    const prefix = params.prefix;
+                    if (prefix.length < chinlength) {
+                        chinObj[origin.getName()] = prefix!.toString();
+                        fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
+                        updatechin();
+                        bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
+                        bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
+                    } else {
+                        bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
+                        bedrockServer.executeCommand(`playsound random.orb @a[name="${origin.getName()}"]`);
+                    }
                 }
-            
-            }
-        },
-        {
-            prefix: CxxString
-        });
+            },
+            {
+                prefix: CxxString,
+            },
+        );
     }
 
     if (howusechin === "C") {
-        command.register(chincommand, chincommandexplanation).overload(async(params, origin, output)=>{
+        command.register(chincommand, chincommandexplanation).overload(async (params, origin, output) => {
             const actor = origin.getEntity();
             if (actor === null) {
                 console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
@@ -844,33 +849,33 @@ if (usechin === true) {
             const ni = actor.getNetworkIdentifier();
 
             const res = await Form.sendTo(ni, {
-                type: 'custom_form',
-                title: '§l§0칭호',
+                type: "custom_form",
+                title: "§l§0칭호",
                 content: [
                     {
-                        type: 'input',
-                        text: '§l§7사용할 칭호를 입력하세요! §l§0[ §gsos9533scr §0]§r ',
-                        default: '§l§7일반인'
-                    }
-                ]
+                        type: "input",
+                        text: "§l§7사용할 칭호를 입력하세요! §l§0[ §gsos9533scr §0]§r ",
+                        default: "§l§7일반인",
+                    },
+                ],
             });
-            
+
             if (res === null) return;
 
-            if(res[0].length < chinlength) {
-                chin[actor.getName()] = res[0]
+            if (res[0].length < chinlength) {
+                chin[actor.getName()] = res[0];
                 const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
                 const prefix = res[0];
 
                 if (res[0] !== undefined && actor.getName() !== undefined) {
                     chinObj[actor.getName()] = prefix!.toString();
-                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), 'utf8');
+                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
                 }
-                bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`, );
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`, );
+                bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`);
+                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
             } else {
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`, );
-                bedrockServer.executeCommand(`playsound random.orb @a[name="${actor.getName()}"]`, );
+                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
+                bedrockServer.executeCommand(`playsound random.orb @a[name="${actor.getName()}"]`);
             }
         }, {});
     }
