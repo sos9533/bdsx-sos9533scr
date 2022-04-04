@@ -77,7 +77,7 @@
 
 ## 설정법
 
-1. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr`.ts 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
+1. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
 > 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
