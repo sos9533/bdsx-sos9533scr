@@ -43,7 +43,7 @@
 ├ 칭호
 │  ├ /칭호 (칭호) - 일반유저 명령어
 │  ├ /칭호 (닉네임) (칭호) - op유저 명령어
-│  └ /칭호 - (칭호적는 창같은거 나오는거)
+│  └ /칭호 - 일반유저 명령어 (칭호적는 창같은거 나오는거)
 └
 ```
 
@@ -65,7 +65,7 @@
 ```
 └─bdsx-master
     └─plugins
-        └─sos9533scr-main
+        └─bdsx-sos9533scr-main
             └─ .gitignore
             └─ .npmignore
             └─ index.ts
@@ -73,11 +73,11 @@
             └─ package.json
             └─ sos9533scr.ts
 ```
-2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔에 뜨면 정상 적용된겁니다.
+2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔(cmd)에 뜨면 정상 적용된겁니다.
 
 ## 설정법
 
-1. 위와같이 적용한 후 아래와 같이 sos9533scr.ts 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
+1. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr`.ts 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
 > 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
