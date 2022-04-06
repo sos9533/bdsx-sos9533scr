@@ -559,9 +559,9 @@ if (usegetinfocommand) {
                 bedrockServer.executeCommand(
                     `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
                         BuildPlatform[os] || "UNKNOWN"
-                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f:${peer.GetAveragePing(
+                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(
                         address
-                    )}"}]}`,
+                    )}ms"}]}`,
                 );
             }
         }
@@ -593,9 +593,9 @@ if (usemyinfocommand) {
             bedrockServer.executeCommand(
                 `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
                     BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f:${peer.GetAveragePing(
-                    address
-                )}"}]}`,
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(
+                        address
+                    )}ms"}]}`,
             );
         }
 
