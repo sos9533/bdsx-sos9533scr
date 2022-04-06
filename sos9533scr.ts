@@ -64,6 +64,9 @@ const updatebancommand = "밴업데이트";
 //밴 사용법 안내 (HowToUse_BAN.md)
 //     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/HowToUse_BAN.md
 
+//정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
+let usegetinfocommand: boolean = true;
+
 //정보확인 명령어 (/빼고) - 관리자 전용 명령어 (원하는 유저의 정보 확인가능)
 const getinfocommand = "정보확인";
 
@@ -534,32 +537,41 @@ function updateban() {
     return false;
 }
 
-command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
-    (param, origin, output) => {
+const peer = serverInstance.networkHandler.instance.peer;
+
+if (usegetinfocommand) {
+    command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
         if (!origin.getEntity()?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
         }
 
         for (const player of param.target.newResults(origin, ServerPlayer)) {
-            const actor = origin.getName();
+            const actorname = origin.getName();
             const DeviceId = player.deviceId;
             const ip = player.getNetworkIdentifier();
             const username = player.getName();
             const xuid = player.getXuid();
             const os = player.getPlatform();
-
-            bedrockServer.executeCommand(
-                `tellraw @a[name="${actor}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
-                    BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`,
-            );
+            const ni = player?.isPlayer() ? player.getNetworkIdentifier() : undefined;
+            const address = player.getNetworkIdentifier().address;
+            if (ni) {
+                bedrockServer.executeCommand(
+                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
+                        BuildPlatform[os] || "UNKNOWN"
+                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f:${peer.GetAveragePing(
+                        address
+                    )}"}]}`,
+                );
+            }
         }
+
     },
     {
         target: PlayerCommandSelector,
     },
-);
+    );
+}
 
 if (usemyinfocommand) {
     command.register(myinfocommand, "내정보를 확인합니다.").overload((param, origin, output) => {
@@ -574,12 +586,34 @@ if (usemyinfocommand) {
         const DeviceId = player.deviceId;
         const xuid = player.getXuid();
         const os = player.getPlatform();
+        const ni = player?.isPlayer() ? player.getNetworkIdentifier() : undefined;
+        const address = player.getNetworkIdentifier().address;
 
-        bedrockServer.executeCommand(
-            `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
-                BuildPlatform[os] || "UNKNOWN"
-            }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}"}]}`,
-        );
+        if (ni) {
+            bedrockServer.executeCommand(
+                `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
+                    BuildPlatform[os] || "UNKNOWN"
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f:${peer.GetAveragePing(
+                    address
+                )}"}]}`,
+            );
+        }
+
+    }, {});
+}
+
+if (usespawncommand) {
+    command.register(spawncommand, "스폰으로 이동합니다.").overload((param, origin, output) => {
+        const username = origin.getName();
+        const entity = origin.getEntity();
+
+        if (!entity?.isPlayer()) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+
+        bedrockServer.executeCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
+        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${spawncommandtitle}"}]}`);
     }, {});
 }
 
