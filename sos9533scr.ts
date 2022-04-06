@@ -549,21 +549,16 @@ if (usegetinfocommand) {
         for (const player of param.target.newResults(origin, ServerPlayer)) {
             const actorname = origin.getName();
             const DeviceId = player.deviceId;
-            const ip = player.getNetworkIdentifier();
+            const ni = player.getNetworkIdentifier();
             const username = player.getName();
             const xuid = player.getXuid();
             const os = player.getPlatform();
-            const ni = player?.isPlayer() ? player.getNetworkIdentifier() : undefined;
             const address = player.getNetworkIdentifier().address;
-            if (ni) {
-                bedrockServer.executeCommand(
-                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
-                        BuildPlatform[os] || "UNKNOWN"
-                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(
-                        address
-                    )}ms"}]}`,
-                );
-            }
+            bedrockServer.executeCommand(
+                `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                    BuildPlatform[os] || "UNKNOWN"
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
+            );
         }
 
     },
