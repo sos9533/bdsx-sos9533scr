@@ -266,6 +266,8 @@ import { CxxString } from "bdsx/nativetype";
 import { gray, green, red } from "colors";
 import * as fs from "fs";
 
+const chin_json = "chin.json";
+
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
 events.serverOpen.on(() => {
@@ -291,7 +293,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     if (uselongnicknamekick) {
         if (username.length > longnicknamekicklength) {
-            serverInstance.disconnectClient(networkIdentifier, longnicknamekicktitle);
+            kick(networkIdentifier, longnicknamekicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${longnicknamekickmessage}"}]}`);
         } else {
@@ -301,7 +303,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     if (usetoolboxkick) {
         if (deviceModel.includes("samsung")) {
-            serverInstance.disconnectClient(networkIdentifier, toolboxkicktitle);
+            kick(networkIdentifier, toolboxkicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
         }
@@ -390,29 +392,30 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 });
 
 events.command.on((command, origin) => {
+    const cmdhead = command.split(" ")[0];
     if (usechatcut) {
-        if (command.startsWith("/w ")) {
+        if (cmdhead === "/w") {
             if (command.length > wcutmessagelength) {
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
-        if (command.startsWith("/tell ")) {
+        if (cmdhead === "/tell") {
             if (command.length > wcutmessagelength) {
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
-        if (command.startsWith("/msg ")) {
+        if (cmdhead === "/msg") {
             if (command.length > wcutmessagelength) {
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
-        if (command.startsWith("/me ")) {
+        if (cmdhead === "/me") {
             if (command.length > wcutmessagelength) {
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
@@ -429,7 +432,7 @@ command.register(kickcommand, "플레이어를 강퇴합니다.", CommandPermiss
             const actor = origin.getName();
 
             for (const actor of param.target.newResults(origin, ServerPlayer)) {
-                serverInstance.disconnectClient(ip, kicktitle);
+                kick(ip, kicktitle);
                 bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
                 console.log("\x1b[41m", `${username} kicked > [ Kicked by ${actor} ]`, "\x1b[0m");
             }
@@ -498,7 +501,7 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
                 banObj[DeviceId] = "BANNED";
                 fs.writeFileSync("ban.json", JSON.stringify(banObj), "utf8");
                 updateban();
-                serverInstance.disconnectClient(ip, bantitle);
+                kick(ip, bantitle);
                 console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m");
             }
         }
@@ -525,7 +528,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const DeviceId = connreq.getDeviceId();
 
     if (ban[DeviceId]?.includes("BADED")) {
-        serverInstance.disconnectClient(networkIdentifier, bantitle);
+        kick(networkIdentifier, bantitle);
     }
 });
 
@@ -683,7 +686,7 @@ command.register("sos9533scr", "This Server use sos9533scr", CommandPermissionLe
     );
 }, {});
 if (usebasicitemcommand) {
-    command.register(basicitemcommand, `기본템을 지급합니다.`).overload((param, origin, output) => {
+    command.register(basicitemcommand, "기본템을 지급합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -770,22 +773,22 @@ if (useanticrasher) {
     });
 }
 
-fs.open(`chin.json`, "a+", function (err, fd) {
+fs.open(chin_json, "a+", function (err, fd) {
     if (err) throw err;
     try {
-        chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+        chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
     } catch (err) {
-        fs.writeFileSync(`chin.json`, JSON.stringify({}), "utf8");
+        fs.writeFileSync(chin_json, JSON.stringify({}), "utf8");
         console.log("[", "sos9533scr".yellow, "]", "Made 'chin.json'".gray, " - sos9533".green);
     }
 });
 
 let chin: any = {};
-chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
 
 function updatechin() {
     try {
-        chin = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+        chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
         return true;
     } catch (err) {}
     return false;
@@ -803,11 +806,11 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         let message = ptr.message.replace(/"/gi, `'`);
         if (chinchatset === "A")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        if (chinchatset === "B")
+        else if (chinchatset === "B")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`);
-        if (chinchatset === "C")
+        else if (chinchatset === "C")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        if (chinchatset === "D")
+        else if (chinchatset === "D")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
@@ -818,14 +821,14 @@ if (usechin === true) {
         command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload(
             (params, origin, output) => {
                 if (params.prefix !== undefined && params.target !== undefined) {
-                    const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                    const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
                     const target = params.target.newResults(origin)!;
                     const prefix = params.prefix;
                     const legnth = target.length;
 
                     for (let i = 0; i < legnth; i++) {
                         chinObj[origin.getName()] = prefix!.toString();
-                        fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
+                        fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                         updatechin();
                         bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
                         bedrockServer.executeCommand(
@@ -845,11 +848,11 @@ if (usechin === true) {
         command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload(
             (params, origin, output) => {
                 if (params.prefix !== undefined && origin.getEntity() !== undefined) {
-                    const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                    const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
                     const prefix = params.prefix;
                     if (prefix.length < chinlength) {
                         chinObj[origin.getName()] = prefix!.toString();
-                        fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
+                        fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                         updatechin();
                         bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
                         bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
@@ -890,12 +893,12 @@ if (usechin === true) {
 
             if (res[0].length < chinlength) {
                 chin[actor.getName()] = res[0];
-                const chinObj = JSON.parse(fs.readFileSync(`chin.json`, "utf8"));
+                const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
                 const prefix = res[0];
 
                 if (res[0] !== undefined && actor.getName() !== undefined) {
-                    chinObj[actor.getName()] = prefix!.toString();
-                    fs.writeFileSync(`chin.json`, JSON.stringify(chinObj), "utf8");
+                    chinObj[actor.getName()] = prefix.toString();
+                    fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                 }
                 bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`);
                 bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
