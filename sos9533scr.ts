@@ -540,31 +540,31 @@ function updateban() {
 const peer = serverInstance.networkHandler.instance.peer;
 
 if (usegetinfocommand) {
-    command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
-        if (!origin.getEntity()?.isPlayer()) {
-            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
-            return;
-        }
+    command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
+        (param, origin, output) => {
+            if (!origin.getEntity()?.isPlayer()) {
+                console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+                return;
+            }
 
-        for (const player of param.target.newResults(origin, ServerPlayer)) {
-            const actorname = origin.getName();
-            const DeviceId = player.deviceId;
-            const ni = player.getNetworkIdentifier();
-            const username = player.getName();
-            const xuid = player.getXuid();
-            const os = player.getPlatform();
-            const address = player.getNetworkIdentifier().address;
-            bedrockServer.executeCommand(
-                `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                    BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
-            );
-        }
-
-    },
-    {
-        target: PlayerCommandSelector,
-    },
+            for (const player of param.target.newResults(origin, ServerPlayer)) {
+                const actorname = origin.getName();
+                const DeviceId = player.deviceId;
+                const ni = player.getNetworkIdentifier();
+                const username = player.getName();
+                const xuid = player.getXuid();
+                const os = player.getPlatform();
+                const address = player.getNetworkIdentifier().address;
+                bedrockServer.executeCommand(
+                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                        BuildPlatform[os] || "UNKNOWN"
+                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
+                );
+            }
+        },
+        {
+            target: PlayerCommandSelector,
+        },
     );
 }
 
@@ -588,12 +588,9 @@ if (usemyinfocommand) {
             bedrockServer.executeCommand(
                 `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
                     BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(
-                        address
-                    )}ms"}]}`,
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
             );
         }
-
     }, {});
 }
 
