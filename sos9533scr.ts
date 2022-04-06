@@ -18,15 +18,13 @@
 
     저작권 안내 (LICENSE.md)
      ㄴ  https://github.com/sos9533/sos9533scr/blob/main/LICENSE.md
-    
+
      ctrl를 누른 상태로 링크를 클릭하고 open을 클릭하면 바로 이동됩니다.
 */
 
 /////////////////////////////////////////////////////////////////////
 
-
 //내용 변경하고 ctrl + s를 꼭 해서 저장하셔야지 적용이 됩니다.
-
 
 /////////////////////////////////////////////////////////////////////
 
@@ -269,6 +267,13 @@ import { gray, green, red } from "colors";
 import * as fs from "fs";
 
 const chin_json = "chin.json";
+const ban_json = "ban.json";
+function mkFileKeep(filepath: string, value = {}) {
+    if (!fs.existsSync(filepath)) {
+        fs.writeFileSync(filepath, JSON.stringify(value));
+        console.log("[", "sos9533scr".yellow, "]", `Made '${filepath}'`.gray, " - sos9533".green);
+    }
+}
 
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
@@ -477,18 +482,10 @@ command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.",
     },
 );
 
-fs.open("ban.json", "a+", function (err, fd) {
-    if (err) throw err;
-    try {
-        ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
-    } catch (err) {
-        fs.writeFileSync("ban.json", JSON.stringify({}), "utf8");
-        console.log("[", "sos9533scr".yellow, "]", "Made 'ban.json'".gray, " - sos9533".green);
-    }
-});
+mkFileKeep(ban_json);
 
 let ban: any = {};
-ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
+ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
 
 command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
@@ -496,12 +493,12 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
             const DeviceId = player.deviceId;
             const ip = player.getNetworkIdentifier();
             const username = player.getName();
-            const banObj = JSON.parse(fs.readFileSync("ban.json", "utf8"));
+            const banObj = JSON.parse(fs.readFileSync(ban_json, "utf8"));
             const target = param.target.newResults(origin)!;
             const legnth = target.length;
             for (let i = 0; i < legnth; i++) {
                 banObj[DeviceId] = "BANNED";
-                fs.writeFileSync("ban.json", JSON.stringify(banObj), "utf8");
+                fs.writeFileSync(ban_json, JSON.stringify(banObj), "utf8");
                 updateban();
                 kick(ip, bantitle);
                 console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m");
@@ -513,7 +510,7 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
     },
 );
 command.register(updatebancommand, "ban.json를 업대이트 합니다.", CommandPermissionLevel.Operator).overload((param, origin, output) => {
-    ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
+    ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
     console.log(green("ban.json updated"));
 
     const entity = origin.getEntity();
@@ -536,7 +533,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
 function updateban() {
     try {
-        ban = JSON.parse(fs.readFileSync("ban.json", "utf8"));
+        ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
         return true;
     } catch (err) {}
     return false;
@@ -596,21 +593,6 @@ if (usemyinfocommand) {
                 }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
             );
         }
-    }, {});
-}
-
-if (usespawncommand) {
-    command.register(spawncommand, "스폰으로 이동합니다.").overload((param, origin, output) => {
-        const username = origin.getName();
-        const entity = origin.getEntity();
-
-        if (!entity?.isPlayer()) {
-            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
-            return;
-        }
-
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${spawncommandtitle}"}]}`);
     }, {});
 }
 
@@ -775,15 +757,7 @@ if (useanticrasher) {
     });
 }
 
-fs.open(chin_json, "a+", function (err, fd) {
-    if (err) throw err;
-    try {
-        chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
-    } catch (err) {
-        fs.writeFileSync(chin_json, JSON.stringify({}), "utf8");
-        console.log("[", "sos9533scr".yellow, "]", "Made 'chin.json'".gray, " - sos9533".green);
-    }
-});
+mkFileKeep(chin_json);
 
 let chin: any = {};
 chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
