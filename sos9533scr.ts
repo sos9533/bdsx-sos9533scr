@@ -771,23 +771,22 @@ function updatechin() {
 }
 
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+    const actor = ni.getActor()!;
+    const username = actor.getName();
     if (useblockcolorword === true) {
         if (ptr.message?.includes("§")) {
-            bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
             return CANCEL;
         }
     }
 
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
-        if (chinchatset === "A")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        else if (chinchatset === "B")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`);
+        if (chinchatset === "A") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[username]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        else if (chinchatset === "B") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[username]}§f> §r${ptr.name}§r : ${message}"}]}`);
         else if (chinchatset === "C")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        else if (chinchatset === "D")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[username]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        else if (chinchatset === "D") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[username]}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
 });
@@ -847,11 +846,12 @@ if (usechin === true) {
     if (howusechin === "C") {
         command.register(chincommand, chincommandexplanation).overload(async (params, origin, output) => {
             const actor = origin.getEntity();
-            if (actor === null) {
+            if (!actor?.isPlayer()) {
                 console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
                 return;
             }
             const ni = actor.getNetworkIdentifier();
+            const username = actor.getName();
 
             const res = await Form.sendTo(ni, {
                 type: "custom_form",
@@ -868,19 +868,19 @@ if (usechin === true) {
             if (res === null) return;
 
             if (res[0].length < chinlength) {
-                chin[actor.getName()] = res[0];
+                chin[username] = res[0];
                 const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
                 const prefix = res[0];
 
-                if (res[0] !== undefined && actor.getName() !== undefined) {
-                    chinObj[actor.getName()] = prefix.toString();
+                if (res[0] !== undefined && username !== undefined) {
+                    chinObj[username] = prefix.toString();
                     fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                 }
-                bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`);
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
+                bedrockServer.executeCommand(`playsound random.levelup @a[name="${username}"]`);
+                bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
             } else {
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
-                bedrockServer.executeCommand(`playsound random.orb @a[name="${actor.getName()}"]`);
+                bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
+                bedrockServer.executeCommand(`playsound random.orb @a[name="${username}"]`);
             }
         }, {});
     }
