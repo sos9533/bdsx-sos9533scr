@@ -912,7 +912,7 @@ export function removeBossBar(target: NetworkIdentifier,title: string): void {
     pk.dispose();
 }
 
-command.register(removebossbarcommand, '보스바를 삭제합니다.').overload((params, origin, output) => {
+command.register(removebossbarcommand, '보스바를 삭제합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
     for (const target of params.target.newResults(origin, ServerPlayer)) {
         const ni = target.getNetworkIdentifier();
         removeBossBar(ni, params.title)
@@ -922,7 +922,7 @@ command.register(removebossbarcommand, '보스바를 삭제합니다.').overload
     title: CxxString,
 });
 
-command.register(setbossbarcommand, '보스바를 생성합니다.').overload((params, origin, output) => {
+command.register(setbossbarcommand, '보스바를 생성합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
     for (const target of params.target.newResults(origin, ServerPlayer)) {
         const ni = target.getNetworkIdentifier();
         if ( params.enum === 'blue' ) {
