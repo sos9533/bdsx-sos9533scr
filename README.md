@@ -1,4 +1,174 @@
-# sos9533scr
+
+# language
+
+#### [Korean](#sos9533scr-korean)
+
+#### [English](#sos9533scr-english)
+
+
+
+
+
+# sos9533scr-english
+Made by sos9533
+
+- [OmletArcade](https://omlet.gg/profile/sos9533)
+
+- [KakaoTalk OpneChat](https://open.kakao.com/me/sos9533)
+
+## function
+
+```
+┌
+├ join event
+│  └ welcome message
+│
+├ OP command
+│  ├ kick command
+│  ├ mute command
+│  ├ ban command
+│  └ get info command
+│
+├ user command
+│  ├ spawn command
+│  ├ custom tp command (3)
+│  ├ my info command
+│  └ basic command
+│
+├ anti cheat
+│  ├ kick toolbox
+│  ├ chatcut
+│     ├ block long chat
+│     ├ block fast chat
+│     └ block long whisper
+│  ├ anti crasher
+│  └ kick long nickname
+│  
+├ etc
+│  ├ block §
+│  └ bossbar command
+│
+├ prefix
+│  ├ /prefix (prefix) - user command
+│  ├ /prefix (name) (prefix) - op command
+│  └ /prefix - user command [UI]
+└
+```
+
+
+- open source
+
+- [ [mdisprgm/bdsx-anticrasher] ](https://github.com/mdisprgm/bdsx-anticrasher)
+
+- [ [kdg7313/bdsx-script] ](https://github.com/kdg7313/bdsx-script)
+
+## How to use
+
+1. Unzip all files in `bdsx-master/plugins`
+
+ex)
+```
+└─bdsx-master
+    └─plugins
+        └─bdsx-sos9533scr-main
+            └─ .gitignore
+            └─ .npmignore
+            └─ index.ts
+            └─ LICENSE
+            └─ package.json
+            └─ sos9533scr.ts
+```
+
+2. In `bdsx-master/plugins/bdsx-sos9533-main/index.ts`, enter your language as `english`.
+```ts
+//what is your language
+//english / korean
+
+let language = "english"
+```
+
+3. Refer to below and set `bdsx-master/sos9533scr-english.ts`
+
+> when you choose y/n, write true/false behind  ': boolean ='
+
+```ts
+//use welcomemessage (true/false)
+let usewelcomemessage: boolean = true;
+```
+
+```ts
+//use welcomemessage (true/false)
+let usewelcomemessage: boolean = false;
+```
+
+---
+
+> when you write something, use " "
+
+```ts
+//welcomemessage
+const welcomemessage = "§l§7welcome! this is steve's server!";
+```
+
+```ts
+//welcomemessage
+const welcomemessage = "§l§Hello! this is my server!";
+```
+
+---
+
+> when write number, dont use " "
+
+```ts
+//prefix max length  (not include 'How to use' style A)
+const chinlength = 20;
+```
+
+```ts
+//prefix max length  (not include 'How to use' style A)
+const chinlength = 10;
+```
+
+---
+
+> when you write coordinate, use " "
+
+```ts
+//spawn coordinate (x y z)
+const spawncoordinate = "0 10 0";
+```
+
+```ts
+//spawn coordinate (x y z)
+const spawncoordinate = "10 10 10";
+```
+
+---
+
+> when you choose style, write style's uppercase alphabet
+```ts
+//output style
+//style A     <prefix> <Name> : message
+//style B     <prefix> Name : message
+//style C     [prefix] <Name> : message
+//style D     [prefix] Name : message
+let chinchatset = "A";
+```
+
+```ts
+//output style
+//style A     <prefix> <Name> : message
+//style B     <prefix> Name : message
+//style C     [prefix] <Name> : message
+//style D     [prefix] Name : message
+let chinchatset = "D";
+```
+
+
+
+
+
+# sos9533scr-korean
 
 본 플러그인은 sos9533이 제작한 기본 세팅 플러그인입니다.
 
@@ -57,12 +227,9 @@
 
 `( 위 오픈소스는 MIT 라이센스로써 저작권 표시 및 허가 표시를 소프트웨어의 모든 복제물 또는 중요한 부분에 기재하고 사용할수 있습니다. )`
 
-## 적용법
+## 사용법
 
 1. `bdsx-master/plugins` 디렉터리에 플러그인 폴더를 두세요.
-
-예시)
-
 ```
 └─bdsx-master
     └─plugins
@@ -74,11 +241,18 @@
             └─ package.json
             └─ sos9533scr.ts
 ```
-2. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔(cmd)에 뜨면 정상 적용된겁니다.
 
-## 설정법
+2. `bdsx-master/plugins/bdsx-sos9533-main/index.ts` 안에서 언어를 `korean`으로 입력합니다.
+```ts
+//what is your language / 당신의 언어는 무엇인가요
+//english / korean
 
-1. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
+let language = "korean"
+```
+
+3. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔(cmd)에 뜨면 정상 적용된겁니다.
+
+4. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
 > 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
