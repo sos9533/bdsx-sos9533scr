@@ -5,7 +5,7 @@
 - [사용법](#사용법)
 
 #### [English](#sos9533scr-english)
-- [How_to_use](#How to use)
+- [How_to_use](#How_to_use)
 
 # sos9533scr-english
 Made by sos9533
@@ -60,7 +60,7 @@ Made by sos9533
 
 - [ [kdg7313/bdsx-script] ](https://github.com/kdg7313/bdsx-script)
 
-## How to use
+## How_to_use
 
 1. Unzip all files in `bdsx-master/plugins`
 
