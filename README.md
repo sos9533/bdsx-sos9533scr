@@ -2,13 +2,13 @@
 # language
 
 #### [Korean](#sos9533scr-korean)
-
-- [사용법](#사용법)
+- [기능](#사용법)
+- [사용법](#기능)
 
 
 
 #### [English](#sos9533scr-english)
-
+- [function](#function)
 - [How_to_use](#How_to_use)
 
 
@@ -173,7 +173,7 @@ let chinchatset = "D";
 ```
 
 
-
+-----------------------------------------------------------------------------
 
 
 # sos9533scr-korean
