@@ -83,7 +83,8 @@ ex)
             └─ index.ts
             └─ LICENSE
             └─ package.json
-            └─ sos9533scr.ts
+            └─ sos9533scr-english.ts
+            └─ sos9533scr-korean.ts
 ```
 
 2. In `bdsx-master/plugins/bdsx-sos9533-main/index.ts`, enter your language as `english`.
@@ -246,7 +247,8 @@ let chinchatset = "D";
             └─ index.ts
             └─ LICENSE
             └─ package.json
-            └─ sos9533scr.ts
+            └─ sos9533scr-english.ts
+            └─ sos9533scr-korean.ts
 ```
 
 2. `bdsx-master/plugins/bdsx-sos9533-main/index.ts` 안에서 언어를 `korean`으로 입력합니다.
