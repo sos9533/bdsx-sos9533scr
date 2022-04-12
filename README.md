@@ -3,13 +3,13 @@
 
 #### [Korean](#sos9533scr-korean)
 
-[사용법](#사용법)
+- [사용법](#사용법)
 
 
 
 #### [English](#sos9533scr-english)
 
-[How_to_use](#How_to_use)
+- [How_to_use](#How_to_use)
 
 
 
