@@ -7,6 +7,7 @@
 // /\____) || (___) |/\____) |/\____) )/\____) )/\___/  //\___/  /
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
+
 //  Made by sos9533
 
 // This code was created by a beginner. Plz dont laugh...
@@ -249,20 +250,26 @@ let useblockcolorword: boolean = true;
 //§ 사용시 안내메시지 - §를 입력한 플레이어의 채팅창에 출력
 const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!";
 
+//보스바 생성 명령어 (/빼고)
+const setbossbarcommand = "보스바생성"
+
+//보스바 삭제 명령어 (/빼고)
+const removebossbarcommand = "보스바삭제"
+
 /////////////////////////////////////////////////////////////////////
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { ActorEventPacket } from "bdsx/bds/packets";
+import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
 import { ServerPlayer } from "bdsx/bds/player";
 import { serverInstance } from "bdsx/bds/server";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
-import { CxxString } from "bdsx/nativetype";
+import { CxxString, float32_t } from "bdsx/nativetype";
 import { gray, green, red } from "colors";
 import * as fs from "fs";
 
@@ -885,3 +892,62 @@ if (usechin === true) {
         }, {});
     }
 }
+
+export function setBossBar(target: NetworkIdentifier,title: string, percent: number, color?: BossEventPacket.Colors): void {
+    const pk = BossEventPacket.allocate();
+    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
+    pk.type = BossEventPacket.Types.Show;
+    pk.title = title;
+    pk.healthPercent = percent;
+    if(color) pk.color = color;
+    pk.sendTo(target)
+    pk.dispose();
+}
+
+export function removeBossBar(target: NetworkIdentifier,title: string): void {
+    const pk = BossEventPacket.allocate();
+    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
+    pk.type = BossEventPacket.Types.Hide;
+    pk.sendTo(target)
+    pk.dispose();
+}
+
+command.register(removebossbarcommand, '보스바를 삭제합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
+    for (const target of params.target.newResults(origin, ServerPlayer)) {
+        const ni = target.getNetworkIdentifier();
+        removeBossBar(ni, params.title)
+    }
+}, {
+    target: ActorWildcardCommandSelector,
+    title: CxxString,
+});
+
+command.register(setbossbarcommand, '보스바를 생성합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
+    for (const target of params.target.newResults(origin, ServerPlayer)) {
+        const ni = target.getNetworkIdentifier();
+        if ( params.enum === 'blue' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Blue)
+        }
+        if ( params.enum === 'red' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Red)
+        }
+        if ( params.enum === 'green' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Green)
+        }
+        if ( params.enum === 'yellow' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Yellow)
+        }
+        if ( params.enum === 'purple' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Purple)
+        }
+        if ( params.enum === 'white' ) {
+            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.White)
+        }
+    }
+
+}, {
+    target: ActorWildcardCommandSelector,
+    title: CxxString,
+    percent: float32_t,
+    enum: command.enum('color','blue','red','green','yellow','purple','white'), 
+});
