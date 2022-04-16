@@ -126,6 +126,15 @@ const tpcoordinateC = "110 10 110";
 //기타 tp 명령어3 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
 const tpcommandtitleC = "§l§7점프맵 이동 완료!";
 
+//셋홈 명령어 사용여부
+let usesethomecommand: boolean = true;
+
+//셋홈 명령어 (/빼고) - 일반유저 명령어
+const sethomecommand = "집설정";
+
+//홈이동 명령어 (/빼고) - 일반유저 명령어
+const homecommand = "집이동";
+
 //기본템 명령어 사용여부 (true/false)
 let usebasicitemcommand: boolean = true;
 
@@ -275,6 +284,7 @@ import * as fs from "fs";
 
 const chin_json = "chin.json";
 const ban_json = "ban.json";
+const sethome_json = "sethome-pos.json";
 function mkFileKeep(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
@@ -951,3 +961,40 @@ command.register(setbossbarcommand, '보스바를 생성합니다.', CommandPerm
     percent: float32_t,
     enum: command.enum('color','blue','red','green','yellow','purple','white'), 
 });
+
+if (usesethomecommand) {
+    command.register(sethomecommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
+        const username = origin.getName();
+        const player = origin.getEntity();
+
+        if (!player?.isPlayer()) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+        const pos = player.getPosition();
+        const DeviceId = player.deviceId;
+
+        if (pos !== undefined && player !== undefined) {
+            const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
+            const writepos = `${pos?.x} ${pos?.y} ${pos?.z}`;
+            jsonObj[DeviceId] = writepos!.toString();
+            fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
+            bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
+        }
+    }, {});
+
+    command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
+        const username = origin.getName();
+        const player = origin.getEntity();
+        
+        if (!player?.isPlayer()) {
+            console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
+            return;
+        }
+        const DeviceId = player.deviceId;
+        const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
+
+        bedrockServer.executeCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
+        bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
+    }, {});
+}   
