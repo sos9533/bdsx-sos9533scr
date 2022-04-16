@@ -808,21 +808,23 @@ if (usechin === true) {
         command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload(
             (params, origin, output) => {
                 if (params.prefix !== undefined && params.target !== undefined) {
-                    const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
-                    const target = params.target.newResults(origin)!;
-                    const prefix = params.prefix;
-                    const legnth = target.length;
+                    for (const player of params.target.newResults(origin, ServerPlayer)) {
+                        const chinObj = JSON.parse(fs.readFileSync(chin_json, "utf8"));
+                        const target = params.target.newResults(origin)!;
+                        const prefix = params.prefix;
+                        const legnth = target.length;
 
-                    for (let i = 0; i < legnth; i++) {
-                        chinObj[origin.getName()] = prefix!.toString();
-                        fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
-                        updatechin();
-                        bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
-                        bedrockServer.executeCommand(
-                            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`,
-                        );
+                        for (let i = 0; i < legnth; i++) {
+                            chinObj[player.getName()] = prefix!.toString();
+                            fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
+                            updatechin();
+                            bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
+                            bedrockServer.executeCommand(
+                                `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`,
+                            );
+                        }
                     }
-                }
+                }    
             },
             {
                 target: ActorWildcardCommandSelector,
