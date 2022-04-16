@@ -39,6 +39,7 @@ Made by sos9533
 ├ user command
 │  ├ spawn command
 │  ├ custom tp command (3)
+│  ├ sethome command
 │  ├ my info command
 │  └ basic command
 │
@@ -203,6 +204,7 @@ let chinchatset = "D";
 ├ 일반인 명령어
 │  ├ 스폰 명령어
 │  ├ 커스텀 tp명령어 (3개)
+│  ├ 셋홈 명령어
 │  ├ 내정보 확인 명령어
 │  └ 기본템 명령어
 │
