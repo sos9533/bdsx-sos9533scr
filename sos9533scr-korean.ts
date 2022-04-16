@@ -265,8 +265,8 @@ const setbossbarcommand = "보스바생성"
 //보스바 삭제 명령어 (/빼고)
 const removebossbarcommand = "보스바삭제"
 
-//cps 액션바 사용여부 (true/false)
-let cpsactionbar = true;
+//cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
+let cpsactionbar: boolean = true;
 /////////////////////////////////////////////////////////////////////
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
@@ -305,6 +305,8 @@ events.serverClose.on(() => {
 });
 
 export const playerList = new Map<NetworkIdentifier, string>();
+
+bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
 
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const ip = networkIdentifier.getAddress();
@@ -1003,28 +1005,26 @@ if (usesethomecommand) {
     }, {});
 }  
 
-events.serverOpen.on(() => {
-    bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
-});
-
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
-    const playerName = ni.getActor()?.getName();
+    const username = ni.getActor()?.getName();
     if (ev.sound === 42) {
-        bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
-        if (cpsactionbar === true) {
-        bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+        bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
+
+        if (cpsactionbar) {
+            bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
         }
     }
 });
 
 events.playerAttack.on((ev) => {
-    const playerName = ev.player.getName();
-    bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
-    if (cpsactionbar === true) {
-    bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+    const username = ev.player.getName();
+    bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
+
+    if (cpsactionbar) {
+        bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
     }
 });
 
-const cool = setInterval(() => {
+setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 },1000);
