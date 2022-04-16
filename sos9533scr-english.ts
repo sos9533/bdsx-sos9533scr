@@ -972,7 +972,7 @@ if (usesethomecommand) {
             const writepos = `${pos?.x} ${pos?.y} ${pos?.z}`;
             jsonObj[DeviceId] = writepos!.toString();
             fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
-            bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
+            bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eSet Home"}]}`);
         }
     }, {});
 
@@ -988,6 +988,6 @@ if (usesethomecommand) {
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
         bedrockServer.executeCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
-        bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
+        bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eWarp Complete!"}]}`);
     }, {});
-}   
+}
