@@ -265,7 +265,7 @@ const setbossbarcommand = "보스바생성"
 //보스바 삭제 명령어 (/빼고)
 const removebossbarcommand = "보스바삭제"
 
-//Cps 액션바 사용여부 (true/false)
+//cps 액션바 사용여부 (true/false)
 let cpsactionbar = true;
 /////////////////////////////////////////////////////////////////////
 
@@ -1006,22 +1006,25 @@ if (usesethomecommand) {
 events.serverOpen.on(() => {
     bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
 });
+
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
-    const playerNme = ni.getActor()?.getName();
+    const playerName = ni.getActor()?.getName();
     if (ev.sound === 42) {
-        bedrockServer.executeCommand(`scoreboard players add ${playerNme} cps 1`);
+        bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
         if (cpsactionbar === true) {
         bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
         }
     }
 });
+
 events.playerAttack.on((ev) => {
     const playerName = ev.player.getName();
     bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
-    if (cpsactionbar === false) {
+    if (cpsactionbar === true) {
     bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
     }
 });
+
 const cool = setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 },1000);
