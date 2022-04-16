@@ -54,7 +54,8 @@ Made by sos9533
 │  
 ├ etc
 │  ├ block §
-│  └ bossbar command
+│  ├ bossbar command
+│  └ cps scoreboard & display cps score on the actionbar
 │
 ├ prefix
 │  ├ /prefix (prefix) - user command
@@ -219,7 +220,8 @@ let chinchatset = "D";
 │  
 ├ 기타기능
 │  ├ 보스바 명령어
-│  └ § 사용 제한시키기
+│  ├ § 사용 제한시키기
+│  └ cps 스코어보드 & 액션바에 표시
 │
 ├ 칭호
 │  ├ /칭호 (칭호) - 일반유저 명령어
