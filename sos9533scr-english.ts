@@ -122,6 +122,15 @@ const tpcoordinateC = "100 10 100";
 //tp command A warp message
 const tpcommandtitleC = "§l§eWarp Complete!";
 
+//use sethome command (true/false)
+let usesethomecommand: boolean = true;
+
+//sethome command (with out /) - For user
+const sethomecommand = "sethome";
+
+//home command (with out /) - For user
+const homecommand = "home";
+
 //use basic item command (true/false)
 let usebasicitemcommand: boolean = true;
 
@@ -269,6 +278,7 @@ import * as fs from "fs";
 
 const chin_json = "chin.json";
 const ban_json = "ban.json";
+const sethome_json = "sethome-pos.json";
 function mkFileKeep(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
@@ -944,3 +954,40 @@ command.register(setbossbarcommand, 'set bossbar', CommandPermissionLevel.Operat
     percent: float32_t,
     enum: command.enum('color','blue','red','green','yellow','purple','white'), 
 });
+
+if (usesethomecommand) {
+    command.register(sethomecommand, "set my home to here").overload((param, origin, output) => {
+        const username = origin.getName();
+        const player = origin.getEntity();
+
+        if (!player?.isPlayer()) {
+            console.log(red("You are the server console"));
+            return;
+        }
+        const pos = player.getPosition();
+        const DeviceId = player.deviceId;
+
+        if (pos !== undefined && player !== undefined) {
+            const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
+            const writepos = `${pos?.x} ${pos?.y} ${pos?.z}`;
+            jsonObj[DeviceId] = writepos!.toString();
+            fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
+            bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
+        }
+    }, {});
+
+    command.register(homecommand, "go home").overload((param, origin, output) => {
+        const username = origin.getName();
+        const player = origin.getEntity();
+        
+        if (!player?.isPlayer()) {
+            console.log(red("You are the server console"));
+            return;
+        }
+        const DeviceId = player.deviceId;
+        const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
+
+        bedrockServer.executeCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
+        bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
+    }, {});
+}   
