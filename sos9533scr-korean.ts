@@ -9,7 +9,7 @@
 
 
 //  Made by sos9533
-
+// blue handsome
 // This code was created by a beginner. Plz dont laugh...
 // This plugin was made for Korean Omlet Arcade user
 
