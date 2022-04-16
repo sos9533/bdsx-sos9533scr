@@ -1000,3 +1000,30 @@ if (usesethomecommand) {
         bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
     }, {});
 }   
+//made by Blue00123
+
+let cpsactionbar = true;
+//사용여부
+
+events.serverOpen.on(() => {
+    bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
+});
+events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
+    const playerNme = ni.getActor()?.getName();
+    if (ev.sound === 42) {
+        bedrockServer.executeCommand(`scoreboard players add ${playerNme} cps 1`);
+        if (cpsactionbar === true) {
+        bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+        }
+    }
+});
+events.playerAttack.on((ev) => {
+    const playerName = ev.player.getName();
+    bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
+    if (cpsactionbar === false) {
+    bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+    }
+});
+const cool = setInterval(() => {
+    bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
+},1000);
