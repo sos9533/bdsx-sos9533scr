@@ -281,7 +281,7 @@ import * as fs from "fs";
 
 const chin_json = "chin.json";
 const ban_json = "ban.json";
-const sethome_json = "sethome-pos.json";
+const sethome_json = "sethome_pos.json";
 function mkFileKeep(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
