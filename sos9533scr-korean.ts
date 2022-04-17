@@ -289,7 +289,7 @@ import * as fs from "fs";
 
 const chin_json = "chin.json";
 const ban_json = "ban.json";
-const sethome_json = "sethome-pos.json";
+const sethome_json = "sethome_pos.json";
 function mkFileKeep(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
@@ -973,6 +973,8 @@ command.register(setbossbarcommand, '보스바를 생성합니다.', CommandPerm
     percent: float32_t,
     enum: command.enum('color','blue','red','green','yellow','purple','white'), 
 });
+
+mkFileKeep(sethome_json);
 
 if (usesethomecommand) {
     command.register(sethomecommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
