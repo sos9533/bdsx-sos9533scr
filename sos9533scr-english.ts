@@ -186,6 +186,9 @@ const chincommandexplanation = "set prefix";
 //prefix max length  (not include 'How to use' style A)
 const chinlength = 10;
 
+//basic prefix - output this when someone don't have any prefix
+const basicchin = "§l§7Member";
+
 /////////////////////////////////////////////////////////////////////
 
 //Anti Hacker
@@ -797,13 +800,13 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
         if (chinchatset === "A")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
         else if (chinchatset === "B")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()]}§f> §r${ptr.name}§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
         else if (chinchatset === "C")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
         else if (chinchatset === "D")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()]}§f] §r${ptr.name}§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
 });
