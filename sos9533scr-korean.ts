@@ -191,6 +191,9 @@ const chincommandexplanation = "칭호를 설정합니다.";
 //칭호 글자수 제한 (칭호 사용법 형식A 제외)
 const chinlength = 10;
 
+//기본 칭호 - 아무칭호도 없을때 대신 출력될 칭호
+const basicchin = "§l§7일반인";
+
 /////////////////////////////////////////////////////////////////////
 
 //불법 프로그램 (핵) 방지
@@ -803,11 +806,14 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
-        if (chinchatset === "A") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[username]}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        else if (chinchatset === "B") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[username]}§f> §r${ptr.name}§r : ${message}"}]}`);
+        if (chinchatset === "A")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        else if (chinchatset === "B")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
         else if (chinchatset === "C")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[username]}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        else if (chinchatset === "D") bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[username]}§f] §r${ptr.name}§r : ${message}"}]}`);
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        else if (chinchatset === "D")
+            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
 });
