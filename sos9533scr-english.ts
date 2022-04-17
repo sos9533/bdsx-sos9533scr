@@ -960,7 +960,10 @@ command.register(setbossbarcommand, 'set bossbar', CommandPermissionLevel.Operat
     title: CxxString,
     percent: float32_t,
     enum: command.enum('color','blue','red','green','yellow','purple','white'), 
+    
 });
+
+mkFileKeep(sethome_json);
 
 if (usesethomecommand) {
     command.register(sethomecommand, "set my home to here").overload((param, origin, output) => {
