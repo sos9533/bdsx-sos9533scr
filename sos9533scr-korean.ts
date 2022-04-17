@@ -272,6 +272,8 @@ const removebossbarcommand = "보스바삭제"
 let cpsactionbar: boolean = true;
 
 let tpa = true;
+
+let combat = true;
 /////////////////////////////////////////////////////////////////////
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
@@ -1091,4 +1093,104 @@ command.register("tpaccept", "Tpa 수락을 합니다").overload((p, origin) => 
     }
   }
 }, { Player: ActorWildcardCommandSelector })
+}
+
+if(combat === true) {
+let data = new Map();
+
+interface PlayerData {
+  xuid: string;
+  username: string;
+  networkIdentifier: NetworkIdentifier;
+}
+
+events.playerLeft.on((e) => {
+  e.skipMessage = true;
+  if (data.has(e.player.getXuid())) {
+    let targetname = data.get(e.player.getXuid()).target.getName();
+    data.delete(e.player.getXuid());
+    bedrockServer.executeCommand(
+      `say §c"${e.player.getName()}"§r 님이 중퇴를 하여 Kill 처리 되었습니다.`
+    );
+    bedrockServer.executeCommand(
+    `kill "${e.player.getName()}"`
+    );
+  }
+  for (let [key, value] of data) {
+    if (value.targetXUID == e.player.getXuid()) {
+      setFree(value.pd);
+    }
+  }
+});
+
+events.playerAttack.on((e) => {
+  let player = e.player;
+  let target = e.victim;
+
+  let p: PlayerData = {
+    xuid: player.getXuid(),
+    username: player.getName(),
+    networkIdentifier: player.getNetworkIdentifier(),
+  };
+
+  if (target.isPlayer()) {
+    if (data.has(player.getXuid())) {
+      data.set(player.getXuid(), {
+        timeleft: 11,
+        target: target,
+        targetXUID: target.getXuid(),
+        pd: p,
+      });
+    } else {
+      data.set(player.getXuid(), {
+        timeleft: 11,
+        target: target,
+        targetXUID: target.getXuid(),
+        pd: p,
+      });
+      countdown(p);
+    }
+  }
+});
+
+function countdown(pd: PlayerData) {
+  if (!data.has(pd.xuid)) return;
+  let target = data.get(pd.xuid).target;
+
+  if (target != null && !target.isAlive()) return setFree(pd);
+
+  data.set(pd.xuid, {
+    ...data.get(pd.xuid),
+    timeleft: data.get(pd.xuid).timeleft - 1,
+  });
+
+  // Show message
+  let message = `Combat: (${data.get(pd.xuid).timeleft})`;
+  let packet = TextPacket.allocate();
+  packet.type = TextPacket.Types.JukeboxPopup;
+  packet.message = message;
+  packet.sendTo(pd.networkIdentifier);
+  packet.dispose();
+
+  // If time left is not 0 execute countdown again
+  if (data.get(pd.xuid).timeleft > 0) {
+    setTimeout(() => {
+      countdown(pd);
+    }, 1000);
+  } else {
+    setFree(pd);
+  }
+}
+
+function setFree(pd: PlayerData) {
+  if (data.has(pd.xuid)) {
+    data.delete(pd.xuid);
+  }
+  let message = `Combat clear`;
+  let packet = TextPacket.allocate();
+  packet.type = TextPacket.Types.JukeboxPopup;
+  packet.message = message;
+  packet.sendTo(pd.networkIdentifier);
+  return;
+}
 }
