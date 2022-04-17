@@ -1,4 +1,4 @@
-![logo](sos9533scr_logo.jpg)  
+![logo](resources/sos9533scr_logo.jpg)  
 # language
 
 #### [Korean](#sos9533scr-korean)
