@@ -270,6 +270,8 @@ const removebossbarcommand = "보스바삭제"
 
 //cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
 let cpsactionbar: boolean = true;
+
+let tpa = true;
 /////////////////////////////////////////////////////////////////////
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
@@ -285,6 +287,8 @@ import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t } from "bdsx/nativetype";
 import { gray, green, red } from "colors";
+import { TextPacket } from 'bdsx/bds/packets';
+import { Player } from 'bdsx/bds/player';
 import * as fs from "fs";
 
 const chin_json = "chin.json";
@@ -1038,3 +1042,53 @@ setInterval(() => {
 events.serverClose.on(() => {
     clearInterval(cool)
 })
+if(tpa === true) {
+const reqs = new Map<string, Set<string>>();
+command.register("tpa", "이동합니다.").overload((p, origin) => {
+  let playerAr = p.player.newResults(origin);
+  if (playerAr.length > 1  playerAr.length < 1) {
+      let oPlayer = origin.getEntity() as Player;
+      if (oPlayer) {
+        let packet = TextPacket.create();
+        packet.message = "한명만 선택이 가능합니다.";
+        packet.sendTo(oPlayer.getNetworkIdentifier());
+        packet.dispose();
+      }
+      return;
+  }
+
+  let player = playerAr[0];
+  bedrockServer.executeCommand(tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()} 님이 §a§l티피 §r요청을 원합니다 '/tpaccept ${origin.getName()}' 명령어로 수락하세요. -------------------"}]});
+  const set = reqs.get(origin.getName()) ?? new Set();
+  if(!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
+  set.add(player.getName());
+  setTimeout(() => {
+    if(set.delete(player.getName()))
+      bedrockServer.executeCommand(tellraw "${origin.getName()}" {"rawtext": [{"text":"상대가 수락을 하여 ${player.getName()} 님에게 이동됩니다"}]});
+  }, 60 * 1000);
+}, { player: ActorWildcardCommandSelector });
+
+command.register("tpaccept", "Tpa 수락을 합니다").overload((p, origin) => {
+  let playerAr = p.Player.newResults(origin);
+  if (playerAr.length > 1  playerAr.length < 1) {
+    let oPlayer = origin.getEntity() as Player;
+    if (oPlayer) {
+      let packet = TextPacket.create();
+      packet.message = "@a 사용이 불가능합니다.";
+      packet.sendTo(oPlayer.getNetworkIdentifier());
+      packet.dispose();
+    }
+    return;
+  }
+
+    let player = playerAr[0];
+
+  if(reqs.has(player.getName())) {
+    const set = reqs.get(player.getName());
+    if (!set) return;
+    if(set.delete(origin.getName())) {
+      bedrockServer.executeCommand(tp "${player.getName()}" "${origin.getName()}");
+    }
+  }
+}, { Player: ActorWildcardCommandSelector })
+}
