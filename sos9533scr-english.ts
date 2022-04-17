@@ -131,6 +131,15 @@ const sethomecommand = "sethome";
 //home command (with out /) - For user
 const homecommand = "home";
 
+//use tpa command (true/false)
+let usetpacommand: boolean = true;
+
+//tpa command (with out /) - For user
+const tpacommand = "tpa";
+
+//tpaccept command (/with out /) - For user
+const tpacceptcommand = "tpaccept";
+
 //use basic item command (true/false)
 let usebasicitemcommand: boolean = true;
 
@@ -1023,6 +1032,71 @@ events.playerAttack.on((ev) => {
     }
 });
 
-setInterval(() => {
+let cool = setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 },1000);
+
+events.serverClose.on(() => {
+    clearInterval(cool)
+})
+
+if(usetpacommand) {
+
+    const reqs = new Map<string, Set<string>>();
+
+    command.register(tpacommand, "tpa").overload((param, origin) => {
+        let playerAr = param.player.newResults(origin);
+
+        if (playerAr.length > 1 || playerAr.length < 1) {
+            let oPlayer = origin.getEntity() as Player;
+
+            if (oPlayer) {
+                let packet = TextPacket.create();
+                packet.message = "can choose just one player";
+                packet.sendTo(oPlayer.getNetworkIdentifier());
+                packet.dispose();
+            }
+            return;
+        }
+
+        let player = playerAr[0];
+
+        bedrockServer.executeCommand(`tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()}  §rwant §a§tp §rto you. use '/tpaccept "${origin.getName()}" ' -------------------"}]}`);
+
+        const set = reqs.get(origin.getName()) ?? new Set();
+        if(!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
+        set.add(player.getName());
+
+        setTimeout(() => {
+            if(set.delete(player.getName())) bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"tp to ${player.getName()}"}]}`);
+        }, 60 * 1000);
+
+    }, { player: ActorWildcardCommandSelector });
+
+    command.register(tpacceptcommand, "accept tpa").overload((param, origin) => {
+        let playerAr = param.Player.newResults(origin);
+        if (playerAr.length > 1 || playerAr.length < 1) {
+            let oPlayer = origin.getEntity() as Player;
+            if (oPlayer) {
+                let packet = TextPacket.create();
+                packet.message = "cant use @a";
+                packet.sendTo(oPlayer.getNetworkIdentifier());
+                packet.dispose();
+            }
+            return;
+        }
+
+        let player = playerAr[0];
+
+        if(reqs.has(player.getName())) {
+            const set = reqs.get(player.getName());
+            if (!set) return;
+
+            if(set.delete(origin.getName())) {
+                bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+            }
+        }
+        
+    }, { Player: ActorWildcardCommandSelector })
+}
+
