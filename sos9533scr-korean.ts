@@ -1035,7 +1035,7 @@ events.playerAttack.on((ev) => {
     }
 });
 
-setInterval(() => {
+const cool = setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 },1000);
 
