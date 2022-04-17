@@ -40,6 +40,7 @@ Made by sos9533
 │  ├ spawn command
 │  ├ custom tp command (3)
 │  ├ sethome command
+│  ├  command
 │  ├ my info command
 │  └ basic command
 │
