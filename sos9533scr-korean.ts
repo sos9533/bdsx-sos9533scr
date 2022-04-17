@@ -1017,7 +1017,7 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
         bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
 
         if (cpsactionbar) {
-            bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+            bedrockServer.executeCommand(`titleraw ${username} actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
         }
     }
 });
@@ -1027,10 +1027,14 @@ events.playerAttack.on((ev) => {
     bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
 
     if (cpsactionbar) {
-        bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+        bedrockServer.executeCommand(`titleraw ${username} actionbar{"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
     }
 });
 
 setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 },1000);
+
+events.serverClose.on(() => { 
+clearInterval(cool)
+});
