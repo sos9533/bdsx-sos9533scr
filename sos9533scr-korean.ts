@@ -7,7 +7,6 @@
 // /\____) || (___) |/\____) |/\____) )/\____) )/\___/  //\___/  /
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
-
 //  Made by sos9533
 
 // This code was created by a beginner. Plz dont laugh...
@@ -272,10 +271,10 @@ let useblockcolorword: boolean = true;
 const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!";
 
 //보스바 생성 명령어 (/빼고)
-const setbossbarcommand = "보스바생성"
+const setbossbarcommand = "보스바생성";
 
 //보스바 삭제 명령어 (/빼고)
-const removebossbarcommand = "보스바삭제"
+const removebossbarcommand = "보스바삭제";
 
 //cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
 let cpsactionbar: boolean = true;
@@ -286,17 +285,14 @@ import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSele
 import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
-import { ServerPlayer } from "bdsx/bds/player";
-import { serverInstance } from "bdsx/bds/server";
+import { ActorEventPacket, BossEventPacket, TextPacket } from "bdsx/bds/packets";
+import { Player, ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t } from "bdsx/nativetype";
 import { gray, green, red } from "colors";
-import { TextPacket } from 'bdsx/bds/packets';
-import { Player } from 'bdsx/bds/player';
 import * as fs from "fs";
 
 const chin_json = "chin.json";
@@ -573,7 +569,7 @@ function updateban() {
     return false;
 }
 
-const peer = serverInstance.networkHandler.instance.peer;
+const peer = bedrockServer.serverInstance.networkHandler.instance.peer;
 
 if (usegetinfocommand) {
     command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
@@ -729,7 +725,7 @@ const COUNT = new Map<NetworkIdentifier, number>();
 const DELAY_LIMIT = 3;
 
 function kick(target: NetworkIdentifier, message = anticrasherkicktitle) {
-    serverInstance.disconnectClient(target, message);
+    bedrockServer.serverInstance.disconnectClient(target, message);
 }
 
 events.packetAfter(MinecraftPacketIds.Login).on(async (pkt, ni) => {
@@ -817,11 +813,15 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
         if (chinchatset === "A")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            bedrockServer.executeCommand(
+                `tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`,
+            );
         else if (chinchatset === "B")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
         else if (chinchatset === "C")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            bedrockServer.executeCommand(
+                `tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`,
+            );
         else if (chinchatset === "D")
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
@@ -849,7 +849,7 @@ if (usechin === true) {
                             );
                         }
                     }
-                }    
+                }
             },
             {
                 target: ActorWildcardCommandSelector,
@@ -925,64 +925,69 @@ if (usechin === true) {
     }
 }
 
-export function setBossBar(target: NetworkIdentifier,title: string, percent: number, color?: BossEventPacket.Colors): void {
+export function setBossBar(target: NetworkIdentifier, title: string, percent: number, color?: BossEventPacket.Colors): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Show;
     pk.title = title;
     pk.healthPercent = percent;
-    if(color) pk.color = color;
-    pk.sendTo(target)
+    if (color) pk.color = color;
+    pk.sendTo(target);
     pk.dispose();
 }
 
-export function removeBossBar(target: NetworkIdentifier,title: string): void {
+export function removeBossBar(target: NetworkIdentifier, title: string): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Hide;
-    pk.sendTo(target)
+    pk.sendTo(target);
     pk.dispose();
 }
 
-command.register(removebossbarcommand, '보스바를 삭제합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
-    for (const target of params.target.newResults(origin, ServerPlayer)) {
-        const ni = target.getNetworkIdentifier();
-        removeBossBar(ni, params.title)
-    }
-}, {
-    target: ActorWildcardCommandSelector,
-    title: CxxString,
-});
+command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
+    (params, origin, output) => {
+        for (const target of params.target.newResults(origin, ServerPlayer)) {
+            const ni = target.getNetworkIdentifier();
+            removeBossBar(ni, params.title);
+        }
+    },
+    {
+        target: ActorWildcardCommandSelector,
+        title: CxxString,
+    },
+);
 
-command.register(setbossbarcommand, '보스바를 생성합니다.', CommandPermissionLevel.Operator).overload((params, origin, output) => {
-    for (const target of params.target.newResults(origin, ServerPlayer)) {
-        const ni = target.getNetworkIdentifier();
-        if ( params.enum === 'blue' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Blue)
+command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPermissionLevel.Operator).overload(
+    (params, origin, output) => {
+        for (const target of params.target.newResults(origin, ServerPlayer)) {
+            const ni = target.getNetworkIdentifier();
+            if (params.enum === "blue") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Blue);
+            }
+            if (params.enum === "red") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Red);
+            }
+            if (params.enum === "green") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Green);
+            }
+            if (params.enum === "yellow") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Yellow);
+            }
+            if (params.enum === "purple") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Purple);
+            }
+            if (params.enum === "white") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.White);
+            }
         }
-        if ( params.enum === 'red' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Red)
-        }
-        if ( params.enum === 'green' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Green)
-        }
-        if ( params.enum === 'yellow' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Yellow)
-        }
-        if ( params.enum === 'purple' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Purple)
-        }
-        if ( params.enum === 'white' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.White)
-        }
-    }
-
-}, {
-    target: ActorWildcardCommandSelector,
-    title: CxxString,
-    percent: float32_t,
-    enum: command.enum('color','blue','red','green','yellow','purple','white'), 
-});
+    },
+    {
+        target: ActorWildcardCommandSelector,
+        title: CxxString,
+        percent: float32_t,
+        enum: command.enum("color", "blue", "red", "green", "yellow", "purple", "white"),
+    },
+);
 
 mkFileKeep(sethome_json);
 
@@ -1010,7 +1015,7 @@ if (usesethomecommand) {
     command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const player = origin.getEntity();
-        
+
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
@@ -1021,7 +1026,7 @@ if (usesethomecommand) {
         bedrockServer.executeCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
         bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
     }, {});
-}  
+}
 
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     const username = ni.getActor()?.getName();
@@ -1043,71 +1048,70 @@ events.playerAttack.on((ev) => {
     }
 });
 
-let cool = setInterval(() => {
+const cool = setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
-},1000);
+}, 1000);
 
-events.serverClose.on(() => {
-    clearInterval(cool)
-})
+events.serverLeave.on(() => {
+    clearInterval(cool);
+});
 
-if(usetpacommand) {
-
+if (usetpacommand) {
     const reqs = new Map<string, Set<string>>();
 
-    command.register(tpacommand, "티피를 요청합니다.").overload((param, origin) => {
-        let playerAr = param.player.newResults(origin);
+    command.register(tpacommand, "티피를 요청합니다.").overload(
+        (param, origin) => {
+            const playerAr = param.player.newResults(origin);
 
-        if (playerAr.length > 1 || playerAr.length < 1) {
-            let oPlayer = origin.getEntity() as Player;
+            if (playerAr.length > 1 || playerAr.length < 1) {
+                const oPlayer = origin.getEntity();
 
-            if (oPlayer) {
-                let packet = TextPacket.create();
-                packet.message = "한명만 선택이 가능합니다.";
-                packet.sendTo(oPlayer.getNetworkIdentifier());
-                packet.dispose();
+                if (oPlayer?.isPlayer()) {
+                    oPlayer.sendMessage("한 명만 선택 가능합니다");
+                }
+                return;
             }
-            return;
-        }
 
-        let player = playerAr[0];
+            const player = playerAr[0];
 
-        bedrockServer.executeCommand(`tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()} 님이 §a§l티피 §r요청을 원합니다 '/tpaccept ${origin.getName()}' 명령어로 수락하세요. -------------------"}]}`);
+            bedrockServer.executeCommand(
+                `tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()} 님이 §a§l티피 §r요청을 원합니다 '/tpaccept ${origin.getName()}' 명령어로 수락하세요. -------------------"}]}`,
+            );
 
-        const set = reqs.get(origin.getName()) ?? new Set();
-        if(!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
-        set.add(player.getName());
+            const set = reqs.get(origin.getName()) ?? new Set();
+            if (!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
+            set.add(player.getName());
 
-        setTimeout(() => {
-            if(set.delete(player.getName())) bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"상대가 수락을 하여 ${player.getName()} 님에게 이동됩니다"}]}`);
-        }, 60 * 1000);
+            setTimeout(() => {
+                if (set.delete(player.getName()))
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"상대가 수락을 하여 ${player.getName()} 님에게 이동됩니다"}]}`);
+            }, 60 * 1000);
+        },
+        { player: PlayerCommandSelector },
+    );
 
-    }, { player: ActorWildcardCommandSelector });
-
-    command.register(tpacceptcommand, "티피를 수락합니다").overload((param, origin) => {
-        let playerAr = param.Player.newResults(origin);
-        if (playerAr.length > 1 || playerAr.length < 1) {
-            let oPlayer = origin.getEntity() as Player;
-            if (oPlayer) {
-                let packet = TextPacket.create();
-                packet.message = "@a 사용이 불가능합니다.";
-                packet.sendTo(oPlayer.getNetworkIdentifier());
-                packet.dispose();
+    command.register(tpacceptcommand, "티피를 수락합니다").overload(
+        (param, origin) => {
+            const playerAr = param.taret.newResults(origin);
+            if (playerAr.length !== 1) {
+                const oPlayer = origin.getEntity();
+                if (oPlayer?.isPlayer()) {
+                    oPlayer.sendMessage("@a 사용이 불가능합니다.");
+                }
+                return;
             }
-            return;
-        }
 
-        let player = playerAr[0];
+            let player = playerAr[0];
 
-        if(reqs.has(player.getName())) {
-            const set = reqs.get(player.getName());
-            if (!set) return;
+            if (reqs.has(player.getName())) {
+                const set = reqs.get(player.getName());
+                if (!set) return;
 
-            if(set.delete(origin.getName())) {
-                bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                if (set.delete(origin.getName())) {
+                    bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                }
             }
-        }
-        
-    }, { Player: ActorWildcardCommandSelector })
+        },
+        { taret: PlayerCommandSelector },
+    );
 }
-
