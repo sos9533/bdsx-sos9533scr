@@ -280,8 +280,8 @@ import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSele
 import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
-import { ServerPlayer } from "bdsx/bds/player";
+import { ActorEventPacket, BossEventPacket, TextPacket } from "bdsx/bds/packets";
+import { Player, ServerPlayer } from "bdsx/bds/player";
 import { serverInstance } from "bdsx/bds/server";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
@@ -1074,19 +1074,17 @@ if(usetpacommand) {
     }, { player: ActorWildcardCommandSelector });
 
     command.register(tpacceptcommand, "accept tpa").overload((param, origin) => {
-        let playerAr = param.Player.newResults(origin);
-        if (playerAr.length > 1 || playerAr.length < 1) {
-            let oPlayer = origin.getEntity() as Player;
-            if (oPlayer) {
-                let packet = TextPacket.create();
-                packet.message = "cant use @a";
-                packet.sendTo(oPlayer.getNetworkIdentifier());
-                packet.dispose();
+        const players = param.target.newResults(origin, ServerPlayer);
+
+        if (players.length !== 1) {
+            const oPlayer = origin.getEntity();
+            if (oPlayer?.isPlayer()) {
+                oPlayer.sendMessage("there must be only one target");
             }
             return;
         }
 
-        let player = playerAr[0];
+        const player = players[0];
 
         if(reqs.has(player.getName())) {
             const set = reqs.get(player.getName());
@@ -1097,6 +1095,6 @@ if(usetpacommand) {
             }
         }
         
-    }, { Player: ActorWildcardCommandSelector })
+    }, { target: PlayerCommandSelector })
 }
 
