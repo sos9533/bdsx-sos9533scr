@@ -1,7 +1,7 @@
 {
   "name": "@bdsx/bdsx-sos9533scr-main",
   "version": "1.0.0",
-  "description": "sos9533scr by sos9533 (PANDA)",
+  "description": "sos9533scr, BDSX Basic setting plugin for beginner BDSX users",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +16,7 @@
   ],
   "author": "sos9533",
   "license": "MIT",
+ ​ ​"bdsxPlugin"​: ​true​,
   "bugs": {
     "url": "https://github.com/sos9533/sos9533scr/issues"
   },
