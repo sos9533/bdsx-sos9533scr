@@ -1,9 +1,8 @@
-![logo](resources/sos9533scr_logo.jpg)  
-# language
+# instruction - 설명서
 
 #### [Korean](#sos9533scr-korean)
-- [기능](#기능)
-- [사용법](#사용법)
+- [기능](# 기능)
+- [사용법](# 사용법)
 
 
 
@@ -12,7 +11,7 @@
 - [How_to_use](#How_to_use)
 
 
-
+![logo](resources/sos9533scr_logo.jpg)  
 
 
 -------------------------------------------------
