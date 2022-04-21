@@ -640,7 +640,7 @@ if (usespawncommand) {
 events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni) => {
     if (ev.command == "/about") {
         bedrockServer.executeCommand(
-            `tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr."}]}`,
+            `tellraw "${ev.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`,
         );
         return CANCEL;
     }
@@ -690,9 +690,10 @@ if (usestpcommandC) {
         bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleC}"}]}`);
     }, {});
 }
-command.register("sos9533scr", "This Server use sos9533scr", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+
+command.register("sos9533scr", "BDSX Basic setting plugin - Copyright (c) 2022 sos9533", CommandPermissionLevel.Normal).overload((param, origin, output) => {
     bedrockServer.executeCommand(
-        `tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr. download : https://github.com/sos9533/bdsx-sos9533scr-english / made by sos9533"}]}`,
+        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr. \nDownload : https://github.com/sos9533/bdsx-sos9533scr-english \nMade by sos9533"}]}`,
     );
 }, {});
 if (usebasicitemcommand) {
