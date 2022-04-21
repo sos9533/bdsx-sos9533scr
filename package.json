@@ -1,5 +1,5 @@
 {
-  "name": "@bdsx/bdsx-sos9533scr-main",
+  "name": "@bdsx/bdsx-sos9533scr",
   "version": "1.0.0",
   "description": "sos9533scr, BDSX Basic setting plugin for beginner BDSX users",
   "main": "index.js",
@@ -16,7 +16,6 @@
   ],
   "author": "sos9533",
   "license": "MIT",
- ​ ​"bdsxPlugin"​: ​true​,
   "bugs": {
     "url": "https://github.com/sos9533/sos9533scr/issues"
   },
