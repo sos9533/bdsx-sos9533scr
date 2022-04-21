@@ -1052,7 +1052,7 @@ const cool = setInterval(() => {
     bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
 }, 1000);
 
-events.ServerClose.on(() => {
+events.serverClose.on(() => {
     clearInterval(cool);
 });
 
