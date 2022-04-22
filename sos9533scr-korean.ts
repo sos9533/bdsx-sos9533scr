@@ -1028,6 +1028,7 @@ if (usesethomecommand) {
     }, {});
 }
 
+/*
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     const username = ni.getActor()?.getName();
     if (ev.sound === 42) {
@@ -1039,7 +1040,6 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     }
 });
 
-/*
 events.playerAttack.on((ev) => {
     const username = ev.player.getName();
     bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
@@ -1057,6 +1057,7 @@ events.serverLeave.on(() => {
     clearInterval(cool);
 });
 */
+
 events.playerJoin.on((ev) => {
     bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
 });
