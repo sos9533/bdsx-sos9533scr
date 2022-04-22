@@ -1039,6 +1039,7 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     }
 });
 
+/*
 events.playerAttack.on((ev) => {
     const username = ev.player.getName();
     bedrockServer.executeCommand(`scoreboard players add ${username} cps 1`);
@@ -1055,6 +1056,39 @@ const cool = setInterval(() => {
 events.serverLeave.on(() => {
     clearInterval(cool);
 });
+*/
+events.playerJoin.on((ev) => {
+    bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
+});
+
+events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
+    const playerName = ni.getActor()?.getName();
+    if (ev.sound === 42) {
+            bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
+    }
+        if (usecpsactionbar) {
+            bedrockServer.executeCommand(`titleraw ${playerName} actionbar {"rawtext":[{"text":"§l§fCPS:§e "},{"score":{"name":"*","objective":"cps"}}]},{"text":""}]}`);
+        }
+});
+
+events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
+    const playerName = ni.getActor()?.getName();
+    if(ev.sound === 43) {
+    bedrockServer.executeCommand(`scoreboard players add ${playerName} cps 1`);
+    }
+    if (usecpsactionbar) {
+        bedrockServer.executeCommand(`titleraw ${playerName} actionbar {"rawtext":[{"text":"§l§fCPS:§e "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+    }
+    
+});
+
+const cool = setInterval(() => {
+    bedrockServer.executeCommand('scoreboard players set @a cps 0');
+},1000);
+
+events.serverLeave.on(() => {
+    clearInterval(cool)
+})
 
 if (usetpacommand) {
     const reqs = new Map<string, Set<string>>();
