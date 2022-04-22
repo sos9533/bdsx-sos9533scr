@@ -429,28 +429,28 @@ events.command.on((command, origin) => {
     if (usechatcut) {
         if (cmdhead === "/w") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/tell") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/msg") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/me") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
