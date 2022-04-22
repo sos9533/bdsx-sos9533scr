@@ -277,7 +277,7 @@ const setbossbarcommand = "보스바생성";
 const removebossbarcommand = "보스바삭제";
 
 //cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
-let cpsactionbar: boolean = true;
+let usecpsactionbar: boolean = true;
 
 /////////////////////////////////////////////////////////////////////
 
