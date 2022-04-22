@@ -11,7 +11,7 @@
 - [How_to_use](#How_to_use)
 
 
-![logo](resources/sos9533scr_logo.jpg)  
+![logo](sos9533scr_logo.jpg)  
 
 
 -------------------------------------------------
