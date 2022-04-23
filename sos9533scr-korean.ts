@@ -1092,6 +1092,7 @@ events.serverLeave.on(() => {
     clearInterval(cool)
 })
 
+
 if (usetpacommand) {
     const reqs = new Map<string, Set<string>>();
 
@@ -1103,7 +1104,7 @@ if (usetpacommand) {
                 const oPlayer = origin.getEntity();
 
                 if (oPlayer?.isPlayer()) {
-                    oPlayer.sendMessage("한 명만 선택 가능합니다");
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §c유저 한명을 정확하게 선택해주세요.");
                 }
                 return;
             }
@@ -1111,7 +1112,7 @@ if (usetpacommand) {
             const player = playerAr[0];
 
             bedrockServer.executeCommand(
-                `tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()} 님이 §a§l티피 §r요청을 원합니다 '/tpaccept ${origin.getName()}' 명령어로 수락하세요. -------------------"}]}`,
+                `tellraw "${player.getName()}" {"rawtext": [{"text": "§l§f------ ${origin.getName()}님이 §a§l티피요청§f을 원합니다 ------\n§l§f------§c '/${tpacceptcommand} ${origin.getName()}'§f 명령어로 수락하세요. ------"}]}`,
             );
 
             const set = reqs.get(origin.getName()) ?? new Set();
@@ -1120,19 +1121,19 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(player.getName()))
-                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"상대가 수락을 하여 ${player.getName()} 님에게 이동됩니다"}]}`);
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f-------------------- 상대가 수락을 하여 §a${player.getName()}§f 님에게 이동됩니다 --------------------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
     );
 
-    command.register(tpacceptcommand, "티피를 수락합니다").overload(
+    command.register(tpacceptcommand, "티피요청를 수락합니다").overload(
         (param, origin) => {
             const playerAr = param.taret.newResults(origin);
             if (playerAr.length !== 1) {
                 const oPlayer = origin.getEntity();
                 if (oPlayer?.isPlayer()) {
-                    oPlayer.sendMessage("@a 사용이 불가능합니다.");
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §c유저 한명을 정확하게 선택해주세요.");
                 }
                 return;
             }
@@ -1151,3 +1152,4 @@ if (usetpacommand) {
         { taret: PlayerCommandSelector },
     );
 }
+
