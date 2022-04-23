@@ -226,6 +226,9 @@ const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플�
 //툴박스 강퇴 안내 메시지 - 툴박스 사용 플레이어의 화면에 출력
 const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다.";
 
+//가짜 OS 강퇴 안내 메시지 - 가짜 OS 사용 플레이어의 화면에 출력
+const FakeOSdetectionTitle = "§l§f[ §7Kick §f]\n\n§c가짜 OS가 감지되어 서버에서 추방되셨습니다."
+
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
 let uselongnicknamekick: boolean = true;
 
@@ -341,8 +344,6 @@ function dateWithZero() {
         + leadZero(d.getMinutes(), 2)) + "-";
 };
 
-
-
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
 events.serverOpen.on(() => {
@@ -364,7 +365,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const cert = connreq.cert;
     const xuid = cert.getXuid();
     const username = cert.getId();
-    const deviceModel = connreq.getJsonValue()!["DeviceModel"];
+    let deviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
 
@@ -382,9 +383,27 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
             bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
         }
-    }
+    };
 
-    console.log(green(`${username}> IP:${ip}, XUID:${xuid} OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}`));
+    if (deviceModel == "") deviceModel = "No Model";
+
+    const OS = connreq.getDeviceOS();
+
+    if (deviceModel !== "No Model" && OS == 7) {
+        kick(networkIdentifier, FakeOSdetectionTitle);
+        const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+        const howmanyops = onlineops.length;
+        console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+    };
+
+    if (deviceModel == "No Model" && OS !== 7) {
+        kick(networkIdentifier, FakeOSdetectionTitle);
+        const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+        const howmanyops = onlineops.length;
+        console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+    };
+
+    console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}`));
 });
 
 events.networkDisconnected.on((networkIdentifier) => {
@@ -1593,4 +1612,14 @@ if (usetpacommand) {
         },
         { taret: PlayerCommandSelector },
     );
-}
+};
+
+command.register('낮', '서버의 시간을 낮으로 바꿉니다').overload((input, corg) => {
+    bedrockServer.executeCommand(`time set day`);
+    corg.getEntity()?.getNetworkIdentifier().getActor()?.sendMessage(`§6서버의 시간을 낮으로 바꿨습니다`);
+}, {});
+
+command.register('밤', '서버의 시간을 밤으로 바꿉니다').overload((input, corg) => {
+    bedrockServer.executeCommand(`time set night`);
+    corg.getEntity()?.getNetworkIdentifier().getActor()?.sendMessage(`§6서버의 시간을 밤으로 바꿨습니다`);
+}, {});
