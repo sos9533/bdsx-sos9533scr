@@ -528,7 +528,7 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
             const target = param.target.newResults(origin)!;
             const legnth = target.length;
             for (let i = 0; i < legnth; i++) {
-                banObj[DeviceId] = "BANNED";
+                banObj[DeviceId] = "BANED";
                 fs.writeFileSync(ban_json, JSON.stringify(banObj), "utf8");
                 updateban();
                 kick(ip, bantitle);
