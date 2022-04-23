@@ -528,7 +528,7 @@ command.register(bancommand, "플레이어를 밴처리 합니다.", CommandPerm
             const target = param.target.newResults(origin)!;
             const legnth = target.length;
             for (let i = 0; i < legnth; i++) {
-                banObj[DeviceId] = "BANED";
+                banObj[DeviceId] = "BAN";
                 fs.writeFileSync(ban_json, JSON.stringify(banObj), "utf8");
                 updateban();
                 kick(ip, bantitle);
@@ -557,7 +557,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     if (connreq === null) return;
     const DeviceId = connreq.getDeviceId();
 
-    if (ban[DeviceId]?.includes("BANED")) {
+    if (ban[DeviceId]?.includes("BAN")) {
         kick(networkIdentifier, bantitle);
     }
 });
