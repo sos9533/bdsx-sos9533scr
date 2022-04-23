@@ -215,7 +215,7 @@ const basicchin = "§l§7일반인";
 
 /////////////////////////////////////////////////////////////////////
 
-const defalut_kick_message = "§c강제 퇴장 조치합니다";
+const default_kick_message = "§c강제 퇴장 조치합니다";
 
 //불법 프로그램 (핵) 방지
 
@@ -1179,7 +1179,7 @@ const LAST = new Map<NetworkIdentifier, number>();
 const COUNT = new Map<NetworkIdentifier, number>();
 const DELAY_LIMIT = 3;
 
-function kick(target: NetworkIdentifier, message = defalut_kick_message) {
+function kick(target: NetworkIdentifier, message = default_kick_message) {
     bedrockServer.serverInstance.disconnectClient(target, message);
 }
 
