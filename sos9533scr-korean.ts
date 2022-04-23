@@ -8,7 +8,6 @@
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
 //  Made by sos9533
-// ..
 
 // This code was created by a beginner. Plz dont laugh...
 // This plugin was made for Korean Omlet Arcade user
