@@ -1041,61 +1041,64 @@ events.serverClose.on(() => {
     clearInterval(cool)
 })
 
-if(usetpacommand) {
 
+if (usetpacommand) {
     const reqs = new Map<string, Set<string>>();
 
-    command.register(tpacommand, "tpa").overload((param, origin) => {
-        let playerAr = param.player.newResults(origin);
+    command.register(tpacommand, "request tp to another user.").overload(
+        (param, origin) => {
+            const playerAr = param.player.newResults(origin);
 
-        if (playerAr.length > 1 || playerAr.length < 1) {
-            let oPlayer = origin.getEntity() as Player;
+            if (playerAr.length > 1 || playerAr.length < 1) {
+                const oPlayer = origin.getEntity();
 
-            if (oPlayer) {
-                let packet = TextPacket.create();
-                packet.message = "can choose just one player";
-                packet.sendTo(oPlayer.getNetworkIdentifier());
-                packet.dispose();
+                if (oPlayer?.isPlayer()) {
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §cselect one user correctly");
+                }
+                return;
             }
-            return;
-        }
 
-        let player = playerAr[0];
+            const player = playerAr[0];
 
-        bedrockServer.executeCommand(`tellraw "${player.getName()}" {"rawtext": [{"text": "-------------------- ${origin.getName()}  §rwant §a§tp §rto you. use '/tpaccept "${origin.getName()}" ' -------------------"}]}`);
+            bedrockServer.executeCommand(
+                `tellraw "${player.getName()}" {"rawtext": [{"text": "§l§f------ ${origin.getName()} want tp to you ------\n§l§f------§c use '/${tpacceptcommand} ${origin.getName()}'§f ------"}]}`,
+            );
 
-        const set = reqs.get(origin.getName()) ?? new Set();
-        if(!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
-        set.add(player.getName());
+            const set = reqs.get(origin.getName()) ?? new Set();
+            if (!reqs.has(origin.getName())) reqs.set(origin.getName(), set);
+            set.add(player.getName());
 
-        setTimeout(() => {
-            if(set.delete(player.getName())) bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"tp to ${player.getName()}"}]}`);
-        }, 60 * 1000);
+            setTimeout(() => {
+                if (set.delete(player.getName()))
+                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §a${player.getName()}§f accept your tpa ------"}]}`);
+            }, 60 * 1000);
+        },
+        { player: PlayerCommandSelector },
+    );
 
-    }, { player: ActorWildcardCommandSelector });
-
-    command.register(tpacceptcommand, "accept tpa").overload((param, origin) => {
-        const players = param.target.newResults(origin, ServerPlayer);
-
-        if (players.length !== 1) {
-            const oPlayer = origin.getEntity();
-            if (oPlayer?.isPlayer()) {
-                oPlayer.sendMessage("there must be only one target");
+    command.register(tpacceptcommand, "accept tpa request").overload(
+        (param, origin) => {
+            const playerAr = param.taret.newResults(origin);
+            if (playerAr.length !== 1) {
+                const oPlayer = origin.getEntity();
+                if (oPlayer?.isPlayer()) {
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §cselect one user correctly");
+                }
+                return;
             }
-            return;
-        }
 
-        const player = players[0];
+            let player = playerAr[0];
 
-        if(reqs.has(player.getName())) {
-            const set = reqs.get(player.getName());
-            if (!set) return;
+            if (reqs.has(player.getName())) {
+                const set = reqs.get(player.getName());
+                if (!set) return;
 
-            if(set.delete(origin.getName())) {
-                bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                if (set.delete(origin.getName())) {
+                    bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                }
             }
-        }
-        
-    }, { target: PlayerCommandSelector })
+        },
+        { taret: PlayerCommandSelector },
+    );
 }
 
