@@ -693,7 +693,7 @@ if (usestpcommandC) {
 
 command.register("sos9533scr", "BDSX Basic setting plugin - Copyright (c) 2022 sos9533", CommandPermissionLevel.Normal).overload((param, origin, output) => {
     bedrockServer.executeCommand(
-        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr. \nDownload : https://github.com/sos9533/bdsx-sos9533scr-english \nMade by sos9533"}]}`,
+        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr. \nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533"}]}`,
     );
 }, {});
 if (usebasicitemcommand) {
