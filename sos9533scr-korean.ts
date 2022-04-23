@@ -572,10 +572,10 @@ command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.",
 events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
     const op_count = onlineops.length;
-    const request = pkt.connreq;
-    if (!request) return;
-    const plname = request.cert.getId();
-    PlayerDeviceID[plname] = request.getDeviceId();
+    const connectionrequest = pkt.connreq;
+    if (!connectionrequest) return;
+    const plname = connectionrequest.cert.getId();
+    PlayerDeviceID[plname] = connectionrequest.getDeviceId();
     let banlist = fs.readdirSync(`./banDB/`);
     if (banlist.includes(`${plname}`)) {
         const getbantime = fs.readFileSync(`./banDB/${plname}`);
@@ -718,7 +718,7 @@ let unbanoverload = unban.overload((inputs, ni) => {
 command.register(bancommand, '플레이어가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)').overload((inputs, corg) => {
 
     const plname = corg.getName();
-    if (inputs.player.getName() == plname) {
+    if (inputs.player.getName() === plname) {
         runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
         return CANCEL;
     }
@@ -809,7 +809,7 @@ command.register(bancommand, '플레이어가 이 서버에 접속하지 못하�
 
 command.register(Devicebancommand, '플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)').overload(async (inputs, corg) => {
     const plname = corg.getName();
-    if (inputs.player.getName() == plname) {
+    if (inputs.player.getName() === plname) {
         runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
         return CANCEL;
     }
@@ -967,8 +967,7 @@ command.register(showbanlistcommand, '서버에서 차단당한 플레이어 목
 command.register(OfflinePlayerDeivceBanCommand, '플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)').overload((input, corg) => {
     const plname = corg.getName();
     const input_length = input.DeviceID.length;
-    const input__ = input.DeviceID;
-    const targetdeviceid = PlayerDeviceID[input__];
+    const targetdeviceid = input.DeviceID;
     if (input_length !== 36) {
         if (corg.isServerCommandOrigin()) {
             console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
@@ -979,13 +978,13 @@ command.register(OfflinePlayerDeivceBanCommand, '플레이어가 접속하지 �
         }
     }
     let banlist = fs.readdirSync(`./DbanDB/`);
-    if (banlist.includes(`${PlayerDeviceID[input__]}`) == true) {
+    if (banlist.includes(`${targetdeviceid}`) == true) {
 
         if (corg.isServerCommandOrigin()) {
-            console.log(red(`디바이스 ${input__}(은)는 이미 차단되어있습니다`));
+            console.log(red(`디바이스 ${targetdeviceid}(은)는 이미 차단되어있습니다`));
             return CANCEL;
         } else {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 디바이스 ${input__}(은)는 이미 차단되어있습니다"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 디바이스 ${targetdeviceid}(은)는 이미 차단되어있습니다"}]}`);
             return CANCEL;
         };
     }
