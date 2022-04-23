@@ -52,22 +52,22 @@ const mutecommand = "뮤트";
 const unmutecommand = "뮤트해제";
 
 //플레이어 디바이스 차단 명령어 (/빼고) - 관리자 전용 명령어
-const Devicebancommand = "ban-device";
+const Devicebancommand = "디바이스-밴";
 
 //플레이어 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
-const Deviceunbancommand = "unban-device";
+const Deviceunbancommand = "디바이스-밴해제";
 
 //플레이어 차단 명령어 (/빼고) - 관리자 전용 명령어
-const bancommand = "ban";
+const bancommand = "밴";
 
 //플레이어 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
-const unbancommand = "unban";
+const unbancommand = "밴해제";
 
 //영구밴 플레이어 확인 (/빼고) - 관리자 전용 명령어
-const showbanlistcommand = "banlist";
+const showbanlistcommand = "밴목록";
 
 //플레이어가 접속하지 않았을때 device id 를 이용해 차단 (/빼고) - 관리자 전용 명령어
-const OfflinePlayerDeivceBanCommand = "c-d-ban";
+const OfflinePlayerDeivceBanCommand = "미접속자-디바이스-밴";
 
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
 const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다.";
