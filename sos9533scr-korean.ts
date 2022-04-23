@@ -316,17 +316,10 @@ function mkFileKeep(filepath: string, value = {}) {
     }
 }
 
-/*
-Ban DB 생성
-*/
-
 if (!fs.existsSync('./banDB')) {
     fs.mkdirSync('./banDB');
 };
 
-/*
-Device Ban DB 생성 (D ban DB) 
- */
 if (!fs.existsSync('./DbanDB')) {
     fs.mkdirSync('./DbanDB');
 };
@@ -570,18 +563,18 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
         if (getbantime == null) {
             serverInstance.disconnectClient(ni, bantitle);
             for (let i1 = 0; i1 < howmanyops; i1++) {
-                onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             };
-            console.log(red(`{Blacklist} ${plname} tried connection [Name Ban Player]`));
+            console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
             return CANCEL;
         };
         const ToString = String(getbantime);
         if (ToString == "null") {
             serverInstance.disconnectClient(ni, bantitle);
             for (let i1 = 0; i1 < howmanyops; i1++) {
-                onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             };
-            console.log(red(`{Blacklist} ${plname} tried connection [Name Ban Player]`));
+            console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
             return CANCEL;
         };
 
@@ -608,9 +601,9 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
 
         serverInstance.disconnectClient(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i1 = 0; i1 < howmanyops; i1++) {
-            onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
         };
-        console.log(red(`{Blacklist} ${plname} tried connection [Name Ban Player]`));
+        console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
         return CANCEL;
     };
 
@@ -620,18 +613,18 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
         if (getbantime == null) {
             serverInstance.disconnectClient(ni, bantitle);
             for (let i1 = 0; i1 < howmanyops; i1++) {
-                onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             };
-            console.log(red(`{Blacklist} ${plname} tried connection [Device Ban Player]`));
+            console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
             return CANCEL;
         };
         const ToString = String(getbantime);
         if (ToString == "null") {
             serverInstance.disconnectClient(ni, bantitle);
             for (let i1 = 0; i1 < howmanyops; i1++) {
-                onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             };
-            console.log(red(`{Blacklist} ${plname} tried connection [Device Ban Player]`));
+            console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
             return CANCEL;
         };
 
@@ -658,9 +651,9 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
 
         serverInstance.disconnectClient(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i1 = 0; i1 < howmanyops; i1++) {
-            onlineops[i1].sendMessage(`§c{Blacklist} ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
         };
-        console.log(red(`{Blacklist} ${plname} tried connection [Device Ban Player]`));
+        console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
         return CANCEL;
     };
 });
@@ -701,11 +694,7 @@ let unbanoverload = unban.overload((inputs, ni) => {
     };
 }, {
     player: unbanenum
-})
-
-/* 네임밴 
-플레이어의 이름을 차단함                                                                                                                                                                                                         Made By What the
-*/
+});
 
 command.register(bancommand, '플레이어가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)').overload((inputs, corg) => {
 
@@ -823,10 +812,6 @@ command.register(Devicebancommand, '플레이어의 디바이스가 이 서버�
         Do(`tellraw ${plname} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
         return CANCEL;
     }
-
-    /* 디바이스밴                                         
-     플레이어의 디바이스를 차단함. 네임밴이랑 다름.                                                                                                                                                                                                                                                                                                                                                                                                                                                     //Made by What the (2차 수정은 가능하나 저와 관련된 정보들은 수정하지 말아주세요, 2차 배포/판매 절대 금지합니다)
-     */
 
     if (inputs.player.getName() == null || inputs.player.getName() == "") {
         Do(`tellraw ${plname} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
@@ -993,10 +978,6 @@ command.register(showbanlistcommand, '서버에서 차단당한 플레이어 목
         Do(`tellraw ${plname} {"rawtext":[{"text":"디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
     }
 }, {});
-
-/*커스텀 디바이스 밴
-플레이어가 오프라인이더라도 디바이스 아이디를 알고 있으면 밴이 가능함
-*/
 
 command.register(OfflinePlayerDeivceBanCommand, '플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)').overload((input, corg) => {
     const plname = corg.getName();
