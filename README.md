@@ -20,7 +20,7 @@ Made by sos9533
 
 - [OmletArcade](https://omlet.gg/profile/sos9533)
 
-- [KakaoTalk OpneChat](https://open.kakao.com/me/sos9533)
+- [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
 
 ## function
 
@@ -186,7 +186,7 @@ let chinchatset = "D";
 
 -   제작자 연락처
     -   [OmletArcade](https://omlet.gg/profile/sos9533)
-    -   [KakaoTalk OpneChat](https://open.kakao.com/me/sos9533)
+    -   [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
 
 ## 기능
 
