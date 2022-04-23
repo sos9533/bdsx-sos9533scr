@@ -44,7 +44,7 @@ const welcomemessage = "§l§7welcome! this is steve's server!";
 const kickcommand = "kickout";
 
 //kick message
-const kicktitle = "§l§f[ §7Kick §f]\n\n§cYou Kicked by server\n§7You can join the server again";
+const kicktitle = "§l§f[ §7Kick §f]\n\n§cYou are kicked from server\n§7You can join the server again";
 
 //mute command (with out /) - For OP
 const mutecommand = "mute";
