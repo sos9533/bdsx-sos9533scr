@@ -552,7 +552,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     if (connreq === null) return;
     const DeviceId = connreq.getDeviceId();
 
-    if (ban[DeviceId]?.includes("BADED")) {
+    if (ban[DeviceId]?.includes("BANED")) {
         kick(networkIdentifier, bantitle);
     }
 });
