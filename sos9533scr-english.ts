@@ -56,7 +56,7 @@ const unmutecommand = "unmute";
 const bancommand = "ban";
 
 //ban message
-const bantitle = "§l§f[ §cBAN §f]\n\n§cYou BANed by server\n§7You cant join the server again";
+const bantitle = "§l§f[ §cBAN §f]\n\n§cYou banned from this server\n§7You can't join the server again";
 
 //ban update command (with out /) - For OP
 const updatebancommand = "ban-update";
