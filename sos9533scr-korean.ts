@@ -368,13 +368,15 @@ events.serverClose.on(() => {
 
 export const playerList = new Map<NetworkIdentifier, string>();
 
-bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
+events.levelTick.once((ev) => {
+    runCommand("scoreboard objectives add cps dummy");
+});
 
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
-    const ip = networkIdentifier.getAddress();
     const connreq = ptr.connreq;
     if (connreq === null) return;
     const cert = connreq.cert;
+    const ip = networkIdentifier.getAddress();
     const xuid = cert.getXuid();
     const username = cert.getId();
     let deviceModel = connreq.getJsonValue()!["DeviceModel"];
@@ -472,26 +474,26 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
     }
 });
 
-const time: Record<string, number> = {};
-events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-    const playername = ni.getActor()!.getName();
+if (usechatcut) {
+    const lastChatTimes: Record<string, number> = {};
+    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+        const username = ni.getActor()!.getName();
 
-    if (usechatcut) {
         if (ptr.message.length > chatcutmessagelength) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
             return CANCEL;
         }
 
-        if (time[playername] === undefined) {
-            time[playername] = Date.now();
-        } else if (Date.now() - time[playername] < chatcutmessagespeedtime) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
+        if (lastChatTimes[username] === undefined) {
+            lastChatTimes[username] = Date.now();
+        } else if (Date.now() - lastChatTimes[username] < chatcutmessagespeedtime) {
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
             return CANCEL;
         } else {
-            time[playername] = Date.now();
+            lastChatTimes[username] = Date.now();
         }
-    }
-});
+    });
+}
 
 events.command.on((command, origin) => {
     const cmdhead = command.split(" ")[0];
@@ -528,16 +530,12 @@ events.command.on((command, origin) => {
 
 command.register(kickcommand, "플레이어를 강퇴합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
-        for (const target of param.target.newResults(origin)) {
+        for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
-            const ip = target.getNetworkIdentifier();
-            const actor = origin.getName();
-
-            for (const actor of param.target.newResults(origin, ServerPlayer)) {
-                kick(ip, kicktitle);
-                runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
-                console.log("\x1b[41m", `${username} kicked > [ Kicked by ${actor} ]`, "\x1b[0m");
-            }
+            const ni = target.getNetworkIdentifier();
+            kick(ni, kicktitle);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
+            console.log("\x1b[41m", `${username} kicked > [ Kicked by ${origin.getName()} ]`, "\x1b[0m");
         }
     },
     {
@@ -1364,6 +1362,7 @@ if (usechin === true) {
     }
 }
 
+/** @deprecated useless, use {@link ServerPlayer.prototype.setBossBar} */
 export function setBossBar(target: NetworkIdentifier, title: string, percent: number, color?: BossEventPacket.Colors): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
@@ -1375,7 +1374,8 @@ export function setBossBar(target: NetworkIdentifier, title: string, percent: nu
     pk.dispose();
 }
 
-export function removeBossBar(target: NetworkIdentifier, title: string): void {
+/** @deprecated useless, use {@link ServerPlayer.prototype.removeBossBar} */
+export function removeBossBar(target: NetworkIdentifier, title?: string): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Hide;
@@ -1386,8 +1386,7 @@ export function removeBossBar(target: NetworkIdentifier, title: string): void {
 command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
-            const ni = target.getNetworkIdentifier();
-            removeBossBar(ni, params.title);
+            target.removeBossBar();
         }
     },
     {
@@ -1399,20 +1398,21 @@ command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandP
 command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
-            const ni = target.getNetworkIdentifier();
+            let color: BossEventPacket.Colors = BossEventPacket.Colors.Purple;
             if (params.enum === "blue") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Blue);
+                color = BossEventPacket.Colors.Blue;
             } else if (params.enum === "red") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Red);
+                color = BossEventPacket.Colors.Red;
             } else if (params.enum === "green") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Green);
+                color = BossEventPacket.Colors.Green;
             } else if (params.enum === "yellow") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Yellow);
+                color = BossEventPacket.Colors.Yellow;
             } else if (params.enum === "purple") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Purple);
+                color = BossEventPacket.Colors.Purple;
             } else if (params.enum === "white") {
-                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.White);
+                color = BossEventPacket.Colors.White;
             }
+            target.setBossBar(params.title, params.percent, color);
         }
     },
     {
@@ -1436,13 +1436,11 @@ if (usesethomecommand) {
         const pos = player.getPosition();
         const DeviceId = player.deviceId;
 
-        if (pos !== undefined && player !== undefined) {
-            const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
-            const writepos = `${pos?.x} ${pos?.y} ${pos?.z}`;
-            jsonObj[DeviceId] = writepos!.toString();
-            fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
-        }
+        const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
+        const homePos = `${pos?.x ?? "??"} ${pos?.y ?? "??"} ${pos?.z ?? "??"}`;
+        jsonObj[DeviceId] = homePos;
+        fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
     }, {});
 
     command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
@@ -1460,10 +1458,6 @@ if (usesethomecommand) {
         runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
     }, {});
 }
-
-events.levelTick.once((ev) => {
-    runCommand("scoreboard objectives add cps dummy");
-});
 
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
     const playerName = ni.getActor()?.getName();
