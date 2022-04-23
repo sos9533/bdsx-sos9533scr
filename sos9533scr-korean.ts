@@ -8,6 +8,7 @@
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
 //  Made by sos9533
+// ..
 
 // This code was created by a beginner. Plz dont laugh...
 // This plugin was made for Korean Omlet Arcade user
@@ -391,14 +392,14 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     if (deviceModel !== "No Model" && OS == 7) {
         kick(networkIdentifier, FakeOSdetectionTitle);
         const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
-        const howmanyops = onlineops.length;
+        const op_count = onlineops.length;
         console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
     };
 
     if (deviceModel == "No Model" && OS !== 7) {
         kick(networkIdentifier, FakeOSdetectionTitle);
         const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
-        const howmanyops = onlineops.length;
+        const op_count = onlineops.length;
         console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
     };
 
@@ -568,10 +569,10 @@ command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.",
     },
 );
 
-events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
+events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const onlineops = serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
-    const howmanyops = onlineops.length;
-    const request = ev.connreq;
+    const op_count = onlineops.length;
+    const request = pkt.connreq;
     if (!request) return;
     const plname = request.cert.getId();
     PlayerDeviceID[plname] = request.getDeviceId();
@@ -579,8 +580,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
     if (banlist.includes(`${plname}`)) {
         const getbantime = fs.readFileSync(`./banDB/${plname}`);
         if (getbantime == null) {
-            serverInstance.disconnectClient(ni, bantitle);
-            for (let i1 = 0; i1 < howmanyops; i1++) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             };
             console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
@@ -588,8 +589,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
         };
         const ToString = String(getbantime);
         if (ToString == "null") {
-            serverInstance.disconnectClient(ni, bantitle);
-            for (let i1 = 0; i1 < howmanyops; i1++) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             };
             console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
@@ -617,8 +618,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
             return;
         };
 
-        serverInstance.disconnectClient(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
-        for (let i1 = 0; i1 < howmanyops; i1++) {
+        kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
+        for (let i1 = 0; i1 < op_count; i1++) {
             onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Name Ban Player]`);
         };
         console.log(red(`[ sos9533scr ] ${plname} tried connection [Name Ban Player]`));
@@ -629,8 +630,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
     if (Dbanlist.includes(`${PlayerDeviceID[plname]}`)) {
         const getbantime = fs.readFileSync(`./DbanDB/${PlayerDeviceID[plname]}`);
         if (getbantime == null) {
-            serverInstance.disconnectClient(ni, bantitle);
-            for (let i1 = 0; i1 < howmanyops; i1++) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             };
             console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
@@ -638,8 +639,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
         };
         const ToString = String(getbantime);
         if (ToString == "null") {
-            serverInstance.disconnectClient(ni, bantitle);
-            for (let i1 = 0; i1 < howmanyops; i1++) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             };
             console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
@@ -667,8 +668,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ev, ni) => {
             return;
         };
 
-        serverInstance.disconnectClient(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
-        for (let i1 = 0; i1 < howmanyops; i1++) {
+        kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
+        for (let i1 = 0; i1 < op_count; i1++) {
             onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${plname}(이)가 연결을 시도했습니다 [Device Ban Player]`);
         };
         console.log(red(`[ sos9533scr ] ${plname} tried connection [Device Ban Player]`));
@@ -744,12 +745,12 @@ command.register(bancommand, '플레이어가 이 서버에 접속하지 못하�
         inputs.minutes = 0;
     }
 
-    const getDate = new Date;
-    let Hours = getDate.getHours();
-    let Month = getDate.getMonth() + 1;
-    let Year = getDate.getFullYear();
-    let minutes = getDate.getMinutes() + inputs.minutes;
-    let day = getDate.getDate();
+    const date = new Date;
+    let Hours = date.getHours();
+    let Month = date.getMonth() + 1;
+    let Year = date.getFullYear();
+    let minutes = date.getMinutes() + inputs.minutes;
+    let day = date.getDate();
 
     for (true; minutes > 59;) {
         minutes = minutes - 60;
@@ -784,24 +785,6 @@ command.register(bancommand, '플레이어가 이 서버에 접속하지 못하�
     const BannedTime = `${Year}년 ${Month}월 ${day}일 ${Hours}시 ${minutes}분`;
     const BannedTime2 = `${Year}-${Month}-${day}-${Hours}-${minutes}`;
 
-    if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, null);
-        console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
-        Do(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
-        unbanenum.addValues(`${inputs.player.getName()}`);
-        if (Do(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
-            for (const pl of inputs.player.newResults(corg)) {
-                const Ni = pl.getNetworkIdentifier();
-                if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-                    serverInstance.disconnectClient(Ni, bantitle);
-                } else {
-                    serverInstance.disconnectClient(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
-                }
-                return CANCEL;
-            };
-        };
-    };
-
     fs.writeFileSync(`./banDB/${inputs.player.getName()}`, BannedTime2);
 
     console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
@@ -810,10 +793,10 @@ command.register(bancommand, '플레이어가 이 서버에 접속하지 못하�
     if (Do(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
         for (const pl of inputs.player.newResults(corg)) {
             const Ni = pl.getNetworkIdentifier();
-            if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-                serverInstance.disconnectClient(Ni, bantitle);
+            if (inputs.minutes == 0 || !inputs.minutes) {
+                kick(Ni, bantitle);
             } else {
-                serverInstance.disconnectClient(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+                kick(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
             }
             return CANCEL;
         }
@@ -862,12 +845,12 @@ command.register(Devicebancommand, '플레이어의 디바이스가 이 서버�
         inputs.minutes = 0;
     }
 
-    const getDate = new Date;
-    let Hours = getDate.getHours();
-    let Month = getDate.getMonth() + 1;
-    let Year = getDate.getFullYear();
-    let minutes = getDate.getMinutes() + inputs.minutes;
-    let day = getDate.getDate();
+    const date = new Date;
+    let Hours = date.getHours();
+    let Month = date.getMonth() + 1;
+    let Year = date.getFullYear();
+    let minutes = date.getMinutes() + inputs.minutes;
+    let day = date.getDate();
 
     for (true; minutes > 59;) {
         minutes = minutes - 60;
@@ -904,22 +887,6 @@ command.register(Devicebancommand, '플레이어의 디바이스가 이 서버�
 
     const targetdeviceid = PlayerDeviceID[inputs.player.getName()];
 
-    if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-        fs.writeFileSync(`./DbanDB/${PlayerDeviceID[inputs.player.getName()]}`, null);
-        Do(`execute ${plname} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
-        Do(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(을)를 차단했습니다 (${PlayerDeviceID[inputs.player.getName()]})"}]}`);
-        console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다 (${PlayerDeviceID[inputs.player.getName()]})`));
-        dunbanenum.addValues(targetdeviceid);
-        for (const pl of inputs.player.newResults(corg)) {
-            const Ni = pl.getNetworkIdentifier();
-            if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-                serverInstance.disconnectClient(Ni, bantitle);
-            } else {
-                serverInstance.disconnectClient(Ni, bantitle);
-            }
-            return CANCEL;
-        }
-    };
     fs.writeFileSync(`./DbanDB/${PlayerDeviceID[inputs.player.getName()]}`, BannedTime2);
 
     Do(`execute ${plname} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
@@ -928,10 +895,10 @@ command.register(Devicebancommand, '플레이어의 디바이스가 이 서버�
     dunbanenum.addValues(targetdeviceid);
     for (const pl of inputs.player.newResults(corg)) {
         const Ni = pl.getNetworkIdentifier();
-        if (inputs.minutes == 0 || inputs.minutes == null || !inputs.minutes) {
-            serverInstance.disconnectClient(Ni, bantitle);
+        if (inputs.minutes == 0 || !inputs.minutes) {
+            kick(Ni, bantitle);
         } else {
-            serverInstance.disconnectClient(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+            kick(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
         }
         return CANCEL;
     }
@@ -1523,6 +1490,8 @@ events.playerJoin.on((ev) => {
     bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
 });
 
+
+//This is not mine
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     const playerName = ni.getActor()?.getName();
     if (ev.sound === 42) {
@@ -1613,12 +1582,12 @@ if (usetpacommand) {
     );
 };
 
-command.register('낮', '서버의 시간을 낮으로 바꿉니다').overload((input, corg) => {
+command.register('낮', '서버의 시간을 낮으로 바꿉니다', CommandPermissionLevel.Operator).overload((input, corg) => {
     bedrockServer.executeCommand(`time set day`);
     corg.getEntity()?.getNetworkIdentifier().getActor()?.sendMessage(`§6서버의 시간을 낮으로 바꿨습니다`);
 }, {});
 
-command.register('밤', '서버의 시간을 밤으로 바꿉니다').overload((input, corg) => {
+command.register('밤', '서버의 시간을 밤으로 바꿉니다', CommandPermissionLevel.Operator).overload((input, corg) => {
     bedrockServer.executeCommand(`time set night`);
     corg.getEntity()?.getNetworkIdentifier().getActor()?.sendMessage(`§6서버의 시간을 밤으로 바꿨습니다`);
 }, {});
