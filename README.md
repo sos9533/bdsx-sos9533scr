@@ -33,6 +33,7 @@ Made by sos9533
 │  ├ kick command
 │  ├ mute command
 │  ├ ban command
+│  ├ simple time set command
 │  └ get info command
 │
 ├ user command
