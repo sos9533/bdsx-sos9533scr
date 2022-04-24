@@ -578,7 +578,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return CANCEL;
         }
         const ToString = String(getbantime);
-        if (ToString == "null") {
+        if (ToString == "null" || ToString == "") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username} tried connection [Name Ban Player]`);
@@ -628,7 +628,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return CANCEL;
         }
         const ToString = String(getbantime);
-        if (ToString == "null") {
+        if (ToString == "null" || ToString == "") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username} tried connection [Device Ban Player]`);
