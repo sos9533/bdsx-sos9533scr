@@ -30,7 +30,7 @@
 //참가 이벤트
 
 //참여 환영 메시지 사용여부 (true/false)
-let usewelcomemessage: boolean = true;
+const usewelcomemessage: boolean = true;
 
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
 const welcomemessage = "§l§7환영합니다!";
@@ -76,7 +76,7 @@ const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되
 //     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/HowToUse_BAN.md
 
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
-let usegetinfocommand: boolean = true;
+const usegetinfocommand: boolean = true;
 
 //정보확인 명령어 (/빼고) - 관리자 전용 명령어 (원하는 유저의 정보 확인가능)
 const getinfocommand = "정보확인";
@@ -86,13 +86,13 @@ const getinfocommand = "정보확인";
 //일반인 명령어
 
 //내정보 명령어 사용여부 (true/false) (자신의 정보만 확인가능)
-let usemyinfocommand: boolean = true;
+const usemyinfocommand: boolean = true;
 
 //내정보 명령어 (/빼고) - 일반유저 명령어
 const myinfocommand = "내정보";
 
 //스폰 명령어 사용여부 (true/false)
-let usespawncommand: boolean = true;
+const usespawncommand: boolean = true;
 
 //스폰 명령어 (/빼고) - 일반유저 명령어
 const spawncommand = "스폰";
@@ -104,7 +104,7 @@ const spawncoordinate = "0 10 0";
 const spawncommandtitle = "§l§e스폰 이동 완료!";
 
 //기타 tp 명령어1 사용여부 (true/false)
-let usestpcommandA: boolean = false;
+const usestpcommandA: boolean = false;
 //기타 tp 명령어1 (/빼고) - 일반유저 명령어
 const tpcommandA = "광산";
 //기타 tp 명령어1 설명
@@ -115,7 +115,7 @@ const tpcoordinateA = "100 10 100";
 const tpcommandtitleA = "§l§7광산 이동 완료!";
 
 //기타 tp 명령어2 사용여부 (true/false)
-let usestpcommandB: boolean = false;
+const usestpcommandB: boolean = false;
 //기타 tp 명령어2 (/빼고) - 일반유저 명령어
 const tpcommandB = "상점";
 //기타 tp 명령어2 설명 (/빼고)
@@ -126,7 +126,7 @@ const tpcoordinateB = "105 10 105";
 const tpcommandtitleB = "§l§7상점 이동 완료!";
 
 //기타 tp 명령어3 사용여부 (true/false)
-let usestpcommandC: boolean = false;
+const usestpcommandC: boolean = false;
 //기타 tp 명령어3 (/빼고) - 일반유저 명령어
 const tpcommandC = "점프맵";
 //기타 tp 명령어3 설명 (/빼고)
@@ -137,7 +137,7 @@ const tpcoordinateC = "110 10 110";
 const tpcommandtitleC = "§l§7점프맵 이동 완료!";
 
 //셋홈 명령어 사용여부
-let usesethomecommand: boolean = true;
+const usesethomecommand: boolean = true;
 
 //셋홈 명령어 (/빼고) - 일반유저 명령어
 const sethomecommand = "집설정";
@@ -146,7 +146,7 @@ const sethomecommand = "집설정";
 const homecommand = "집이동";
 
 //티피요청 명령어 사용여부 (true/false)
-let usetpacommand: boolean = true;
+const usetpacommand: boolean = true;
 
 //티피요청 명령어 (/빼고) - 일반유저 명령어
 const tpacommand = "티피요청";
@@ -155,13 +155,13 @@ const tpacommand = "티피요청";
 const tpacceptcommand = "티피수락";
 
 //기본템 명령어 사용여부 (true/false)
-let usebasicitemcommand: boolean = true;
+const usebasicitemcommand: boolean = true;
 
 //기본템 명령어 (/빼고) - 일반유저 명령어
 const basicitemcommand = "기본템";
 
 //처음 접속시 자동으로 기본템 지급 (true/false)
-let joingivebasicitem: boolean = true;
+const joingivebasicitem: boolean = true;
 
 //아이템 1
 const basicitemA = "wooden_sword 1";
@@ -186,14 +186,14 @@ const basicitemH = "cooked_beef 64";
 //칭호
 
 //칭호 사용여부
-let usechin: boolean = true;
+const usechin: boolean = true;
 
 //칭호 형식 설정
 //형식A     <칭호> <닉네임> : 채팅
 //형식B     <칭호> 닉네임 : 채팅
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅
-let chinchatset = "A";
+const chinchatset = "A";
 
 //칭호 사용법 - " " 써야함
 //형식A     오피유저(커멘드)가 일반유저의 칭호 설정 - /칭호 (닉네임) "(칭호)"
@@ -218,7 +218,7 @@ const basicchin = "§l§7일반인";
 //불법 프로그램 (핵) 방지
 
 //참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
-let usetoolboxkick: boolean = true;
+const usetoolboxkick: boolean = true;
 
 //툴박스 강퇴 안내 메시지 - 전체 유저에게 출력
 const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다.";
@@ -230,7 +230,7 @@ const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 �
 const FakeOSdetectionTitle = "§l§f[ §7Kick §f]\n\n§c가짜 OS가 감지되어 서버에서 추방되셨습니다."
 
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
-let uselongnicknamekick: boolean = true;
+const uselongnicknamekick: boolean = true;
 
 //긴 닉네임 길이 (권장:30)
 const longnicknamekicklength = 30;
@@ -242,7 +242,7 @@ const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여
 const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다.";
 
 //도배방지 사용여부 (true/false)
-let usechatcut: boolean = true;
+const usechatcut: boolean = true;
 
 //일반채팅 도배방지-장문방지 글자수 (권장:100)
 const chatcutmessagelength = 100;
@@ -266,7 +266,7 @@ const nowhispermessge = "§l§c귓속말을 이용한 강종을 막기위해 귓
 //해당 도배방지 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
 
 //안티크래셔 사용여부 (true/false) ----- Made By mdisprgm
-let useanticrasher: boolean = true;
+const useanticrasher: boolean = true;
 
 //안티크래셔 강퇴 안내 메시지 - 강종 사용 플레이어의 화면에 출력 ----- Made By mdisprgm
 const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되어 서버에서 추방되셨습니다.";
@@ -279,7 +279,7 @@ const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되�
 //기타기능
 
 //§ 사용 막기 사용여부 (true/false)
-let useblockcolorword: boolean = true;
+const useblockcolorword: boolean = true;
 
 //§ 사용시 안내메시지 - §를 입력한 플레이어의 채팅창에 출력
 const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!";
@@ -291,7 +291,7 @@ const setbossbarcommand = "보스바생성";
 const removebossbarcommand = "보스바삭제";
 
 //cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
-let usecpsactionbar: boolean = true;
+const usecpsactionbar: boolean = true;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -801,7 +801,7 @@ command.register(bancommand, '플레이어가 이 서버에 접속하지 못하�
             return CANCEL;
         }
     }
-    
+
 }, {
     player: PlayerCommandSelector,
     minutes: [int32_t, true],
