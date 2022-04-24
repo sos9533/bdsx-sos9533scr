@@ -315,6 +315,15 @@ function mkFileKeep(filepath: string, value = {}) {
     }
 }
 
+function mkdir(dirname: string) {
+    if (!fs.existsSync(dirname)) {
+        fs.mkdirSync(dirname);
+    };
+};
+
+mkdir("./banDB");
+mkdir("./DbanDB");
+
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
 events.serverOpen.on(() => {
@@ -1068,7 +1077,7 @@ if (usespawncommand) {
 events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni) => {
     if (ev.command == "/about") {
         runCommand(
-            `tellraw "${ev.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`,
+            `tellraw "${ni.getActor()!.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`,
         );
         return CANCEL;
     }
