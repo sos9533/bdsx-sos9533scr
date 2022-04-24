@@ -10,9 +10,7 @@
 - [function](#function)
 - [How_to_use](#How_to_use)
 
-MIT LICENSE
-
-`Copyright (c) 2022 sos9533`
+MIT LICENSE  `Copyright (c) 2022 sos9533`
 
 
 
