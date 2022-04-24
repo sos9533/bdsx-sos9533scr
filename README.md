@@ -10,6 +10,11 @@
 - [function](#function)
 - [How_to_use](#How_to_use)
 
+MIT LICENSE
+
+`Copyright (c) 2022 sos9533`
+
+
 
 ![logo](sos9533scr_logo.png)  
 
