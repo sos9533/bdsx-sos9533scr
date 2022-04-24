@@ -1,10 +1,8 @@
-# instruction - 설명서
+# sos9533scr
 
 #### [Korean](#sos9533scr-korean)
 - [기능](#기능)
 - [사용법](#사용법)
-
-
 
 #### [English](#sos9533scr-english)
 - [function](#function)
@@ -12,7 +10,9 @@
 
 MIT LICENSE  `Copyright (c) 2022 sos9533`
 
+We welcome pull requests. Anyone can make pull requests. we welcome small feature additions.
 
+저희는 풀퀘스트를 환영합니다. 누구나 풀퀘스트를 생성할수 있으며 우리는 소소한 기능 추가도 환영합니다.
 
 ![logo](sos9533scr_logo.png)  
 
@@ -54,6 +54,7 @@ Made by sos9533
 │     ├ block fast chat
 │     └ block long whisper
 │  ├ anti crasher
+│  ├ anti fakeOS
 │  └ kick long nickname
 │  
 ├ etc
@@ -222,6 +223,7 @@ let chinchatset = "D";
 │     ├ 단타방지
 │     └귓속말 장문방지
 │  ├ 크래셔 방지 (지퍼 크래셔 방지)
+│  ├ OS 조작 감지
 │  └ 참가시 긴 닉네임 강제퇴장시키기 (닉핵방지)
 │  
 ├ 기타기능
