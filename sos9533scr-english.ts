@@ -65,7 +65,7 @@ const unbancommand = "unban";
 //ban list command (with out /) - For OP
 const showbanlistcommand = "banlist";
 
-//Offline Player Device Ban command [Only DeviceID] (/빼고) - 관리자 전용 명령어
+//Offline Player Device Ban command [Only DeviceID] (with out /) - For OP
 const OfflinePlayerDeivceBanCommand = "offline-ban-device";
 
 const DEVICE_ID_FMT_LENGTH = 36;
