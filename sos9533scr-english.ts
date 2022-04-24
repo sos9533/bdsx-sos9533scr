@@ -15,10 +15,8 @@
 /*
     How to use (README.md)
      ㄴ  https://github.com/sos9533/sos9533scr/blob/main/README.md
-
     About Copyright (LICENSE.md)
      ㄴ  https://github.com/sos9533/sos9533scr/blob/main/LICENSE.md
-
     If you hold ctrl and click the link, it will take you right there.
 */
 
@@ -52,8 +50,25 @@ const mutecommand = "mute";
 //unmute command (with out /) - For OP
 const unmutecommand = "unmute";
 
+//Device ban command (with out /) - For OP
+const Devicebancommand = "ban-device";
+
+//unban device command (with out /) - For OP
+const Deviceunbancommand = "unban-device";
+
 //ban command (with out /) - For OP
 const bancommand = "ban";
+
+//unban command (with out /) - For OP
+const unbancommand = "unban";
+
+//ban list command (with out /) - For OP
+const showbanlistcommand = "banlist";
+
+//Offline Player Device Ban command [Only DeviceID] (/빼고) - 관리자 전용 명령어
+const OfflinePlayerDeivceBanCommand = "offline-ban-device";
+
+const DEVICE_ID_FMT_LENGTH = 36;
 
 //ban message
 const bantitle = "§l§f[ §cBAN §f]\n\n§cYou are banned from this server\n§7You can't join the server again";
@@ -281,18 +296,17 @@ import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { ActorEventPacket, BossEventPacket, TextPacket } from "bdsx/bds/packets";
-import { Player, ServerPlayer } from "bdsx/bds/player";
+import { Player, PlayerPermission, ServerPlayer } from "bdsx/bds/player";
 import { serverInstance } from "bdsx/bds/server";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
-import { CxxString, float32_t } from "bdsx/nativetype";
-import { gray, green, red } from "colors";
+import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
+import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
 
 const chin_json = "chin.json";
-const ban_json = "ban.json";
 const sethome_json = "sethome_pos.json";
 function mkFileKeep(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
@@ -314,7 +328,7 @@ events.serverClose.on(() => {
 export const playerList = new Map<NetworkIdentifier, string>();
 const runCommand = bedrockServer.executeCommand;
 
-bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
+runCommand(`scoreboard objectives add cps dummy`);
 
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const ip = networkIdentifier.getAddress();
@@ -331,7 +345,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         if (username.length > longnicknamekicklength) {
             kick(networkIdentifier, longnicknamekicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m");
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${longnicknamekickmessage}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${longnicknamekickmessage}"}]}`);
         }
     }
 
@@ -339,7 +353,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         if (deviceModel.includes("samsung")) {
             kick(networkIdentifier, toolboxkicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
         }
     }
 
@@ -356,22 +370,22 @@ events.playerJoin.on((ev) => {
     const username = ev.player.getName();
 
     if (usewelcomemessage) {
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`);
     }
 
     if (usebasicitemcommand) {
         if (joingivebasicitem) {
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemA}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemB}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemC}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemD}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemE}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemF}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemG}`);
-            bedrockServer.executeCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemH}`);
-            bedrockServer.executeCommand(`tag @a[name="${username}",tag=!joinbasicitem] add joinbasicitem`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemA}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemB}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemC}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemD}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemE}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemF}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemG}`);
+            runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemH}`);
+            runCommand(`tag @a[name="${username}",tag=!joinbasicitem] add joinbasicitem`);
         }
-        bedrockServer.executeCommand(`ability @a[name="${username}",tag=mute] mute true`);
+        runCommand(`ability @a[name="${username}",tag=mute] mute true`);
     }
 });
 
@@ -410,14 +424,14 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
 
     if (usechatcut) {
         if (ptr.message.length > chatcutmessagelength) {
-            bedrockServer.executeCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
+            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
             return CANCEL;
         }
 
         if (time[playername] === undefined) {
             time[playername] = Date.now();
         } else if (Date.now() - time[playername] < chatcutmessagespeedtime) {
-            bedrockServer.executeCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
+            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
             return CANCEL;
         } else {
             time[playername] = Date.now();
@@ -430,28 +444,28 @@ events.command.on((command, origin) => {
     if (usechatcut) {
         if (cmdhead === "/w") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/tell") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/msg") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/me") {
             if (command.length > wcutmessagelength) {
-                bedrockServer.executeCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
@@ -463,11 +477,11 @@ command.register(kickcommand, "Kick player", CommandPermissionLevel.Operator).ov
         for (const target of param.target.newResults(origin)) {
             const username = target.getName();
             const ip = target.getNetworkIdentifier();
-            
+
             for (const actor of param.target.newResults(origin, ServerPlayer)) {
                 kick(ip, kicktitle);
                 const name = origin.getName();
-                bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§fis kicked"}]}`);
+                runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§fis kicked"}]}`);
                 console.log("\x1b[41m", `${username} kicked > [ Kicked by ${actor} ]`, "\x1b[0m");
             }
         }
@@ -482,9 +496,9 @@ command.register(mutecommand, "Mute player", CommandPermissionLevel.Operator).ov
         for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
 
-            bedrockServer.executeCommand(`ability @a[name="${username}"] mute true`);
-            bedrockServer.executeCommand(`tag @a[name="${username}"] add mute`);
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r§l §7${username}§fis §cMuted"}]}`);
+            runCommand(`ability @a[name="${username}"] mute true`);
+            runCommand(`tag @a[name="${username}"] add mute`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r§l §7${username}§fis §cMuted"}]}`);
             console.log("\x1b[41m", `${username} Mute > [ Muted by ${origin.getName()} ]`, "\x1b[0m");
         }
     },
@@ -498,10 +512,10 @@ command.register(unmutecommand, "Unmute player", CommandPermissionLevel.Operator
         for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
 
-            bedrockServer.executeCommand(`ability @a[name="${username}"] mute false`);
-            bedrockServer.executeCommand(`tag @a[name="${username}"] remove mute`);
+            runCommand(`ability @a[name="${username}"] mute false`);
+            runCommand(`tag @a[name="${username}"] remove mute`);
             console.log("\x1b[41m", `${username} UnMute > [ UnMuted by ${origin.getName()} ]`, "\x1b[0m");
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r§l §7${username}§fis §aUnMuted"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r§l §7${username}§fis §aUnMuted"}]}`);
         }
     },
     {
@@ -509,62 +523,477 @@ command.register(unmutecommand, "Unmute player", CommandPermissionLevel.Operator
     },
 );
 
-mkFileKeep(ban_json);
+const PlayerDeviceID: any = {};
 
-let ban: any = {};
-ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
+function leadZero(num: number, n: number) {
+    var leadZero = "";
+    let num2 = num.toString();
+    if (num2.length < n) {
+        for (var i = 0; i < n - num2.length; i++) leadZero += "0";
+    }
+    return leadZero + num;
+}
 
-command.register(bancommand, "Ban player", CommandPermissionLevel.Operator).overload(
-    (param, origin, output) => {
-        for (const player of param.target.newResults(origin, ServerPlayer)) {
-            const DeviceId = player.deviceId;
-            const ip = player.getNetworkIdentifier();
-            const username = player.getName();
-            const banObj = JSON.parse(fs.readFileSync(ban_json, "utf8"));
-            const target = param.target.newResults(origin)!;
-            const legnth = target.length;
-            for (let i = 0; i < legnth; i++) {
-                banObj[DeviceId] = "BANED";
-                fs.writeFileSync(ban_json, JSON.stringify(banObj), "utf8");
-                updateban();
-                kick(ip, bantitle);
-                console.log("\x1b[41me", `${username} - Device BANed`, "\x1b[0m");
+function dateWithZero() {
+    var d = new Date();
+    return (
+        d.getFullYear() +
+        "-" +
+        leadZero(d.getMonth() + 1, 2) +
+        "-" +
+        leadZero(d.getDate(), 2) +
+        "-" +
+        leadZero(d.getHours(), 2) +
+        "-" +
+        leadZero(d.getMinutes(), 2) +
+        "-"
+    );
+}
+
+events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
+    const onlineops = bedrockServer.serverInstance.getPlayers().filter((p) => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+    const op_count = onlineops.length;
+    const connectionrequest = pkt.connreq;
+    if (!connectionrequest) return;
+    const username = connectionrequest.cert.getId();
+    PlayerDeviceID[username] = connectionrequest.getDeviceId();
+    let banlist = fs.readdirSync("./banDB/");
+    if (banlist.includes(`${username}`)) {
+        const getbantime = fs.readFileSync(`./banDB/${username}`);
+        if (getbantime == null) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username} tried connection [Name Ban Player]`);
+            }
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+            return CANCEL;
+        }
+        const ToString = String(getbantime);
+        if (ToString == "null") {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username} tried connection [Name Ban Player]`);
+            }
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+            return CANCEL;
+        }
+
+        const bandate = ToString.split(`-`);
+        const year = Number(bandate[0]);
+        const month = Number(bandate[1]);
+        const day = Number(bandate[2]);
+        const hours = Number(bandate[3]);
+        const minutes = Number(bandate[4]);
+        const banTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
+
+        const Now = dateWithZero().split("-");
+        const nyear = Number(Now[0]);
+        const nmonth = Number(Now[1]);
+        const nday = Number(Now[2]);
+        const nhours = Number(Now[3]);
+        const nminutes = Number(Now[4]);
+
+        if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
+            unbanenum.removeValues(`${username}`);
+            fs.unlink(`./banDB/${username}`, (err) => { });
+            return;
+        }
+
+        kick(ni, `${bantitle}\n§fYour ban is expired on ${banTime}`);
+        for (let i1 = 0; i1 < op_count; i1++) {
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username} tried connection [Name Ban Player]`);
+        }
+        console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+        return CANCEL;
+    }
+
+    let Dbanlist = fs.readdirSync(`./DbanDB`);
+    if (Dbanlist.includes(PlayerDeviceID[username])) {
+        const getbantime = fs.readFileSync(`./DbanDB/${PlayerDeviceID[username]}`);
+        if (getbantime == null) {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username} tried connection [Device Ban Player]`);
+            }
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
+            return CANCEL;
+        }
+        const ToString = String(getbantime);
+        if (ToString == "null") {
+            kick(ni, bantitle);
+            for (let i1 = 0; i1 < op_count; i1++) {
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username} tried connection [Device Ban Player]`);
+            }
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
+            return CANCEL;
+        }
+
+        const bandate = ToString.split(`-`);
+        const year = Number(bandate[0]);
+        const month = Number(bandate[1]);
+        const day = Number(bandate[2]);
+        const hours = Number(bandate[3]);
+        const minutes = Number(bandate[4]);
+        const banTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
+
+        const Now = dateWithZero().split("-");
+        const nyear = Number(Now[0]);
+        const nmonth = Number(Now[1]);
+        const nday = Number(Now[2]);
+        const nhours = Number(Now[3]);
+        const nminutes = Number(Now[4]);
+
+        if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
+            unbanenum.removeValues(PlayerDeviceID[username]);
+            fs.unlink(`./DbanDB/${PlayerDeviceID[username]}`, (err) => { });
+            return;
+        }
+
+        kick(ni, `${bantitle}\n§fYour ban is expired on ${banTime}`);
+        for (let i1 = 0; i1 < op_count; i1++) {
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username} tried connection [Device Ban Player]`);
+        }
+        console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
+        return CANCEL;
+    }
+});
+
+const cmd_unban = command.register(unbancommand, "Unban player", CommandPermissionLevel.Operator);
+
+const unbanenum = command.softEnum("player", fs.readdirSync("./banDB/"));
+const dunbanenum = command.softEnum("DeviceID", fs.readdirSync("./DbanDB/"));
+
+cmd_unban.overload(
+    (inputs, ni) => {
+        const plname = ni.getName();
+
+        if (plname === inputs.player) {
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§cYou can't unban yourself!)"}]}`);
+            return 0;
+        }
+        if (inputs.player === "") {
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: Please type name here. Do not use @a @e @s @r @p"}]}`);
+            return;
+        }
+
+        let banlist = fs.readdirSync("./banDB/");
+        if (banlist.includes(`${inputs.player}`) === false) {
+            if (ni.isServerCommandOrigin() === true) {
+                console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
+                return CANCEL;
+            } else {
+                runCommand(
+                    `tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using /banlist §e/banlist"}]}`,
+                );
+                return CANCEL;
+            }
+        } else {
+            fs.unlink(`./banDB/${inputs.player}`, (err) => { });
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"Unbanned ${inputs.player}"}]}`);
+            console.log(yellow(`${plname} : Unbanned ${inputs.player}`));
+            unbanenum.removeValues(`${inputs.player}`);
+            
+        }
+    },
+    {
+        player: unbanenum,
+    },
+);
+
+command.register(bancommand, "Ban Player (Minutes, 0 or null is never expired)", CommandPermissionLevel.Operator).overload(
+    (inputs, corg) => {
+        const plname = corg.getName();
+        if (inputs.player.getName() === plname) {
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§cYou can't ban yourself"}]}`);
+            return CANCEL;
+        }
+
+        if (inputs.player.getName() == null || inputs.player.getName() == "") {
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: Please type name here. Do not use @a @e @r @s @p"}]}`);
+            return CANCEL;
+        }
+
+        let banlist = fs.readdirSync(`./banDB/`);
+        if (banlist.includes(`${inputs.player.getName()}`) == true) {
+            if (corg.isServerCommandOrigin() == true) {
+                console.log(red(`${inputs.player.getName()} is already unbanned`));
+
+                return CANCEL;
+            } else {
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player.getName()} is already unbanned}]}`);
+                return CANCEL;
+            }
+        }
+
+        if (!inputs.minutes) {
+            inputs.minutes = 0;
+        }
+
+        const date = new Date();
+        let hours = date.getHours();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let minutes = date.getMinutes() + inputs.minutes;
+        let day = date.getDate();
+
+        for (true; minutes > 59;) {
+            minutes = minutes - 60;
+            hours++;
+            if (hours > 23) {
+                hours = 0;
+                day++;
+                if (day > 29) {
+                    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                        if (day > 31) {
+                            day = 0;
+                            month++;
+                            if (month > 12) {
+                                month = 1;
+                                year++;
+                            }
+                        }
+                    } else {
+                        if (day > 30) {
+                            day = 0;
+                            month++;
+                            if (month > 12) {
+                                month = 1;
+                                year++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        const BannedTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
+        const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+
+        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, BannedTime2);
+
+        console.log(yellow(`${plname} : Banned ${inputs.player.getName()}`));
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"Banned ${inputs.player.getName()}"}]}`);
+        unbanenum.addValues(`${inputs.player.getName()}`);
+        if (runCommand(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
+            for (const pl of inputs.player.newResults(corg)) {
+                const Ni = pl.getNetworkIdentifier();
+                if (inputs.minutes == 0 || !inputs.minutes) {
+                    kick(Ni, bantitle);
+                } else {
+                    kick(Ni, `${bantitle}\n§fYour ban is expired on ${BannedTime}`);
+                }
+                return CANCEL;
             }
         }
     },
     {
-        target: PlayerCommandSelector,
+        player: PlayerCommandSelector,
+        minutes: [int32_t, true],
     },
 );
-command.register(updatebancommand, "update ban.json", CommandPermissionLevel.Operator).overload((param, origin, output) => {
-    ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
-    console.log(green("ban.json updated"));
 
-    const entity = origin.getEntity();
-    if (entity?.isPlayer()) {
-        bedrockServer.executeCommand(
-            `tellraw @a[name="${origin.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§7ban.json applied normally."}]}`,
-        );
+command
+    .register(
+        Devicebancommand,
+        "Ban player using Device ID",
+        CommandPermissionLevel.Operator,
+    )
+    .overload(
+        async (inputs, corg) => {
+            const originName = corg.getName();
+            const targetName = inputs.player.getName();
+            inputs.minutes = inputs.minutes ?? 0;
+
+            if (targetName === originName) {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§cYou can't ban yourself"}]}`);
+                return;
+            }
+
+            if (targetName == null || targetName == "") {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type name here. Do not use @a @e @r @s @p"}]}`);
+                return;
+            }
+
+            if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: You can not use this command for offline player"}]}`);
+                runCommand(
+                    `tellraw ${originName} {"rawtext":[{"text":"§cError: If you know player deviceID use "/${OfflinePlayerDeivceBanCommand} <DeviceID>"}]}`,
+                );
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red("Error: You can not use this command for offline player"));
+                    console.log(yellow(`If you know player device ID use "${OfflinePlayerDeivceBanCommand} <DeviceID>"`));
+                }
+                return;
+            }
+
+            const banlist = fs.readdirSync("./banDB/");
+            const banlist2 = fs.readdirSync("./DbanDB/");
+            if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red(`${targetName} is already banned`));
+                    return;
+                } else {
+                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"${targetName} is already banned"}]}`);
+                    return;
+                }
+            }
+
+            const date = new Date();
+            let hours = date.getHours();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            let minutes = date.getMinutes() + inputs.minutes;
+            let day = date.getDate();
+
+            for (true; minutes > 59;) {
+                minutes = minutes - 60;
+                hours++;
+                if (hours > 23) {
+                    hours = 0;
+                    day++;
+                    if (day > 29) {
+                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                            if (day > 31) {
+                                day = 0;
+                                month++;
+                                if (month > 12) {
+                                    month = 1;
+                                    year++;
+                                }
+                            }
+                        } else {
+                            if (day > 30) {
+                                day = 0;
+                                month++;
+                                if (month > 12) {
+                                    month = 1;
+                                    year++;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            const BannedTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
+            const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+
+            const deviceId = PlayerDeviceID[targetName];
+
+            fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
+
+            runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"Banned ${targetName} (${deviceId})"}]}`);
+            console.log(yellow(`${originName} : Banned ${targetName} (${deviceId})`));
+            dunbanenum.addValues(deviceId);
+            for (const player of inputs.player.newResults(corg)) {
+                const ni = player.getNetworkIdentifier();
+                if (inputs.minutes == 0 || !inputs.minutes) {
+                    kick(ni, bantitle);
+                } else {
+                    kick(ni, `${bantitle}\n§fYour ban is expired on ${BannedTime}`);
+                }
+                return;
+            }
+        },
+        {
+            player: PlayerCommandSelector,
+            minutes: [int32_t, true],
+        },
+    );
+
+command.register(Deviceunbancommand, "Unban player device", CommandPermissionLevel.Operator).overload(
+    (inputs, corg) => {
+        const originName = corg.getName();
+
+        if (inputs.DeviceID == "") {
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type device id here"}]}`);
+            return;
+        }
+        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH) {
+            if (corg.isServerCommandOrigin()) {
+                console.log(red("Error: This command needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+                return;
+            } else {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: This command needs only device ID"}]}`);
+                return;
+            }
+        }
+
+        let Dbanlist = fs.readdirSync(`./DbanDB/`);
+        if (!Dbanlist.includes(inputs.DeviceID)) {
+            if (corg.isServerCommandOrigin() === true) {
+                console.log(red(`${inputs.DeviceID} is already unbanned\nYou can see banlist using banlist`));
+                return CANCEL;
+            } else {
+                runCommand(
+                    `tellraw ${inputs.DeviceID} { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using /banlist §e/banlist" }] }`,
+                );
+                return CANCEL;
+            }
+        } else {
+            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"Unbanned device ID ${inputs.DeviceID}"}]}`);
+            console.log(yellow(`${originName} : Unbanned device ID ${inputs.DeviceID}`));
+            dunbanenum.removeValues(inputs.DeviceID);
+        }
+    },
+    {
+        DeviceID: dunbanenum,
+    },
+);
+
+command.register(showbanlistcommand, "Shows server ban list", CommandPermissionLevel.Operator).overload((asdf, corg) => {
+    const plname = corg.getName();
+    const banlist = fs.readdirSync("./banDB/", { withFileTypes: false });
+    const Dbanlist = fs.readdirSync("./DbanDB/", { withFileTypes: false });
+    if (corg.isServerCommandOrigin() == true) {
+        console.log(yellow(`Name ban list : ${banlist}`));
+        console.log(yellow(`Device ban list : ${Dbanlist}`));
+    } else {
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"Name ban list : ${banlist}"}]}`);
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"Device ban list : ${Dbanlist}"}]}`);
     }
 }, {});
 
-events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
-    const connreq = ptr.connreq;
-    if (connreq === null) return;
-    const DeviceId = connreq.getDeviceId();
+command
+    .register(
+        OfflinePlayerDeivceBanCommand,
+        "You can device ban even if the player is offline",
+        CommandPermissionLevel.Operator,
+    )
+    .overload(
+        (input, corg) => {
+            const originName = corg.getName();
+            const input_length = input.DeviceID.length;
+            const targetDeviceId = input.DeviceID;
+            if (input_length !== DEVICE_ID_FMT_LENGTH) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red("Error: This commmand needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+                    return CANCEL;
+                } else {
+                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: This commmand needs only device ID"}]}`);
+                    return CANCEL;
+                }
+            }
+            const banlist = fs.readdirSync("./DbanDB/");
+            if (banlist.includes(targetDeviceId) === true) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red(`${targetDeviceId} is already banned`));
+                    return CANCEL;
+                } else {
+                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: ${targetDeviceId} is already banned"}]}`);
+                    return CANCEL;
+                }
+            }
 
-    if (ban[DeviceId]?.includes("BANED")) {
-        kick(networkIdentifier, bantitle);
-    }
-});
-
-function updateban() {
-    try {
-        ban = JSON.parse(fs.readFileSync(ban_json, "utf8"));
-        return true;
-    } catch (err) {}
-    return false;
-}
+            fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "utf-8");
+            console.log(yellow(`${originName} : banned ${targetDeviceId}`));
+        },
+        {
+            DeviceID: CxxString,
+        },
+    );
 
 const peer = serverInstance.networkHandler.instance.peer;
 
@@ -584,9 +1013,8 @@ if (usegetinfocommand) {
                 const xuid = player.getXuid();
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
-                bedrockServer.executeCommand(
-                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                        BuildPlatform[os] || "UNKNOWN"
+                runCommand(
+                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
                     }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
                 );
             }
@@ -614,9 +1042,8 @@ if (usemyinfocommand) {
         const address = player.getNetworkIdentifier().address;
 
         if (ni) {
-            bedrockServer.executeCommand(
-                `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
-                    BuildPlatform[os] || "UNKNOWN"
+            runCommand(
+                `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
                 }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
             );
         }
@@ -633,14 +1060,14 @@ if (usespawncommand) {
             return;
         }
 
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${spawncommandtitle}"}]}`);
+        runCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${spawncommandtitle}"}]}`);
     }, {});
 }
 
 events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni) => {
     if (ev.command == "/about") {
-        bedrockServer.executeCommand(
+        runCommand(
             `tellraw "${ev.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`,
         );
         return CANCEL;
@@ -657,8 +1084,8 @@ if (usestpcommandA) {
             return;
         }
 
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateA}`);
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleA}"}]}`);
+        runCommand(`tp @a[name="${username}"] ${tpcoordinateA}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleA}"}]}`);
     }, {});
 }
 
@@ -672,8 +1099,8 @@ if (usestpcommandB) {
             return;
         }
 
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateB}`);
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleB}"}]}`);
+        runCommand(`tp @a[name="${username}"] ${tpcoordinateB}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleB}"}]}`);
     }, {});
 }
 
@@ -687,13 +1114,13 @@ if (usestpcommandC) {
             return;
         }
 
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${tpcoordinateC}`);
-        bedrockServer.executeCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleC}"}]}`);
+        runCommand(`tp @a[name="${username}"] ${tpcoordinateC}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleC}"}]}`);
     }, {});
 }
 
 command.register("sos9533scr", "BDSX Basic setting plugin - Copyright (c) 2022 sos9533", CommandPermissionLevel.Normal).overload((param, origin, output) => {
-    bedrockServer.executeCommand(
+    runCommand(
         `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c§lthis server use sos9533scr. \nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533"}]}`,
     );
 }, {});
@@ -707,14 +1134,14 @@ if (usebasicitemcommand) {
             return;
         }
 
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemA}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemB}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemC}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemD}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemE}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemF}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemG}`);
-        bedrockServer.executeCommand(`give @a[name="${username}"] ${basicitemH}`);
+        runCommand(`give @a[name="${username}"] ${basicitemA}`);
+        runCommand(`give @a[name="${username}"] ${basicitemB}`);
+        runCommand(`give @a[name="${username}"] ${basicitemC}`);
+        runCommand(`give @a[name="${username}"] ${basicitemD}`);
+        runCommand(`give @a[name="${username}"] ${basicitemE}`);
+        runCommand(`give @a[name="${username}"] ${basicitemF}`);
+        runCommand(`give @a[name="${username}"] ${basicitemG}`);
+        runCommand(`give @a[name="${username}"] ${basicitemH}`);
     }, {});
 }
 
@@ -794,14 +1221,14 @@ function updatechin() {
     try {
         chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
         return true;
-    } catch (err) {}
+    } catch (err) { }
     return false;
 }
 
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     if (useblockcolorword === true) {
         if (ptr.message?.includes("§")) {
-            bedrockServer.executeCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
+            runCommand(`tellraw @a[name="${ni.getActor()!.getName()}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
             return CANCEL;
         }
     }
@@ -809,13 +1236,13 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     if (usechin === true) {
         let message = ptr.message.replace(/"/gi, `'`);
         if (chinchatset === "A")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
         else if (chinchatset === "B")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${chin[ni.getActor()!.getName()] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
         else if (chinchatset === "C")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
         else if (chinchatset === "D")
-            bedrockServer.executeCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${chin[ni.getActor()!.getName()] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
         return CANCEL;
     }
 });
@@ -835,13 +1262,13 @@ if (usechin === true) {
                             chinObj[player.getName()] = prefix!.toString();
                             fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                             updatechin();
-                            bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
-                            bedrockServer.executeCommand(
+                            runCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
+                            runCommand(
                                 `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`,
                             );
                         }
                     }
-                }    
+                }
             },
             {
                 target: ActorWildcardCommandSelector,
@@ -860,11 +1287,11 @@ if (usechin === true) {
                         chinObj[origin.getName()] = prefix!.toString();
                         fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                         updatechin();
-                        bedrockServer.executeCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
-                        bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`);
+                        runCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
+                        runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`);
                     } else {
-                        bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthe prefix is too long!"}]}`);
-                        bedrockServer.executeCommand(`playsound random.orb @a[name="${origin.getName()}"]`);
+                        runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthe prefix is too long!"}]}`);
+                        runCommand(`playsound random.orb @a[name="${origin.getName()}"]`);
                     }
                 }
             },
@@ -905,28 +1332,28 @@ if (usechin === true) {
                     chinObj[actor.getName()] = prefix.toString();
                     fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                 }
-                bedrockServer.executeCommand(`playsound random.levelup @a[name="${actor.getName()}"]`);
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully"}]}`);
+                runCommand(`playsound random.levelup @a[name="${actor.getName()}"]`);
+                runCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully"}]}`);
             } else {
-                bedrockServer.executeCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthe prefix is too long!"}]}`);
-                bedrockServer.executeCommand(`playsound random.orb @a[name="${actor.getName()}"]`);
+                runCommand(`tellraw "${actor.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthe prefix is too long!"}]}`);
+                runCommand(`playsound random.orb @a[name="${actor.getName()}"]`);
             }
         }, {});
     }
 }
 
-export function setBossBar(target: NetworkIdentifier,title: string, percent: number, color?: BossEventPacket.Colors): void {
+export function setBossBar(target: NetworkIdentifier, title: string, percent: number, color?: BossEventPacket.Colors): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Show;
     pk.title = title;
     pk.healthPercent = percent;
-    if(color) pk.color = color;
+    if (color) pk.color = color;
     pk.sendTo(target)
     pk.dispose();
 }
 
-export function removeBossBar(target: NetworkIdentifier,title: string): void {
+export function removeBossBar(target: NetworkIdentifier, title: string): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Hide;
@@ -947,23 +1374,23 @@ command.register(removebossbarcommand, 'remove bossbar', CommandPermissionLevel.
 command.register(setbossbarcommand, 'set bossbar', CommandPermissionLevel.Operator).overload((params, origin, output) => {
     for (const target of params.target.newResults(origin, ServerPlayer)) {
         const ni = target.getNetworkIdentifier();
-        if ( params.enum === 'blue' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Blue)
+        if (params.enum === 'blue') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Blue)
         }
-        if ( params.enum === 'red' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Red)
+        if (params.enum === 'red') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Red)
         }
-        if ( params.enum === 'green' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Green)
+        if (params.enum === 'green') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Green)
         }
-        if ( params.enum === 'yellow' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Yellow)
+        if (params.enum === 'yellow') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Yellow)
         }
-        if ( params.enum === 'purple' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.Purple)
+        if (params.enum === 'purple') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Purple)
         }
-        if ( params.enum === 'white' ) {
-            setBossBar(ni, params.title, params.percent,BossEventPacket.Colors.White)
+        if (params.enum === 'white') {
+            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.White)
         }
     }
 
@@ -971,8 +1398,8 @@ command.register(setbossbarcommand, 'set bossbar', CommandPermissionLevel.Operat
     target: ActorWildcardCommandSelector,
     title: CxxString,
     percent: float32_t,
-    enum: command.enum('color','blue','red','green','yellow','purple','white'), 
-    
+    enum: command.enum('color', 'blue', 'red', 'green', 'yellow', 'purple', 'white'),
+
 });
 
 mkFileKeep(sethome_json);
@@ -994,14 +1421,14 @@ if (usesethomecommand) {
             const writepos = `${pos?.x} ${pos?.y} ${pos?.z}`;
             jsonObj[DeviceId] = writepos!.toString();
             fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
-            bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eSet Home"}]}`);
+            runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eSet Home"}]}`);
         }
     }, {});
 
     command.register(homecommand, "go home").overload((param, origin, output) => {
         const username = origin.getName();
         const player = origin.getEntity();
-        
+
         if (!player?.isPlayer()) {
             console.log(red("You are the server console"));
             return;
@@ -1009,34 +1436,34 @@ if (usesethomecommand) {
         const DeviceId = player.deviceId;
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
-        bedrockServer.executeCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
-        bedrockServer.executeCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eWarp Complete!"}]}`);
+        runCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§eWarp Complete!"}]}`);
     }, {});
 }
 
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((ev, ni) => {
     const username = ni.getActor()?.getName();
     if (ev.sound === 42) {
-        bedrockServer.executeCommand(`scoreboard players add @a[name="${username}"] cps 1`);
+        runCommand(`scoreboard players add @a[name="${username}"] cps 1`);
 
         if (cpsactionbar) {
-            bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+            runCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
         }
     }
 });
 
 events.playerAttack.on((ev) => {
     const username = ev.player.getName();
-    bedrockServer.executeCommand(`scoreboard players add @a[name="${username}"] cps 1`);
+    runCommand(`scoreboard players add @a[name="${username}"] cps 1`);
 
     if (cpsactionbar) {
-        bedrockServer.executeCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
+        runCommand(`titleraw @a actionbar {"rawtext":[{"text":"§fCPS:§f "},{"score":{"name":"*","objective":"cps"}},{"text":""}]}`);
     }
 });
 
 let cool = setInterval(() => {
-    bedrockServer.executeCommand(`scoreboard players set @a cps 0`);
-},1000);
+    runCommand(`scoreboard players set @a cps 0`);
+}, 1000);
 
 events.serverClose.on(() => {
     clearInterval(cool)
@@ -1061,7 +1488,7 @@ if (usetpacommand) {
 
             const player = playerAr[0];
 
-            bedrockServer.executeCommand(
+            runCommand(
                 `tellraw "${player.getName()}" {"rawtext": [{"text": "§l§f------ ${origin.getName()} want tp to you ------\n§l§f------§c use '/${tpacceptcommand} ${origin.getName()}'§f ------"}]}`,
             );
 
@@ -1071,7 +1498,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(player.getName()))
-                    bedrockServer.executeCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §a${player.getName()}§f accept your tpa ------"}]}`);
+                    runCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §a${player.getName()}§f accept your tpa ------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1095,7 +1522,7 @@ if (usetpacommand) {
                 if (!set) return;
 
                 if (set.delete(origin.getName())) {
-                    bedrockServer.executeCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                    runCommand(`tp "${player.getName()}" "${origin.getName()}"`);
                 }
             }
         },
@@ -1103,14 +1530,14 @@ if (usetpacommand) {
     );
 }
 
-command.register("낮", "서버의 시간을 낮으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
+command.register("day", "Change server time to day", CommandPermissionLevel.Operator).overload((input, corg) => {
     runCommand("time set day");
     const player = corg.getEntity();
-    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 낮으로 바꿨습니다");
+    if (player?.isPlayer()) player.sendMessage("§6Changed server time to day");
 }, {});
 
-command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
+command.register("night", "Change server time to night", CommandPermissionLevel.Operator).overload((input, corg) => {
     runCommand("time set night");
     const player = corg.getEntity();
-    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
+    if (player?.isPlayer()) player.sendMessage("§6Changed server time to night");
 }, {});
