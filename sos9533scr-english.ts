@@ -996,7 +996,7 @@ command
                 }
             }
 
-            fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "utf-8");
+            fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
             console.log(yellow(`${originName} : banned ${targetDeviceId}`));
         },
         {
