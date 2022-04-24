@@ -1303,9 +1303,10 @@ if (usechin === true) {
     if (howusechin === "B") {
         command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload(
             (params, origin, output) => {
+                const entity = origin.getEntity();
                 const originName = origin.getName();
-                if (params.prefix !== undefined && origin.getEntity() !== undefined) {
-                    const prefix = params.prefix;
+                const prefix = params.prefix;
+                if (entity) {
                     if (prefix.length < chinlength) {
                         ChinData[originName] = prefix;
                         saveChin();
