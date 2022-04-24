@@ -1102,3 +1102,14 @@ if (usetpacommand) {
     );
 }
 
+command.register("낮", "서버의 시간을 낮으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
+    runCommand("time set day");
+    const player = corg.getEntity();
+    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 낮으로 바꿨습니다");
+}, {});
+
+command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
+    runCommand("time set night");
+    const player = corg.getEntity();
+    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
+}, {});
