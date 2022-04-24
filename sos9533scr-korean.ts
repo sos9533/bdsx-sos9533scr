@@ -293,8 +293,8 @@ const setbossbarcommand = "보스바생성";
 //보스바 삭제 명령어 (/빼고)
 const removebossbarcommand = "보스바삭제";
 
-//cps 액션바 표시 사용여부 (true/false) - fasle여도 cps 스코어보드는 존재함
-const usecpsactionbar: boolean = true;
+//cps 액션바 표시 사용여부 (true/false) - false 시 cps 측정 & 표시 안 함
+const useCPSchecker: boolean = true;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -1457,21 +1457,22 @@ if (usesethomecommand) {
     }, {});
 }
 
+const playerCPS: any = {};
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
-    const playerName = ni.getActor()?.getName();
-    if (pkt.sound === 42 || pkt.sound === 43) {
-        runCommand(`scoreboard players add ${playerName} cps 1`);
+    if (useCPSchecker) {
+        const playerName = ni.getActor()!.getName();
+        if (pkt.sound === 42 || pkt.sound === 43) {
+            if (isNaN(playerCPS[playerName])) {
+                playerCPS[playerName] = 0;
+            };
+            playerCPS[playerName]++;
+            runCommand(`title ${playerName} actionbar CPS : ${playerCPS[playerName]}`);
+            setTimeout(() => {
+                playerCPS[playerName]--;
+                runCommand(`title ${playerName} actionbar CPS : ${playerCPS[playerName]}`);
+            }, 1000);
+        }
     }
-    if (usecpsactionbar) {
-        runCommand(`titleraw ${playerName} actionbar {"rawtext":[{"text":"§l§fCPS:§e "},{"score":{"name":"*","objective":"cps"}}]},{"text":""}]}`);
-    }
-});
-
-const cool = setInterval(() => {
-    runCommand("scoreboard players set @a cps 0");
-}, 1000);
-events.serverLeave.on(() => {
-    clearInterval(cool);
 });
 
 if (usetpacommand) {
