@@ -29,7 +29,7 @@ Made by sos9533
 ├ join event
 │  └ welcome message
 │
-├ OP command
+├ OP(command, execute) command
 │  ├ kick command
 │  ├ mute command
 │  ├ ban command
@@ -195,10 +195,11 @@ let chinchatset = "D";
 │ 참가이벤트
 │  └ 참여 환영 메시지
 │
-├ 관리자 전용 명령어
+├ 관리자(커멘드, execute) 전용 명령어
 │  ├ 강제퇴장 명령어
 │  ├ 뮤트 명령어
 │  ├ 디바이스 영구 밴 명령어
+│  ├ 낮, 밤 간단 변경 명령어
 │  └ 유저정보 확인 명령어
 │
 │
