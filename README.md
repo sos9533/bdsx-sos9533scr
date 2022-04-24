@@ -8,11 +8,7 @@
 - [function](#function)
 - [How_to_use](#How_to_use)
 
-MIT LICENSE  `Copyright (c) 2022 sos9533`
-
-We welcome pull requests. Anyone can make pull requests. we welcome small feature additions.
-
-저희는 풀퀘스트를 환영합니다. 누구나 풀퀘스트를 생성할수 있으며 우리는 소소한 기능 추가도 환영합니다.
+`MIT LICENSE - Copyright (c) 2022 sos9533`
 
 ![logo](sos9533scr_logo.png)  
 
@@ -30,7 +26,11 @@ Made by sos9533
 ```
 ┌
 ├ join event
+│  ├ output join/exit log
 │  └ welcome message
+│
+├ chat event
+│  └ output chat log
 │
 ├ OP(command, execute) command
 │  ├ kick command
@@ -197,8 +197,12 @@ let chinchatset = "D";
 
 ```
 ┌
-│ 참가이벤트
-│  └ 참여 환영 메시지
+├ 참가 이벤트
+│  ├ 참가/퇴장 로그 출력
+│  └ 참가 환영 메시지
+│
+├ 채팅 이벤트
+│  └ 채팅 로그 출력
 │
 ├ 관리자(커멘드, execute) 전용 명령어
 │  ├ 강제퇴장 명령어
