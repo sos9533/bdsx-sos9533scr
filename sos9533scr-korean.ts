@@ -1185,6 +1185,11 @@ events.networkDisconnected.on(async (ni) => {
 
 if (useanticrasher) {
     events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
+        if (pkt.sound === 0) {
+            kick(ni);
+            return CANCEL;
+        }
+
         if ([12, 26, 35, 42].includes(pkt.sound)) return;
 
         if (Date.now() - LAST.get(ni)! < DELAY_LIMIT) {
@@ -1195,14 +1200,9 @@ if (useanticrasher) {
             }
 
             return CANCEL;
-        };
+        }
         COUNT.set(ni, 0);
         LAST.set(ni, Date.now());
-
-        if (pkt.sound === 0) {
-            kick(ni);
-            return CANCEL;
-        };
     });
 
     const FOOD_LAST = new Map<NetworkIdentifier, number>();
