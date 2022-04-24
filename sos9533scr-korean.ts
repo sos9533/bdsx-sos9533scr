@@ -294,7 +294,7 @@ const setbossbarcommand = "보스바생성";
 const removebossbarcommand = "보스바삭제";
 
 //cps 액션바 표시 사용여부 (true/false) - false 시 cps 측정 & 표시 안 함
-const useCPSchecker: boolean = false;
+const useCPSchecker: boolean = true;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -1469,16 +1469,10 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
             runCommand(`title ${playerName} actionbar CPS : ${playerCPS[playerName]}`);
             setTimeout(() => {
                 playerCPS[playerName]--;
+                runCommand(`title ${playerName} actionbar CPS : ${playerCPS[playerName]}`);
             }, 1000);
         }
     }
-});
-
-const cool = setInterval(() => {
-    runCommand("scoreboard players set @a cps 0");
-}, 1000);
-events.serverLeave.on(() => {
-    clearInterval(cool);
 });
 
 if (usetpacommand) {
