@@ -1,15 +1,12 @@
 # sos9533scr
+### Basic Setting Plugin for BDSX.
 
-#### [Korean](#sos9533scr-korean)
-- [기능](#기능)
-- [사용법](#사용법)
+[[ Features and usage ]](#sos9533scr-english) 
 
-#### [English](#sos9533scr-english)
-- [function](#function)
-- [How_to_use](#How_to_use)
+[[ 기능 및 사용법 ]](#sos9533scr-korean)
+
 
 `MIT LICENSE - Copyright (c) 2022 sos9533`
-
 ![logo](sos9533scr_logo.png)  
 
 

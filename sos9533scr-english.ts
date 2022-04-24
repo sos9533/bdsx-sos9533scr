@@ -312,6 +312,7 @@ events.serverClose.on(() => {
 });
 
 export const playerList = new Map<NetworkIdentifier, string>();
+const runCommand = bedrockServer.executeCommand;
 
 bedrockServer.executeCommand(`scoreboard objectives add cps dummy`);
 
