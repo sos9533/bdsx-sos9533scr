@@ -217,6 +217,7 @@ const basicchin = "§l§7일반인";
 
 const DEFAULT_KICK_MESSAGE = "§c강제 퇴장 조치합니다";
 const DEVICE_ID_FMT_LENGTH = 36;
+const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 
 //불법 프로그램 (핵) 방지
 
@@ -934,7 +935,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
             return;
         }
-        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH) {
+        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
             if (corg.isServerCommandOrigin()) {
                 console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
@@ -992,7 +993,7 @@ command
             const originName = corg.getName();
             const input_length = input.DeviceID.length;
             const targetDeviceId = input.DeviceID;
-            if (input_length !== DEVICE_ID_FMT_LENGTH) {
+            if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
                 if (corg.isServerCommandOrigin()) {
                     console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                     return CANCEL;
