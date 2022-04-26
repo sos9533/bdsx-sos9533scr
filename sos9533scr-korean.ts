@@ -311,6 +311,8 @@ import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
 import { gray, green, red, yellow } from "colors";
+import { GameType } from "bdsx/bds/player";
+
 import * as fs from "fs";
 
 const chin_json = "chin.json";
@@ -1552,3 +1554,42 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
 }, {});
+
+command.register('gm', '게임모드를 전환합니다.').overload((params, origin) => {
+    const getgmp = Number(params.GamemodeNumber);
+    if (params.Player == null) {
+        if (getgmp == 3) {
+            origin.getEntity()!.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Spectator);
+        };
+        if (getgmp == 1) {
+            origin.getEntity()!.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Creative);
+        };
+        if (getgmp == 0) {
+            origin.getEntity()!.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Survival);
+        };
+        if (getgmp == 2) {
+            origin.getEntity()!.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Adventure);
+        };
+    } else {
+        const target = params.Player.newResults(origin)[0];
+        if (getgmp == 3) {
+            target.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Spectator);
+        };
+        if (getgmp == 1) {
+            target.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Creative);
+        };
+        if (getgmp == 0) {
+            target.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Survival);
+        };
+        if (getgmp == 2) {
+            target.getNetworkIdentifier()!.getActor()!.setGameType(GameType.Adventure);
+        };
+    }
+
+}
+    , {
+        GamemodeNumber: int32_t,
+        Player: [PlayerCommandSelector, true]
+    });
+
+command.find('gm').signature.permissionLevel = CommandPermissionLevel.Operator;
