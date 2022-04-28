@@ -1509,7 +1509,7 @@ if (usetpacommand) {
             setTimeout(() => {
                 if (set.delete(username))
                     runCommand(
-                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f-------------------- 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 --------------------"}]}`,
+                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f-------------------- ${username}님에게 보낸 티피요청이 만료되었습니다 --------------------"}]}`,
                     );
             }, 60 * 1000);
         },
@@ -1536,6 +1536,12 @@ if (usetpacommand) {
 
                 if (set.delete(originName)) {
                     runCommand(`tp "${username}" "${originName}"`);
+                    runCommand(
+                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f-------------------- 상대가 이동합니다 --------------------"}]}`,
+                    );
+                    runCommand(
+                        `tellraw "${username}" {"rawtext": [{"text":"§l§f-------------------- 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 --------------------"}]}`,
+                    );
                 }
             }
         },
@@ -1555,13 +1561,22 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
 }, {});
 
-command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator).overload((params, origin) => {
+command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator,).overload((params, origin) => {
     const getgmp = params.gamemodenumber;
     const actor = origin.getEntity()!.getNetworkIdentifier()!.getActor()!;
 
     function setGameMode(target: ServerPlayer, Gamemode: GameType) {
         target.setGameType(Gamemode);
     }
+
+    if (getgmp > 3) {
+        actor.sendMessage("§cError: 게임모드 숫자는 반드시 0 이상 3 이하여야 합니다");
+        return;
+    };
+    if (getgmp < 0) {
+        actor.sendMessage("§cError: 게임모드 숫자는 반드시 0 이상 3 이햐여야 합니다");
+        return;
+    };
 
     if (params.player == null) {
         if (getgmp === 3) {
