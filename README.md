@@ -5,6 +5,8 @@
 
 [[ 기능 및 사용법 ]](#sos9533scr-korean)
 
+[[ Note ]](#Note)
+
 ### 1.8.5 UPDATE
 Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fix sos9533scr command output / Change sos9533scr Logo
 
