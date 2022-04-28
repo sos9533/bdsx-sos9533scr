@@ -7,6 +7,10 @@
 
 
 `MIT LICENSE - Copyright (c) 2022 sos9533`
+
+### 1.8.5 UPDATE
+Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fix sos9533scr command output / Change sos9533scr Logo
+
 ![logo](sos9533scr_logo.png)  
 
 
