@@ -10,9 +10,9 @@
 
 `Can use it freely without any restrictions. 
 But don't change the code that makes "/sos9533scr" visible in-game.
-Or indicate that you used sos9533scr in-gamer.
+Or indicate that you used sos9533scr in-gamer.`
 
-어떠한 제한 없이 사용할수 있음.
+`어떠한 제한 없이 사용할수 있음.
 하지만 "/sos9533scr"가 인게임에서 보이게 하는 코드를 변경하지 말것.
 또는 sos9533scr가 사용되었음을 해당 서버에서 누구나 쉽게 볼수 있는곳에 표시할것.`
 
