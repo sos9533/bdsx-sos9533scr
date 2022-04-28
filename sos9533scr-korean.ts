@@ -312,6 +312,7 @@ import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
 import { gray, green, red, yellow } from "colors";
 import { GameType } from "bdsx/bds/player";
+import { MobEffectIds, MobEffectInstance } from "bdsx/bds/effects";
 
 import * as fs from "fs";
 
@@ -328,6 +329,7 @@ function makeDir(dirname: string) {
         fs.mkdirSync(dirname);
     }
 }
+
 makeDir("./banDB");
 makeDir("./DbanDB");
 
@@ -597,7 +599,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return CANCEL;
         }
         const ToString = String(getbantime);
-        if (ToString == "null") {
+        if (ToString == "null" || ToString == "") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
@@ -647,7 +649,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return CANCEL;
         }
         const ToString = String(getbantime);
-        if (ToString == "null") {
+        if (ToString == "null" || ToString == "") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
                 onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
@@ -1562,51 +1564,63 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
 }, {});
 
 command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator,).overload((params, origin) => {
-    const getgmp = params.gamemodenumber;
+    const gmValue = params.gamemodenumber;
     const actor = origin.getEntity()!.getNetworkIdentifier()!.getActor()!;
 
     function setGameMode(target: ServerPlayer, Gamemode: GameType) {
         target.setGameType(Gamemode);
     }
 
-    if (getgmp > 3) {
+    if (gmValue > 3) {
         actor.sendMessage("§cError: 게임모드 숫자는 반드시 0 이상 3 이하여야 합니다");
         return;
     };
-    if (getgmp < 0) {
+    if (gmValue < 0) {
         actor.sendMessage("§cError: 게임모드 숫자는 반드시 0 이상 3 이햐여야 합니다");
         return;
     };
 
     if (params.player == null) {
-        if (getgmp === 3) {
+        if (gmValue === 3) {
+            actor.addEffect(MobEffectInstance.create(MobEffectIds.Invisibility, 99999999, 1, false, false));
+            runCommand(`clear "${actor.getName()}"`);
             setGameMode(actor, GameType.Spectator);
+            actor.sendMessage("[ sos9533scr ] 게임모드 3을 정상적으로 사용하려면 재접속해주세요");
         };
-        if (getgmp === 1) {
+        if (gmValue === 1) {
             setGameMode(actor, GameType.Creative);
+            actor.removeEffect(MobEffectIds.Invisibility);
         };
-        if (getgmp === 0) {
+        if (gmValue === 0) {
             setGameMode(actor, GameType.Survival);
+            actor.removeEffect(MobEffectIds.Invisibility);
         };
-        if (getgmp === 2) {
+        if (gmValue === 2) {
             setGameMode(actor, GameType.Adventure);
+            actor.removeEffect(MobEffectIds.Invisibility);
         };
     } else {
         const targetresults = params.player.newResults(origin)[0];
         const target = targetresults.getNetworkIdentifier()!.getActor()!;
 
 
-        if (getgmp === 3) {
+        if (gmValue === 3) {
+            target.addEffect(MobEffectInstance.create(MobEffectIds.Invisibility, 99999999, 1, false, false));
+            runCommand(`clear "${target.getName()}"`);
             setGameMode(target, GameType.Spectator);
+            target.sendMessage("[ sos9533scr ] 게임모드 3을 정상적으로 사용하려면 재접속해주세요");
         };
-        if (getgmp === 1) {
+        if (gmValue === 1) {
             setGameMode(target, GameType.Creative);
+            target.removeEffect(MobEffectIds.Invisibility);
         };
-        if (getgmp === 0) {
+        if (gmValue === 0) {
             setGameMode(target, GameType.Survival);
+            target.removeEffect(MobEffectIds.Invisibility);
         };
-        if (getgmp === 2) {
+        if (gmValue === 2) {
             setGameMode(target, GameType.Adventure);
+            target.removeEffect(MobEffectIds.Invisibility);
         };
     }
 
