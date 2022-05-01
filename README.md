@@ -17,10 +17,6 @@ Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fi
 # sos9533scr-english
 Made by sos9533
 
-- [OmletArcade](https://omlet.gg/profile/sos9533)
-
-- [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
-
 ## function
 
 ```
@@ -188,10 +184,6 @@ let chinchatset = "D";
 본 플러그인은 sos9533이 제작한 기본 세팅 플러그인입니다.
 
 기본적인 지식으로 만든 연습겸 공유 플러그인입니다.
-
--   제작자 연락처
-    -   [OmletArcade](https://omlet.gg/profile/sos9533)
-    -   [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
 
 ## 기능
 
@@ -374,4 +366,12 @@ Or indicate that you used sos9533scr in-gamer.`
 - [`Blue00123`](https://github.com/Blue00123)
 
 
+## About sos9533scr
+- [`Discord`](https://discord.gg/w9NHc5BZve)
+- [`Pull requests`](https://github.com/sos9533/bdsx-sos9533scr/pulls)
+- [`KakaoTalk OPEN CHAT`](https://open.kakao.com/o/gbISJxrd)
+
+## About sos9533
+- [`OmletArcade`](https://omlet.gg/profile/sos9533)
+- [`KakaoTalk`](https://open.kakao.com/me/sos9533)
 
