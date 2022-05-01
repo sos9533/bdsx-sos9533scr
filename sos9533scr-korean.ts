@@ -698,11 +698,11 @@ cmd_unban.overload(
         const plname = ni.getName();
 
         if (plname === inputs.player) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e행운을 빌게요 :)"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§cHmm.."}]}`);
             return 0;
         }
         if (inputs.player === "") {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
             return;
         }
 
@@ -713,13 +713,13 @@ cmd_unban.overload(
                 return CANCEL;
             } else {
                 runCommand(
-                    `tellraw ${plname} {"rawtext":[{"text":"${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
+                    `tellraw "${plname}" {"rawtext":[{"text":"${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
                 );
                 return CANCEL;
             }
         } else {
             fs.unlink(`./banDB/${inputs.player}`, (err) => { });
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
             unbanenum.removeValues(`${inputs.player}`);
         }
@@ -733,12 +733,12 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     (inputs, corg) => {
         const plname = corg.getName();
         if (inputs.player.getName() === plname) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§e진심으로?"}]}`);
             return CANCEL;
         }
 
         if (inputs.player.getName() == null || inputs.player.getName() == "") {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
             return CANCEL;
         }
 
@@ -749,7 +749,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
 
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다"}]}`);
+                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다"}]}`);
                 return CANCEL;
             }
         }
@@ -801,9 +801,9 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         fs.writeFileSync(`./banDB/${inputs.player.getName()}`, BannedTime2);
 
         console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
         unbanenum.addValues(`${inputs.player.getName()}`);
-        if (runCommand(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
+        if (runCommand(`testfor "${inputs.player.getName()}"`).isSuccess() == true) {
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
                 if (inputs.minutes == 0 || !inputs.minutes) {
@@ -834,19 +834,19 @@ command
             inputs.minutes = inputs.minutes ?? 0;
 
             if (targetName === originName) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§e진심으로?"}]}`);
                 return;
             }
 
             if (targetName == null || targetName == "") {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
                 return;
             }
 
-            if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
+            if (runCommand(`testfor "${targetName}"`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
                 runCommand(
-                    `tellraw ${originName} {"rawtext":[{"text":"§cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
+                    `tellraw "${originName}" {"rawtext":[{"text":"§cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
                 );
                 if (corg.isServerCommandOrigin()) {
                     console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
@@ -862,7 +862,7 @@ command
                     console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
                     return;
                 } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
+                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
                     return;
                 }
             }
@@ -911,8 +911,8 @@ command
 
             fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
 
-            runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
+            runCommand(`execute "${originName}" ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
             console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
             dunbanenum.addValues(deviceId);
             for (const player of inputs.player.newResults(corg)) {
@@ -936,7 +936,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
         const originName = corg.getName();
 
         if (inputs.DeviceID == "") {
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
             return;
         }
         if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
@@ -944,7 +944,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
                 console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
             } else {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
                 return;
             }
         }
@@ -957,13 +957,13 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
                 return;
             } else {
                 runCommand(
-                    `tellraw ${originName} {"rawtext":[{"text":"§c${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
+                    `tellraw "${originName}" {"rawtext":[{"text":"§c${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
                 );
                 return;
             }
         } else {
             fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
             dunbanenum.removeValues(inputs.DeviceID);
         }
@@ -981,8 +981,8 @@ command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목
         console.log(yellow(`차단된 플레이어 목록 : ${banlist}`));
         console.log(yellow(`디바이스 차단된 플레이어 목록 : ${Dbanlist}`));
     } else {
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"차단된 플레이어 목록 : ${banlist}"}]}`);
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"차단된 플레이어 목록 : ${banlist}"}]}`);
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
     }
 }, {});
 
@@ -1002,7 +1002,7 @@ command
                     console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                     return CANCEL;
                 } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
+                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
                     return CANCEL;
                 }
             }
@@ -1012,7 +1012,7 @@ command
                     console.log(red(`디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다`));
                     return CANCEL;
                 } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`);
+                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`);
                     return CANCEL;
                 }
             }
