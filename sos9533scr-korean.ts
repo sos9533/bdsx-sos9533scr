@@ -1563,7 +1563,8 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
 }, {});
 
-command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator,).overload((params, origin) => {
+//때려칩시다
+/*command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator,).overload((params, origin) => {
     const gmValue = params.gamemodenumber;
     const actor = origin.getEntity()!.getNetworkIdentifier()!.getActor()!;
 
@@ -1628,4 +1629,4 @@ command.register('gm', '게임모드를 전환합니다.', CommandPermissionLeve
     , {
         gamemodenumber: int32_t,
         player: [PlayerCommandSelector, true]
-    });
+    });*/
