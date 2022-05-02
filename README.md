@@ -1,7 +1,7 @@
 # sos9533scr
 ### Basic Setting Plugin for BDSX.
 
-[[ Features and usage ]](#sos9533scr-english) 
+[[ Features and usage ]](#sos9533scr-english)
 
 [[ 기능 및 사용법 ]](#sos9533scr-korean)
 
@@ -10,7 +10,7 @@
 ### 1.8.5 UPDATE
 Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fix sos9533scr command output / Change sos9533scr Logo
 
-![logo](sos9533scr_logo.png)  
+![logo](sos9533scr_logo.png)
 
 
 -------------------------------------------------
@@ -52,7 +52,7 @@ Made by sos9533
 │  ├ anti crasher
 │  ├ anti fakeOS
 │  └ kick long nickname
-│  
+│
 ├ etc
 │  ├ block §
 │  ├ bossbar command
@@ -221,7 +221,7 @@ let chinchatset = "D";
 │  ├ 크래셔 방지 (지퍼 크래셔 방지)
 │  ├ OS 조작 감지
 │  └ 참가시 긴 닉네임 강제퇴장시키기 (닉핵방지)
-│  
+│
 ├ 기타기능
 │  ├ 보스바 명령어
 │  ├ § 사용 제한시키기
@@ -351,7 +351,7 @@ let chinchatset = "D"
 ## LICENSE
 `MIT LICENSE - Copyright (c) 2022 sos9533`
 
-`Can use it freely without any restrictions. 
+`Can use it freely without any restrictions.
 But don't change the code that makes "/sos9533scr" visible in-game.
 Or indicate that you used sos9533scr in-gamer.`
 
@@ -359,7 +359,7 @@ Or indicate that you used sos9533scr in-gamer.`
 하지만 "/sos9533scr"가 인게임에서 보이게 하는 코드를 변경하지 말것.
 또는 sos9533scr가 사용되었음을 해당 서버에서 누구나 쉽게 볼수 있는곳에 표시할것.`
 
-## Contributions
+## Contributors
 - [`sos9533`](https://github.com/sos9533)
 - [`mdisprgm`](https://github.com/mdisprgm)
 - [`job-gut`](https://github.com/job-gut)
