@@ -7,7 +7,6 @@
 // /\____) || (___) |/\____) |/\____) )/\____) )/\___/  //\___/  /
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
-
 //  Made by sos9533
 
 // This code was created by a beginner. Plz dont laugh...
@@ -176,7 +175,7 @@ const basicitemD = "wooden_hoe 1";
 const basicitemE = "wooden_shovel 1";
 //item F
 const basicitemF = "leather_chestplate 1";
-//item G 
+//item G
 const basicitemG = "leather_leggings 1";
 //item H
 const basicitemH = "cooked_beef 64";
@@ -261,7 +260,6 @@ const nowhispermessge = "§l§cYou cant chat long message by whisper";
 
 //chatcut open source ( https://github.com/kdg7313/bdsx-script )
 
-
 //use anti crasher (true/false)
 let useanticrasher: boolean = true;
 
@@ -281,10 +279,10 @@ let useblockcolorword: boolean = false;
 const blockcolorwordtitle = "§l§ccolor word is not allow";
 
 //set bossbar command (with out /)
-const setbossbarcommand = "setbossbar"
+const setbossbarcommand = "setbossbar";
 
 //remove bossbar command (with out /)
-const removebossbarcommand = "removebossbar"
+const removebossbarcommand = "removebossbar";
 
 //use cps actionbar (true/false) - Even if it is false, the cps scoreboard object remains and works fine.
 let cpsactionbar: boolean = true;
@@ -295,9 +293,8 @@ import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSele
 import { Form } from "bdsx/bds/form";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { ActorEventPacket, BossEventPacket, TextPacket } from "bdsx/bds/packets";
-import { Player, PlayerPermission, ServerPlayer } from "bdsx/bds/player";
-import { serverInstance } from "bdsx/bds/server";
+import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
+import { PlayerPermission, ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
@@ -318,8 +315,8 @@ function mkFileKeep(filepath: string, value = {}) {
 function mkdir(dirname: string) {
     if (!fs.existsSync(dirname)) {
         fs.mkdirSync(dirname);
-    };
-};
+    }
+}
 
 mkdir("./banDB");
 mkdir("./DbanDB");
@@ -604,7 +601,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(`${username}`);
-            fs.unlink(`./banDB/${username}`, (err) => { });
+            fs.unlink(`./banDB/${username}`, (err) => {});
             return;
         }
 
@@ -654,7 +651,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(PlayerDeviceID[username]);
-            fs.unlink(`./DbanDB/${PlayerDeviceID[username]}`, (err) => { });
+            fs.unlink(`./DbanDB/${PlayerDeviceID[username]}`, (err) => {});
             return;
         }
 
@@ -691,17 +688,14 @@ cmd_unban.overload(
                 console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
                 return CANCEL;
             } else {
-                runCommand(
-                    `tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using /banlist §e/banlist"}]}`,
-                );
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using /banlist §e/banlist"}]}`);
                 return CANCEL;
             }
         } else {
-            fs.unlink(`./banDB/${inputs.player}`, (err) => { });
+            fs.unlink(`./banDB/${inputs.player}`, (err) => {});
             runCommand(`tellraw ${plname} {"rawtext":[{"text":"Unbanned ${inputs.player}"}]}`);
             console.log(yellow(`${plname} : Unbanned ${inputs.player}`));
             unbanenum.removeValues(`${inputs.player}`);
-            
         }
     },
     {
@@ -745,7 +739,7 @@ command.register(bancommand, "Ban Player (Minutes, 0 or null is never expired)",
         let minutes = date.getMinutes() + inputs.minutes;
         let day = date.getDate();
 
-        for (true; minutes > 59;) {
+        for (true; minutes > 59; ) {
             minutes = minutes - 60;
             hours++;
             if (hours > 23) {
@@ -801,115 +795,107 @@ command.register(bancommand, "Ban Player (Minutes, 0 or null is never expired)",
     },
 );
 
-command
-    .register(
-        Devicebancommand,
-        "Ban player using Device ID",
-        CommandPermissionLevel.Operator,
-    )
-    .overload(
-        async (inputs, corg) => {
-            const originName = corg.getName();
-            const targetName = inputs.player.getName();
-            inputs.minutes = inputs.minutes ?? 0;
+command.register(Devicebancommand, "Ban player using Device ID", CommandPermissionLevel.Operator).overload(
+    async (inputs, corg) => {
+        const originName = corg.getName();
+        const targetName = inputs.player.getName();
+        inputs.minutes = inputs.minutes ?? 0;
 
-            if (targetName === originName) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§cYou can't ban yourself"}]}`);
+        if (targetName === originName) {
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§cYou can't ban yourself"}]}`);
+            return;
+        }
+
+        if (targetName == null || targetName == "") {
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type name here. Do not use @a @e @r @s @p"}]}`);
+            return;
+        }
+
+        if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: You can not use this command for offline player"}]}`);
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: If you know player deviceID use "/${OfflinePlayerDeivceBanCommand} <DeviceID>"}]}`);
+            if (corg.isServerCommandOrigin()) {
+                console.log(red("Error: You can not use this command for offline player"));
+                console.log(yellow(`If you know player device ID use "${OfflinePlayerDeivceBanCommand} <DeviceID>"`));
+            }
+            return;
+        }
+
+        const banlist = fs.readdirSync("./banDB/");
+        const banlist2 = fs.readdirSync("./DbanDB/");
+        if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
+            if (corg.isServerCommandOrigin()) {
+                console.log(red(`${targetName} is already banned`));
+                return;
+            } else {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"${targetName} is already banned"}]}`);
                 return;
             }
+        }
 
-            if (targetName == null || targetName == "") {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type name here. Do not use @a @e @r @s @p"}]}`);
-                return;
-            }
+        const date = new Date();
+        let hours = date.getHours();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let minutes = date.getMinutes() + inputs.minutes;
+        let day = date.getDate();
 
-            if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: You can not use this command for offline player"}]}`);
-                runCommand(
-                    `tellraw ${originName} {"rawtext":[{"text":"§cError: If you know player deviceID use "/${OfflinePlayerDeivceBanCommand} <DeviceID>"}]}`,
-                );
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red("Error: You can not use this command for offline player"));
-                    console.log(yellow(`If you know player device ID use "${OfflinePlayerDeivceBanCommand} <DeviceID>"`));
-                }
-                return;
-            }
-
-            const banlist = fs.readdirSync("./banDB/");
-            const banlist2 = fs.readdirSync("./DbanDB/");
-            if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red(`${targetName} is already banned`));
-                    return;
-                } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"${targetName} is already banned"}]}`);
-                    return;
-                }
-            }
-
-            const date = new Date();
-            let hours = date.getHours();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            let minutes = date.getMinutes() + inputs.minutes;
-            let day = date.getDate();
-
-            for (true; minutes > 59;) {
-                minutes = minutes - 60;
-                hours++;
-                if (hours > 23) {
-                    hours = 0;
-                    day++;
-                    if (day > 29) {
-                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                            if (day > 31) {
-                                day = 0;
-                                month++;
-                                if (month > 12) {
-                                    month = 1;
-                                    year++;
-                                }
+        for (true; minutes > 59; ) {
+            minutes = minutes - 60;
+            hours++;
+            if (hours > 23) {
+                hours = 0;
+                day++;
+                if (day > 29) {
+                    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
+                        if (day > 31) {
+                            day = 0;
+                            month++;
+                            if (month > 12) {
+                                month = 1;
+                                year++;
                             }
-                        } else {
-                            if (day > 30) {
-                                day = 0;
-                                month++;
-                                if (month > 12) {
-                                    month = 1;
-                                    year++;
-                                }
+                        }
+                    } else {
+                        if (day > 30) {
+                            day = 0;
+                            month++;
+                            if (month > 12) {
+                                month = 1;
+                                year++;
                             }
                         }
                     }
                 }
             }
+        }
 
-            const BannedTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
-            const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+        const BannedTime = `${day}/${month}/${year}, ${hours}:${minutes}`;
+        const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-            const deviceId = PlayerDeviceID[targetName];
+        const deviceId = PlayerDeviceID[targetName];
 
-            fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
+        fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
 
-            runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"Banned ${targetName} (${deviceId})"}]}`);
-            console.log(yellow(`${originName} : Banned ${targetName} (${deviceId})`));
-            dunbanenum.addValues(deviceId);
-            for (const player of inputs.player.newResults(corg)) {
-                const ni = player.getNetworkIdentifier();
-                if (inputs.minutes == 0 || !inputs.minutes) {
-                    kick(ni, bantitle);
-                } else {
-                    kick(ni, `${bantitle}\n§fYour ban is expired on ${BannedTime}`);
-                }
-                return;
+        runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
+        runCommand(`tellraw ${originName} {"rawtext":[{"text":"Banned ${targetName} (${deviceId})"}]}`);
+        console.log(yellow(`${originName} : Banned ${targetName} (${deviceId})`));
+        dunbanenum.addValues(deviceId);
+        for (const player of inputs.player.newResults(corg)) {
+            const ni = player.getNetworkIdentifier();
+            if (inputs.minutes == 0 || !inputs.minutes) {
+                kick(ni, bantitle);
+            } else {
+                kick(ni, `${bantitle}\n§fYour ban is expired on ${BannedTime}`);
             }
-        },
-        {
-            player: PlayerCommandSelector,
-            minutes: [int32_t, true],
-        },
-    );
+            return;
+        }
+    },
+    {
+        player: PlayerCommandSelector,
+        minutes: [int32_t, true],
+    },
+);
 
 command.register(Deviceunbancommand, "Unban player device", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
@@ -941,7 +927,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
                 return CANCEL;
             }
         } else {
-            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
+            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => {});
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"Unbanned device ID ${inputs.DeviceID}"}]}`);
             console.log(yellow(`${originName} : Unbanned device ID ${inputs.DeviceID}`));
             dunbanenum.removeValues(inputs.DeviceID);
@@ -965,47 +951,40 @@ command.register(showbanlistcommand, "Shows server ban list", CommandPermissionL
     }
 }, {});
 
-command
-    .register(
-        OfflinePlayerDeivceBanCommand,
-        "You can device ban even if the player is offline",
-        CommandPermissionLevel.Operator,
-    )
-    .overload(
-        (input, corg) => {
-            const originName = corg.getName();
-            const input_length = input.DeviceID.length;
-            const targetDeviceId = input.DeviceID;
-            if (input_length !== DEVICE_ID_FMT_LENGTH) {
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red("Error: This commmand needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-                    return CANCEL;
-                } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: This commmand needs only device ID"}]}`);
-                    return CANCEL;
-                }
+command.register(OfflinePlayerDeivceBanCommand, "You can device ban even if the player is offline", CommandPermissionLevel.Operator).overload(
+    (input, corg) => {
+        const originName = corg.getName();
+        const input_length = input.DeviceID.length;
+        const targetDeviceId = input.DeviceID;
+        if (input_length !== DEVICE_ID_FMT_LENGTH) {
+            if (corg.isServerCommandOrigin()) {
+                console.log(red("Error: This commmand needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+                return CANCEL;
+            } else {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: This commmand needs only device ID"}]}`);
+                return CANCEL;
             }
-            const banlist = fs.readdirSync("./DbanDB/");
-            if (banlist.includes(targetDeviceId) === true) {
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red(`${targetDeviceId} is already banned`));
-                    return CANCEL;
-                } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: ${targetDeviceId} is already banned"}]}`);
-                    return CANCEL;
-                }
+        }
+        const banlist = fs.readdirSync("./DbanDB/");
+        if (banlist.includes(targetDeviceId) === true) {
+            if (corg.isServerCommandOrigin()) {
+                console.log(red(`${targetDeviceId} is already banned`));
+                return CANCEL;
+            } else {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: ${targetDeviceId} is already banned"}]}`);
+                return CANCEL;
             }
+        }
 
-            fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
-            console.log(yellow(`${originName} : banned ${targetDeviceId}`));
-        },
-        {
-            DeviceID: CxxString,
-        },
-    );
+        fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
+        console.log(yellow(`${originName} : banned ${targetDeviceId}`));
+    },
+    {
+        DeviceID: CxxString,
+    },
+);
 
-const peer = serverInstance.networkHandler.instance.peer;
-
+const RakPeer = bedrockServer.rakPeer;
 if (usegetinfocommand) {
     command.register(getinfocommand, "get player info", CommandPermissionLevel.Operator).overload(
         (param, origin, output) => {
@@ -1023,8 +1002,9 @@ if (usegetinfocommand) {
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
                 runCommand(
-                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
-                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
+                    `tellraw @a[name="${actorname}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                        BuildPlatform[os] || "UNKNOWN"
+                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
                 );
             }
         },
@@ -1052,8 +1032,9 @@ if (usemyinfocommand) {
 
         if (ni) {
             runCommand(
-                `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${peer.GetAveragePing(address)}ms"}]}`,
+                `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b's INFO\n\n§l§eIP §f: §7${ip}\n§eName §f: §7${username}\n§eOS §f: §7${
+                    BuildPlatform[os] || "UNKNOWN"
+                }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
             );
         }
     }, {});
@@ -1076,9 +1057,7 @@ if (usespawncommand) {
 
 events.packetBefore(MinecraftPacketIds.CommandRequest).on((ev, ni) => {
     if (ev.command == "/about") {
-        runCommand(
-            `tellraw "${ni.getActor()!.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`,
-        );
+        runCommand(`tellraw "${ni.getActor()!.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§cthis server use sos9533scr"}]}`);
         return CANCEL;
     }
 });
@@ -1159,7 +1138,7 @@ const COUNT = new Map<NetworkIdentifier, number>();
 const DELAY_LIMIT = 3;
 
 function kick(target: NetworkIdentifier, message = anticrasherkicktitle) {
-    serverInstance.disconnectClient(target, message);
+    bedrockServer.serverInstance.disconnectClient(target, message);
 }
 
 events.packetAfter(MinecraftPacketIds.Login).on(async (pkt, ni) => {
@@ -1230,7 +1209,7 @@ function updatechin() {
     try {
         chin = JSON.parse(fs.readFileSync(chin_json, "utf8"));
         return true;
-    } catch (err) { }
+    } catch (err) {}
     return false;
 }
 
@@ -1272,9 +1251,7 @@ if (usechin === true) {
                             fs.writeFileSync(chin_json, JSON.stringify(chinObj), "utf8");
                             updatechin();
                             runCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
-                            runCommand(
-                                `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`,
-                            );
+                            runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§aprocessed successfully!"}]}`);
                         }
                     }
                 }
@@ -1358,7 +1335,7 @@ export function setBossBar(target: NetworkIdentifier, title: string, percent: nu
     pk.title = title;
     pk.healthPercent = percent;
     if (color) pk.color = color;
-    pk.sendTo(target)
+    pk.sendTo(target);
     pk.dispose();
 }
 
@@ -1366,50 +1343,54 @@ export function removeBossBar(target: NetworkIdentifier, title: string): void {
     const pk = BossEventPacket.allocate();
     pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
     pk.type = BossEventPacket.Types.Hide;
-    pk.sendTo(target)
+    pk.sendTo(target);
     pk.dispose();
 }
 
-command.register(removebossbarcommand, 'remove bossbar', CommandPermissionLevel.Operator).overload((params, origin, output) => {
-    for (const target of params.target.newResults(origin, ServerPlayer)) {
-        const ni = target.getNetworkIdentifier();
-        removeBossBar(ni, params.title)
-    }
-}, {
-    target: ActorWildcardCommandSelector,
-    title: CxxString,
-});
+command.register(removebossbarcommand, "remove bossbar", CommandPermissionLevel.Operator).overload(
+    (params, origin, output) => {
+        for (const target of params.target.newResults(origin, ServerPlayer)) {
+            const ni = target.getNetworkIdentifier();
+            removeBossBar(ni, params.title);
+        }
+    },
+    {
+        target: ActorWildcardCommandSelector,
+        title: CxxString,
+    },
+);
 
-command.register(setbossbarcommand, 'set bossbar', CommandPermissionLevel.Operator).overload((params, origin, output) => {
-    for (const target of params.target.newResults(origin, ServerPlayer)) {
-        const ni = target.getNetworkIdentifier();
-        if (params.enum === 'blue') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Blue)
+command.register(setbossbarcommand, "set bossbar", CommandPermissionLevel.Operator).overload(
+    (params, origin, output) => {
+        for (const target of params.target.newResults(origin, ServerPlayer)) {
+            const ni = target.getNetworkIdentifier();
+            if (params.enum === "blue") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Blue);
+            }
+            if (params.enum === "red") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Red);
+            }
+            if (params.enum === "green") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Green);
+            }
+            if (params.enum === "yellow") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Yellow);
+            }
+            if (params.enum === "purple") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Purple);
+            }
+            if (params.enum === "white") {
+                setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.White);
+            }
         }
-        if (params.enum === 'red') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Red)
-        }
-        if (params.enum === 'green') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Green)
-        }
-        if (params.enum === 'yellow') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Yellow)
-        }
-        if (params.enum === 'purple') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.Purple)
-        }
-        if (params.enum === 'white') {
-            setBossBar(ni, params.title, params.percent, BossEventPacket.Colors.White)
-        }
-    }
-
-}, {
-    target: ActorWildcardCommandSelector,
-    title: CxxString,
-    percent: float32_t,
-    enum: command.enum('color', 'blue', 'red', 'green', 'yellow', 'purple', 'white'),
-
-});
+    },
+    {
+        target: ActorWildcardCommandSelector,
+        title: CxxString,
+        percent: float32_t,
+        enum: command.enum("color", "blue", "red", "green", "yellow", "purple", "white"),
+    },
+);
 
 mkFileKeep(sethome_json);
 
@@ -1475,9 +1456,8 @@ let cool = setInterval(() => {
 }, 1000);
 
 events.serverClose.on(() => {
-    clearInterval(cool)
-})
-
+    clearInterval(cool);
+});
 
 if (usetpacommand) {
     const reqs = new Map<string, Set<string>>();
