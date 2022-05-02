@@ -695,7 +695,7 @@ cmd_unban.overload(
         const plname = ni.getName();
 
         if (plname === inputs.player) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e음? \n§c무언가 잘못되었네요"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e행운을 빌게요 :)"}]}`);
             return 0;
         }
         if (inputs.player === "") {
@@ -730,7 +730,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     (inputs, corg) => {
         const plname = corg.getName();
         if (inputs.player.getName() === plname) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c무언가 잘못된 것 같은데..}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
             return CANCEL;
         }
 
@@ -818,17 +818,17 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     },
 );
 
-command.register(Devicebancommand, "플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)", CommandPermissionLevel.Operator,).overload(async (inputs, corg) => {
-    const originName = corg.getName();
-    const targetName = inputs.player.getName();
-    inputs.minutes = inputs.minutes ?? 0;
+command.register(Devicebancommand,"플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)",CommandPermissionLevel.Operator,).overload(async (inputs, corg) => {
+            const originName = corg.getName();
+            const targetName = inputs.player.getName();
+            inputs.minutes = inputs.minutes ?? 0;
 
-    if (targetName === originName) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c무언가 잘못 된 것 같은데..."}]}`);
-        return;
-    }
+            if (targetName === originName) {
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
+                return;
+            }
 
-    if (targetName == null || targetName == "") {
+            if (targetName == null || targetName == "") {
                 runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
                 return;
             }
