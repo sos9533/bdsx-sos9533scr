@@ -1333,27 +1333,6 @@ if (usechin === true) {
     }
 }
 
-/** @deprecated useless, use {@link ServerPlayer.prototype.setBossBar} */
-export function setBossBar(target: NetworkIdentifier, title: string, percent: number, color?: BossEventPacket.Colors): void {
-    const pk = BossEventPacket.allocate();
-    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
-    pk.type = BossEventPacket.Types.Show;
-    pk.title = title;
-    pk.healthPercent = percent;
-    if (color) pk.color = color;
-    pk.sendTo(target);
-    pk.dispose();
-}
-
-/** @deprecated useless, use {@link ServerPlayer.prototype.removeBossBar} */
-export function removeBossBar(target: NetworkIdentifier, title?: string): void {
-    const pk = BossEventPacket.allocate();
-    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
-    pk.type = BossEventPacket.Types.Hide;
-    pk.sendTo(target);
-    pk.dispose();
-}
-
 command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
