@@ -836,24 +836,24 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
             if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
                 runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
                 runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,);
-        if (corg.isServerCommandOrigin()) {
-            console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
-            console.log(yellow('접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다'));
-        }
-        return;
-    }
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
+                    console.log(yellow('접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다'));
+                }
+                return;
+            }
 
-    const banlist = fs.readdirSync("./banDB/");
-    const banlist2 = fs.readdirSync("./DbanDB/");
-    if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
-        if (corg.isServerCommandOrigin()) {
-            console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
-            return;
-        } else {
+            const banlist = fs.readdirSync("./banDB/");
+            const banlist2 = fs.readdirSync("./DbanDB/");
+            if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
+                    return;
+                } else {
                     runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
-            return;
-        }
-    }
+                    return;
+                }
+            }
 
     const date = new Date();
     let hours = date.getHours();
