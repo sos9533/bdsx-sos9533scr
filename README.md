@@ -5,18 +5,17 @@
 
 [[ 기능 및 사용법 ]](#sos9533scr-korean)
 
+[[ Note ]](#Note)
 
-`MIT LICENSE - Copyright (c) 2022 sos9533`
+### 1.8.5 UPDATE
+Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fix sos9533scr command output / Change sos9533scr Logo
+
 ![logo](sos9533scr_logo.png)  
 
 
 -------------------------------------------------
 # sos9533scr-english
 Made by sos9533
-
-- [OmletArcade](https://omlet.gg/profile/sos9533)
-
-- [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
 
 ## function
 
@@ -186,10 +185,6 @@ let chinchatset = "D";
 
 기본적인 지식으로 만든 연습겸 공유 플러그인입니다.
 
--   제작자 연락처
-    -   [OmletArcade](https://omlet.gg/profile/sos9533)
-    -   [KakaoTalk OpenChat](https://open.kakao.com/me/sos9533)
-
 ## 기능
 
 ```
@@ -351,3 +346,32 @@ let chinchatset = "A"
 //형식D     [칭호] 닉네임 : 채팅
 let chinchatset = "D"
 ```
+# Note
+
+## LICENSE
+`MIT LICENSE - Copyright (c) 2022 sos9533`
+
+`Can use it freely without any restrictions. 
+But don't change the code that makes "/sos9533scr" visible in-game.
+Or indicate that you used sos9533scr in-gamer.`
+
+`어떠한 제한 없이 사용할수 있음.
+하지만 "/sos9533scr"가 인게임에서 보이게 하는 코드를 변경하지 말것.
+또는 sos9533scr가 사용되었음을 해당 서버에서 누구나 쉽게 볼수 있는곳에 표시할것.`
+
+## Contributions
+- [`sos9533`](https://github.com/sos9533)
+- [`mdisprgm`](https://github.com/mdisprgm)
+- [`job-gut`](https://github.com/job-gut)
+- [`Blue00123`](https://github.com/Blue00123)
+
+
+## About sos9533scr
+- [`Discord`](https://discord.gg/w9NHc5BZve)
+- [`Pull requests`](https://github.com/sos9533/bdsx-sos9533scr/pulls)
+- [`KakaoTalk OPEN CHAT`](https://open.kakao.com/o/gbISJxrd)
+
+## About sos9533
+- [`OmletArcade`](https://omlet.gg/profile/sos9533)
+- [`KakaoTalk`](https://open.kakao.com/me/sos9533)
+
