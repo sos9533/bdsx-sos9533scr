@@ -901,23 +901,23 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
 
             runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
-    console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
-    dunbanenum.addValues(deviceId);
-    for (const player of inputs.player.newResults(corg)) {
-        const ni = player.getNetworkIdentifier();
-        if (inputs.minutes == 0 || !inputs.minutes) {
-            kick(ni, bantitle);
-        } else {
-            kick(ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
-        }
-        return;
-    }
-},
-    {
-        player: PlayerCommandSelector,
-        minutes: [int32_t, true],
-    },
-);
+            console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
+            dunbanenum.addValues(deviceId);
+            for (const player of inputs.player.newResults(corg)) {
+                const ni = player.getNetworkIdentifier();
+                if (inputs.minutes == 0 || !inputs.minutes) {
+                    kick(ni, bantitle);
+                } else {
+                    kick(ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+                }
+                return;
+            }
+        },
+        {
+            player: PlayerCommandSelector,
+            minutes: [int32_t, true],
+        },
+    );
 
 command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서버에 접속가능하도록 합니다", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
@@ -972,29 +972,29 @@ command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목
     }
 }, {});
 
-command.register(OfflinePlayerDeivceBanCommand, "플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)", CommandPermissionLevel.Operator,).overload((input, corg) => {
-    const originName = corg.getName();
-    const input_length = input.DeviceID.length;
-    const targetDeviceId = input.DeviceID;
-    if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
-        if (corg.isServerCommandOrigin()) {
-            console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-            return CANCEL;
-        } else {
+command.register(OfflinePlayerDeivceBanCommand,"플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)",CommandPermissionLevel.Operator,).overload((input, corg) => {
+            const originName = corg.getName();
+            const input_length = input.DeviceID.length;
+            const targetDeviceId = input.DeviceID;
+            if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+                    return CANCEL;
+                } else {
                     runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
-            return CANCEL;
-        }
-    }
-    const banlist = fs.readdirSync("./DbanDB/");
-    if (banlist.includes(targetDeviceId) === true) {
-        if (corg.isServerCommandOrigin()) {
-            console.log(red(`디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다`));
-            return CANCEL;
-        } else {
+                    return CANCEL;
+                }
+            }
+            const banlist = fs.readdirSync("./DbanDB/");
+            if (banlist.includes(targetDeviceId) === true) {
+                if (corg.isServerCommandOrigin()) {
+                    console.log(red(`디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다`));
+                    return CANCEL;
+                } else {
                     runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`);
-            return CANCEL;
-        }
-    }
+                    return CANCEL;
+                }
+            }
 
     fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
     console.log(yellow(`${originName} : ${targetDeviceId}(을)를 차단했습니다`));
