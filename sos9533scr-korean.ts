@@ -1311,7 +1311,7 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
 }, {});
-//때려칩시다
+
 /*command.register('gm', '게임모드를 전환합니다.', CommandPermissionLevel.Operator,).overload((params, origin) => {
     const gmValue = params.gamemodenumber;
     const actor = origin.getEntity()!.getNetworkIdentifier()!.getActor()!;
