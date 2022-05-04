@@ -361,7 +361,7 @@ Or indicate that you used sos9533scr in-gamer.`
 
 ## Contributors
 - [`sos9533`](https://github.com/sos9533)
-- ⭐[`mdisprgm`](https://github.com/mdisprgm)⭐
+- [`mdisprgm`](https://github.com/mdisprgm)
 - [`job-gut`](https://github.com/job-gut)
 - [`Blue00123`](https://github.com/Blue00123)
 
