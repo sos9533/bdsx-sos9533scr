@@ -758,7 +758,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         let minutes = date.getMinutes() + inputs.minutes;
         let day = date.getDate();
 
-        for (true; minutes > 59;) {
+        while (minutes > 59) {
             minutes = minutes - 60;
             hours++;
             if (hours > 23) {
@@ -858,7 +858,7 @@ command.register(Devicebancommand,"플레이어의 디바이스가 이 서버에
             let minutes = date.getMinutes() + inputs.minutes;
             let day = date.getDate();
 
-            for (true; minutes > 59;) {
+            while (minutes > 59) {
                 minutes = minutes - 60;
                 hours++;
                 if (hours > 23) {
