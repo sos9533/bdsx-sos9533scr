@@ -581,7 +581,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const username = connectionrequest.cert.getId();
     PlayerDeviceID[username] = connectionrequest.getDeviceId();
     let banlist = fs.readdirSync("./banDB/");
-    if (banlist.includes(`${username}`)) {
+    if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
         if (getbantime == null) {
             kick(ni, bantitle);
@@ -617,7 +617,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const nminutes = Number(Now[4]);
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
-            unbanenum.removeValues(`${username}`);
+            unbanenum.removeValues(username);
             fs.unlink(`./banDB/${username}`, (err) => { });
             return;
         }
@@ -700,7 +700,7 @@ cmd_unban.overload(
         }
 
         let banlist = fs.readdirSync("./banDB/");
-        if (banlist.includes(`${inputs.player}`) === false) {
+        if (banlist.includes(inputs.player) === false) {
             if (ni.isServerCommandOrigin() === true) {
                 console.log(red(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`));
                 return CANCEL;
@@ -714,7 +714,7 @@ cmd_unban.overload(
             fs.unlink(`./banDB/${inputs.player}`, (err) => { });
             runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
-            unbanenum.removeValues(`${inputs.player}`);
+            unbanenum.removeValues(inputs.player);
         }
     },
     {
@@ -736,7 +736,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         }
 
         let banlist = fs.readdirSync(`./banDB/`);
-        if (banlist.includes(`${inputs.player.getName()}`) == true) {
+        if (banlist.includes(inputs.player.getName()) == true) {
             if (corg.isServerCommandOrigin() == true) {
                 console.log(red(`플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다`));
 
@@ -768,7 +768,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
 
         console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
         runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
-        unbanenum.addValues(`${inputs.player.getName()}`);
+        unbanenum.addValues(inputs.player.getName());
         if (runCommand(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
