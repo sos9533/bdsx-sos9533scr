@@ -761,10 +761,10 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         const hours = date.getHours();
         const minutes = date.getMinutes();
 
-        const BannedTime = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-        const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+        const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+        const time_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, BannedTime2);
+        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, time_log);
 
         console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
         runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
@@ -775,7 +775,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
                 if (inputs.minutes == 0 || !inputs.minutes) {
                     kick(Ni, bantitle);
                 } else {
-                    kick(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+                    kick(Ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
                 }
                 return CANCEL;
             }
@@ -834,12 +834,12 @@ command.register(Devicebancommand,"플레이어의 디바이스가 이 서버에
     const hours = date.getHours();
     const minutes = date.getMinutes();
 
-    const BannedTime = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-    const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+    const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+    const title_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
     const deviceId = PlayerDeviceID[targetName];
 
-    fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
+    fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
     runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
     runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
@@ -850,7 +850,7 @@ command.register(Devicebancommand,"플레이어의 디바이스가 이 서버에
         if (inputs.minutes == 0 || !inputs.minutes) {
             kick(ni, bantitle);
         } else {
-            kick(ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+            kick(ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
         }
         return;
     }
