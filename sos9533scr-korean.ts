@@ -72,9 +72,6 @@ const OfflinePlayerDeivceBanCommand = "미접속자-디바이스-밴";
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
 const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다.";
 
-//밴 사용법 안내 (HowToUse_BAN.md)
-//     ㄴ  https://github.com/sos9533/sos9533scr/blob/main/HowToUse_BAN.md
-
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
 const usegetinfocommand: boolean = true;
 
@@ -388,7 +385,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         if (username.length > longnicknamekicklength) {
             kick(networkIdentifier, longnicknamekicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m");
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${longnicknamekickmessage}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${longnicknamekickmessage}"}]}`);
         }
     }
 
@@ -396,7 +393,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         if (deviceModel.includes("samsung")) {
             kick(networkIdentifier, toolboxkicktitle);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${toolboxkickmessage}"}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${toolboxkickmessage}"}]}`);
         }
     }
 
@@ -481,14 +478,14 @@ if (usechatcut) {
         const username = ni.getActor()!.getName();
 
         if (ptr.message.length > chatcutmessagelength) {
-            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
             return CANCEL;
         }
 
         if (lastChatTimes[username] === undefined) {
             lastChatTimes[username] = Date.now();
         } else if (Date.now() - lastChatTimes[username] < chatcutmessagespeedtime) {
-            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutspeedtitle}"}]}`);
             return CANCEL;
         } else {
             lastChatTimes[username] = Date.now();
@@ -501,28 +498,28 @@ events.command.on((command, origin) => {
     if (usechatcut) {
         if (cmdhead === "/w") {
             if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/tell") {
             if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/msg") {
             if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/me") {
             if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${nowhispermessge}"}]}`);
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
                 return 0;
             }
         }
@@ -535,7 +532,7 @@ command.register(kickcommand, "플레이어를 강퇴합니다.", CommandPermiss
             const username = target.getName();
             const ni = target.getNetworkIdentifier();
             kick(ni, kicktitle);
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by ${origin.getName()} ]`, "\x1b[0m");
         }
     },
@@ -551,7 +548,7 @@ command.register(mutecommand, "플레이어를 뮤트처리 합니다.", Command
 
             runCommand(`ability @a[name="${username}"] mute true`);
             runCommand(`tag @a[name="${username}"] add mute`);
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §7${username}§f님이 §c뮤트처리 §f되셨습니다."}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §7${username}§f님이 §c뮤트처리 §f되셨습니다."}]}`);
             console.log("\x1b[41m", `${username} Mute > [ Muted by ${origin.getName()} ]`, "\x1b[0m");
         }
     },
@@ -568,7 +565,7 @@ command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.",
             runCommand(`ability @a[name="${username}"] mute false`);
             runCommand(`tag @a[name="${username}"] remove mute`);
             console.log("\x1b[41m", `${username} UnMute > [ UnMuted by ${origin.getName()} ]`, "\x1b[0m");
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §7${username}§f님이 §a뮤트해제 §f되셨습니다."}]}`);
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §7${username}§f님이 §a뮤트해제 §f되셨습니다."}]}`);
         }
     },
     {
@@ -584,12 +581,12 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const username = connectionrequest.cert.getId();
     PlayerDeviceID[username] = connectionrequest.getDeviceId();
     let banlist = fs.readdirSync("./banDB/");
-    if (banlist.includes(`${username}`)) {
+    if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
         if (getbantime == null) {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
             return CANCEL;
@@ -598,7 +595,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (ToString == "null") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
             return CANCEL;
@@ -620,14 +617,14 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const nminutes = Number(Now[4]);
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
-            unbanenum.removeValues(`${username}`);
+            unbanenum.removeValues(username);
             fs.unlink(`./banDB/${username}`, (err) => { });
             return;
         }
 
         kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i1 = 0; i1 < op_count; i1++) {
-            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
         return CANCEL;
@@ -639,7 +636,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (getbantime == null) {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r §c${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
             return CANCEL;
@@ -648,7 +645,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (ToString == "null") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
             return CANCEL;
@@ -677,7 +674,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i1 = 0; i1 < op_count; i1++) {
-            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§r§c ${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player]`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player]`));
         return CANCEL;
@@ -694,30 +691,30 @@ cmd_unban.overload(
         const plname = ni.getName();
 
         if (plname === inputs.player) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e행운을 빌게요 :)"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e행운을 빌게요 :)"}]}`);
             return 0;
         }
         if (inputs.player === "") {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
             return;
         }
 
         let banlist = fs.readdirSync("./banDB/");
-        if (banlist.includes(`${inputs.player}`) === false) {
+        if (banlist.includes(inputs.player) === false) {
             if (ni.isServerCommandOrigin() === true) {
                 console.log(red(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`));
                 return CANCEL;
             } else {
                 runCommand(
-                    `tellraw ${plname} {"rawtext":[{"text":"${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
+                    `tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
                 );
                 return CANCEL;
             }
         } else {
             fs.unlink(`./banDB/${inputs.player}`, (err) => { });
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
-            unbanenum.removeValues(`${inputs.player}`);
+            unbanenum.removeValues(inputs.player);
         }
     },
     {
@@ -729,23 +726,25 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     (inputs, corg) => {
         const plname = corg.getName();
         if (inputs.player.getName() === plname) {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
             return CANCEL;
         }
 
         if (inputs.player.getName() == null || inputs.player.getName() == "") {
-            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
             return CANCEL;
         }
 
         let banlist = fs.readdirSync(`./banDB/`);
-        if (banlist.includes(`${inputs.player.getName()}`) == true) {
+        if (banlist.includes(inputs.player.getName()) == true) {
             if (corg.isServerCommandOrigin() == true) {
                 console.log(red(`플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다`));
 
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다"}]}`);
+                runCommand(
+                    `tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player.getName()}(은)는 이미 차단된 플레이어입니다"}]}`,
+                );
                 return CANCEL;
             }
         }
@@ -755,57 +754,28 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         }
 
         const date = new Date();
-        let hours = date.getHours();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        let minutes = date.getMinutes() + inputs.minutes;
-        let day = date.getDate();
+        date.setMinutes(date.getMinutes() + inputs.minutes);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
 
-        for (true; minutes > 59;) {
-            minutes = minutes - 60;
-            hours++;
-            if (hours > 23) {
-                hours = 0;
-                day++;
-                if (day > 29) {
-                    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                        if (day > 31) {
-                            day = 0;
-                            month++;
-                            if (month > 12) {
-                                month = 1;
-                                year++;
-                            }
-                        }
-                    } else {
-                        if (day > 30) {
-                            day = 0;
-                            month++;
-                            if (month > 12) {
-                                month = 1;
-                                year++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+        const time_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-        const BannedTime = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-        const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
-
-        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, BannedTime2);
+        fs.writeFileSync(`./banDB/${inputs.player.getName()}`, time_log);
 
         console.log(yellow(`${plname} : ${inputs.player.getName()}(을)를 차단했습니다`));
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
-        unbanenum.addValues(`${inputs.player.getName()}`);
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player.getName()}(을)를 차단했습니다"}]}`);
+        unbanenum.addValues(inputs.player.getName());
         if (runCommand(`testfor ${inputs.player.getName()}`).isSuccess() == true) {
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
                 if (inputs.minutes == 0 || !inputs.minutes) {
                     kick(Ni, bantitle);
                 } else {
-                    kick(Ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
+                    kick(Ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
                 }
                 return CANCEL;
             }
@@ -817,110 +787,74 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     },
 );
 
-command
-    .register(
-        Devicebancommand,
-        "플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)",
-        CommandPermissionLevel.Operator,
-    )
-    .overload(
-        async (inputs, corg) => {
-            const originName = corg.getName();
-            const targetName = inputs.player.getName();
-            inputs.minutes = inputs.minutes ?? 0;
+command.register(Devicebancommand,"플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)",CommandPermissionLevel.Operator,).overload(async (inputs, corg) => {
+    const originName = corg.getName();
+    const targetName = inputs.player.getName();
+    inputs.minutes = inputs.minutes ?? 0;
 
-            if (targetName === originName) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§e자기자신은 가장 소중한 존재입니다"}]}`);
-                return;
-            }
+    if (targetName === originName) {
+        runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
+        return;
+    }
 
-            if (targetName == null || targetName == "") {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
-                return;
-            }
+    if (targetName == null || targetName == "") {
+        runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
+        return;
+    }
 
-            if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
-                runCommand(
-                    `tellraw ${originName} {"rawtext":[{"text":"§cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
-                );
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
-                    console.log(yellow('접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다'));
-                }
-                return;
-            }
+    if (runCommand(`testfor ${targetName}`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
+        runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
+        runCommand(
+            `tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
+        );
+        if (corg.isServerCommandOrigin()) {
+            console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
+            console.log(yellow('접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다'));
+        }
+        return;
+    }
 
-            const banlist = fs.readdirSync("./banDB/");
-            const banlist2 = fs.readdirSync("./DbanDB/");
-            if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
-                if (corg.isServerCommandOrigin()) {
-                    console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
-                    return;
-                } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
-                    return;
-                }
-            }
+    const banlist = fs.readdirSync("./banDB/");
+    const banlist2 = fs.readdirSync("./DbanDB/");
+    if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
+        if (corg.isServerCommandOrigin()) {
+            console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
+            return;
+        } else {
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
+            return;
+        }
+    }
 
-            const date = new Date();
-            let hours = date.getHours();
-            let month = date.getMonth() + 1;
-            let year = date.getFullYear();
-            let minutes = date.getMinutes() + inputs.minutes;
-            let day = date.getDate();
+    const date = new Date();
+    date.setMinutes(date.getMinutes() + inputs.minutes);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
 
-            for (true; minutes > 59;) {
-                minutes = minutes - 60;
-                hours++;
-                if (hours > 23) {
-                    hours = 0;
-                    day++;
-                    if (day > 29) {
-                        if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
-                            if (day > 31) {
-                                day = 0;
-                                month++;
-                                if (month > 12) {
-                                    month = 1;
-                                    year++;
-                                }
-                            }
-                        } else {
-                            if (day > 30) {
-                                day = 0;
-                                month++;
-                                if (month > 12) {
-                                    month = 1;
-                                    year++;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
+    const title_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-            const BannedTime = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
-            const BannedTime2 = `${year}-${month}-${day}-${hours}-${minutes}`;
+    const deviceId = PlayerDeviceID[targetName];
 
-            const deviceId = PlayerDeviceID[targetName];
+    fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
-            fs.writeFileSync(`./DbanDB/${deviceId}`, BannedTime2);
-
-            runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
-            console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
-            dunbanenum.addValues(deviceId);
-            for (const player of inputs.player.newResults(corg)) {
-                const ni = player.getNetworkIdentifier();
-                if (inputs.minutes == 0 || !inputs.minutes) {
-                    kick(ni, bantitle);
-                } else {
-                    kick(ni, `${bantitle}\n§f차단은 §l${BannedTime}§r까지입니다`);
-                }
-                return;
-            }
-        },
+    runCommand(`execute ${originName} ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
+    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
+    console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
+    dunbanenum.addValues(deviceId);
+    for (const player of inputs.player.newResults(corg)) {
+        const ni = player.getNetworkIdentifier();
+        if (inputs.minutes == 0 || !inputs.minutes) {
+            kick(ni, bantitle);
+        } else {
+            kick(ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
+        }
+        return;
+    }
+},
         {
             player: PlayerCommandSelector,
             minutes: [int32_t, true],
@@ -940,7 +874,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
                 console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
             } else {
-                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
                 return;
             }
         }
@@ -952,14 +886,12 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
 
                 return;
             } else {
-                runCommand(
-                    `tellraw ${originName} {"rawtext":[{"text":"§c${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
-                );
+                runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,);
                 return;
             }
         } else {
             fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
-            runCommand(`tellraw ${originName} {"rawtext":[{"text":"디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
+            runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
             dunbanenum.removeValues(inputs.DeviceID);
         }
@@ -977,19 +909,12 @@ command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목
         console.log(yellow(`차단된 플레이어 목록 : ${banlist}`));
         console.log(yellow(`디바이스 차단된 플레이어 목록 : ${Dbanlist}`));
     } else {
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"차단된 플레이어 목록 : ${banlist}"}]}`);
-        runCommand(`tellraw ${plname} {"rawtext":[{"text":"디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 차단된 플레이어 목록 : ${banlist}"}]}`);
+        runCommand(`tellraw ${plname} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
     }
 }, {});
 
-command
-    .register(
-        OfflinePlayerDeivceBanCommand,
-        "플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)",
-        CommandPermissionLevel.Operator,
-    )
-    .overload(
-        (input, corg) => {
+command.register(OfflinePlayerDeivceBanCommand,"플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)",CommandPermissionLevel.Operator,).overload((input, corg) => {
             const originName = corg.getName();
             const input_length = input.DeviceID.length;
             const targetDeviceId = input.DeviceID;
@@ -998,7 +923,7 @@ command
                     console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                     return CANCEL;
                 } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
+                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
                     return CANCEL;
                 }
             }
@@ -1008,7 +933,7 @@ command
                     console.log(red(`디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다`));
                     return CANCEL;
                 } else {
-                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`);
+                    runCommand(`tellraw ${originName} {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`);
                     return CANCEL;
                 }
             }
@@ -1084,18 +1009,9 @@ if (usespawncommand) {
         }
 
         runCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§f§l[§7Server§f] §r${spawncommandtitle}"}]}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${spawncommandtitle}"}]}`);
     }, {});
 }
-
-events.packetBefore(MinecraftPacketIds.CommandRequest).on((pkt, ni) => {
-    if (pkt.command === "/about") {
-        runCommand(
-            `tellraw "${ni.getActor()!.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c본서버는 sos9533scr를 사용중이며 만약 /sos9533scr 명령어가 존재하지 않는다면 MIT 라이센스를 위반중인 서버입니다."}]}`,
-        );
-        return CANCEL;
-    }
-});
 
 if (usestpcommandA) {
     command.register(tpcommandA, tpcommandexplanationA).overload((param, origin, output) => {
@@ -1108,7 +1024,7 @@ if (usestpcommandA) {
         }
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateA}`);
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleA}"}]}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${tpcommandtitleA}"}]}`);
     }, {});
 }
 
@@ -1123,7 +1039,7 @@ if (usestpcommandB) {
         }
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateB}`);
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleB}"}]}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${tpcommandtitleB}"}]}`);
     }, {});
 }
 
@@ -1138,12 +1054,12 @@ if (usestpcommandC) {
         }
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateC}`);
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §r${tpcommandtitleC}"}]}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${tpcommandtitleC}"}]}`);
     }, {});
 }
-command.register("sos9533scr", "BDSX 기본세팅 플러그인 - Copyright (c) 2022 sos9533", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
     runCommand(
-        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c본서버는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533 (omlet)"}]}`,
+        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c본서버는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533 (omlet)"}]}`,
     );
 }, {});
 if (usebasicitemcommand) {
@@ -1248,7 +1164,7 @@ if (useblockcolorword === true) {
 
         if (useblockcolorword === true) {
             if (ptr.message?.includes("§")) {
-                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${blockcolorwordtitle}"}]}`);
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${blockcolorwordtitle}"}]}`);
                 return CANCEL;
             }
         }
@@ -1287,7 +1203,7 @@ if (usechin === true) {
                             ChinData[username] = prefix;
                             saveChin();
                             runCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
-                            runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a해당유저에게 칭호가 적용됬습니다!"}]}`);
+                            runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a해당유저에게 칭호가 적용됬습니다!"}]}`);
                         }
                     }
                 }
@@ -1309,9 +1225,9 @@ if (usechin === true) {
                         ChinData[originName] = prefix;
                         saveChin();
                         runCommand(`playsound random.levelup @a[name="${originName}"]`);
-                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
+                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a칭호가 적용됬습니다!"}]}`);
                     } else {
-                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
+                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c칭호가 너무 깁니다!"}]}`);
                         runCommand(`playsound random.orb @a[name="${originName}"]`);
                     }
                 }
@@ -1352,9 +1268,9 @@ if (usechin === true) {
                 saveChin();
 
                 runCommand(`playsound random.levelup @a[name="${username}"]`);
-                runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a칭호가 적용됬습니다!"}]}`);
+                runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a칭호가 적용됬습니다!"}]}`);
             } else {
-                runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§c칭호가 너무 깁니다!"}]}`);
+                runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c칭호가 너무 깁니다!"}]}`);
                 runCommand(`playsound random.orb @a[name="${username}"]`);
             }
         }, {});
@@ -1439,7 +1355,7 @@ if (usesethomecommand) {
         const homePos = `${pos?.x ?? "??"} ${pos?.y ?? "??"} ${pos?.z ?? "??"}`;
         jsonObj[DeviceId] = homePos;
         fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
-        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a현재 위치가 집으로 설정되었습니다."}]}`);
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a현재 위치가 집으로 설정되었습니다."}]}`);
     }, {});
 
     command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
@@ -1454,7 +1370,7 @@ if (usesethomecommand) {
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
         runCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
-        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §l§a집으로 이동되었습니다!"}]}`);
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a집으로 이동되었습니다!"}]}`);
     }, {});
 }
 
@@ -1488,7 +1404,7 @@ if (usetpacommand) {
                 const oPlayer = origin.getEntity();
 
                 if (oPlayer?.isPlayer()) {
-                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §c유저 한명을 정확하게 선택해주세요.");
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f]§f§l §c유저 한명을 정확하게 선택해주세요.");
                 }
                 return;
             }
@@ -1507,7 +1423,7 @@ if (usetpacommand) {
             setTimeout(() => {
                 if (set.delete(username))
                     runCommand(
-                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f-------------------- 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 --------------------"}]}`,
+                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 ------"}]}`,
                     );
             }, 60 * 1000);
         },
@@ -1520,7 +1436,7 @@ if (usetpacommand) {
             if (players.length !== 1) {
                 const oPlayer = origin.getEntity();
                 if (oPlayer?.isPlayer()) {
-                    oPlayer.sendMessage("§l§f[ §esos9533scr §f] §c유저 한명을 정확하게 선택해주세요.");
+                    oPlayer.sendMessage("§l§f[ §esos9533scr §f]§f§l §c유저 한명을 정확하게 선택해주세요.");
                 }
                 return;
             }
@@ -1544,11 +1460,11 @@ if (usetpacommand) {
 command.register("낮", "서버의 시간을 낮으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
     runCommand("time set day");
     const player = corg.getEntity();
-    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 낮으로 바꿨습니다");
+    if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간 낮으로 변경되었습니다.");
 }, {});
 
 command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPermissionLevel.Operator).overload((input, corg) => {
     runCommand("time set night");
     const player = corg.getEntity();
-    if (player?.isPlayer()) player.sendMessage("§6서버의 시간을 밤으로 바꿨습니다");
+    if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
 }, {});
