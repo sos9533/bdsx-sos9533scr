@@ -257,6 +257,9 @@ const chatcutlongtitle = "§l§c채팅이 너무 깁니다!";
 //일반채팅 도배방지-단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
 const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!";
 
+//일반채팅 도배방지-똑같은 메세지 안내 메시지 - 똑같은 채팅 또는 전 채팅이랑 2글자 이상 차이나지않는 플레이어의 채팅창에 출력
+const chatcutsametitle = "§l§c똑같거나 비슷한 채팅을 치지마세요!";
+
 //귓속말 도배방지-장문방지 (권장:30) (/w @a @e @e @e @e @e @e @e과 같은 방식으로 서버를 터트리는 방법이 있음)
 const wcutmessagelength = 30;
 
@@ -474,10 +477,13 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
 
 if (usechatcut) {
     const lastChatTimes: Record<string, number> = {};
+    const LastChat: Record<string, string> = {};
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-        const username = ni.getActor()!.getName();
+        const actor = ni.getActor()!;
+        const username = actor.getName();
+        const msg = ptr.message;
 
-        if (ptr.message.length > chatcutmessagelength) {
+        if (msg.length > chatcutmessagelength) {
             runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
             return CANCEL;
         }
@@ -490,6 +496,22 @@ if (usechatcut) {
         } else {
             lastChatTimes[username] = Date.now();
         }
+
+        if (!LastChat[username]) {
+            LastChat[username] = msg;
+        } else
+        if (LastChat[username]) {
+            let msglength = msg.length;
+            const LastChatlength = LastChat[username].length;
+            if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
+                if (msglength === LastChatlength || msglength - 2 === LastChatlength || msglength + 2 === LastChatlength || msglength + 1 === LastChatlength || msglength - 1 === LastChatlength) {
+                    LastChat[username] = msg;
+                    actor.sendMessage(chatcutsametitle);
+                    return CANCEL;
+                }
+            }
+            }
+        LastChat[username] = msg;
     });
 }
 
@@ -753,9 +775,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
             }
         }
 
-        if (!inputs.minutes) {
-            inputs.minutes = 0;
-        }
+        inputs.minutes = inputs.minutes ?? 0;
 
         const date = new Date();
         date.setMinutes(date.getMinutes() + inputs.minutes);
@@ -772,7 +792,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
 
         console.log(yellow(`${plname} : ${Tname}(을)를 차단했습니다`));
         runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${Tname}(을)를 차단했습니다"}]}`);
-        unbanenum.addValues();
+        unbanenum.addValues(Tname);
         if (runCommand(`testfor "${Tname}"`).isSuccess() == true) {
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
@@ -1107,7 +1127,7 @@ events.networkDisconnected.on(async (ni) => {
 
 if (useanticrasher) {
     events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
-        if ([12, 26, 35, 42].includes(pkt.sound)) return;
+        if ([12, 26, 35, 42, 43].includes(pkt.sound)) return;
 
         if (Date.now() - LAST.get(ni)! < DELAY_LIMIT) {
             const next = COUNT.get(ni)!;
@@ -1148,6 +1168,21 @@ if (useanticrasher) {
             case pkt.pos.x > 1073741823:
             case pkt.pos.y > 1073741823:
             case pkt.pos.z > 1073741823:
+                kick(ni);
+                return CANCEL;
+            default:
+        }
+    });
+
+    events.packetBefore(MinecraftPacketIds.MovePlayer).on((pkt, ni) => {
+        const X = pkt.pos.x;
+        const Y = pkt.pos.y;
+        const Z = pkt.pos.z;
+
+        switch (true) {
+            case X > 1073741823:
+            case Y > 1073741823:
+            case Z > 1073741823:
                 kick(ni);
                 return CANCEL;
             default:
