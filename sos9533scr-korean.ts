@@ -863,7 +863,8 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
     const title_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-    const target = inputs.player.newResults(corg)[0];
+    const targets = inputs.player.newResults(corg);
+    const target = targets[0];
     const deviceId = target.getNetworkIdentifier()!.getActor()!.deviceId;
 
     fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
@@ -872,7 +873,7 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
     console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
     dunbanenum.addValues(deviceId);
-    for (const player of inputs.player.newResults(corg)) {
+    for (const player of targets) {
         const ni = player.getNetworkIdentifier();
         if (!inputs.minutes) {
             kick(ni, bantitle);
