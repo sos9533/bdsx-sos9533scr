@@ -600,11 +600,10 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const op_count = onlineops.length;
     const connectionrequest = pkt.connreq;
 
-    //버그로 인해 !connectionreqeust 제거
-    const username = connectionrequest?.cert.getId();
-    if (!username) return;
+    if (!connectionrequest) return;
 
-    PlayerDeviceID[username] = connectionrequest?.getDeviceId();
+    const username = connectionrequest.cert.getId();
+    PlayerDeviceID[username] = connectionrequest.getDeviceId();
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
