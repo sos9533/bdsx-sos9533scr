@@ -610,8 +610,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
         if (getbantime == null) {
             kick(ni, bantitle);
-            for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+            for (let i = 0; i < op_count; i++) {
+                onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
             return CANCEL;
@@ -619,8 +619,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const ToString = String(getbantime);
         if (ToString == "null") {
             kick(ni, bantitle);
-            for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+            for (let i = 0; i < op_count; i++) {
+                onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
             return CANCEL;
@@ -648,8 +648,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         }
 
         kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
-        for (let i1 = 0; i1 < op_count; i1++) {
-            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
+        for (let i = 0; i < op_count; i++) {
+            onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
         return CANCEL;
@@ -660,8 +660,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
         if (getbantime == null) {
             kick(ni, bantitle);
-            for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
+            for (let i = 0; i < op_count; i++) {
+                onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             return CANCEL;
@@ -669,8 +669,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const ToString = String(getbantime);
         if (ToString == "null") {
             kick(ni, bantitle);
-            for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
+            for (let i = 0; i < op_count; i++) {
+                onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             return CANCEL;
@@ -698,8 +698,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         }
 
         kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
-        for (let i1 = 0; i1 < op_count; i1++) {
-            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
+        for (let i = 0; i < op_count; i++) {
+            onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
         return CANCEL;
