@@ -762,8 +762,8 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         }
 
         let banlist = fs.readdirSync(`./banDB/`);
-        if (banlist.includes(Tname) == true) {
-            if (corg.isServerCommandOrigin() == true) {
+        if (banlist.includes(Tname)) {
+            if (corg.isServerCommandOrigin()) {
                 console.log(red(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`));
 
                 return CANCEL;
@@ -793,10 +793,10 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
         console.log(yellow(`${plname} : ${Tname}(을)를 차단했습니다`));
         runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${Tname}(을)를 차단했습니다"}]}`);
         unbanenum.addValues(Tname);
-        if (runCommand(`testfor "${Tname}"`).isSuccess() == true) {
+        if (runCommand(`testfor "${Tname}"`).isSuccess()) {
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
-                if (inputs.minutes == 0 || !inputs.minutes) {
+                if (!inputs.minutes) {
                     kick(Ni, bantitle);
                 } else {
                     kick(Ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
@@ -874,7 +874,7 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     dunbanenum.addValues(deviceId);
     for (const player of inputs.player.newResults(corg)) {
         const ni = player.getNetworkIdentifier();
-        if (inputs.minutes == 0 || !inputs.minutes) {
+        if (!inputs.minutes) {
             kick(ni, bantitle);
         } else {
             kick(ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
@@ -892,7 +892,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
     (inputs, corg) => {
         const originName = corg.getName();
 
-        if (inputs.DeviceID == "") {
+        if (inputs.DeviceID === "") {
             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
             return;
         }
@@ -932,7 +932,7 @@ command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목
     const plname = corg.getName();
     const banlist = fs.readdirSync("./banDB/", { withFileTypes: false });
     const Dbanlist = fs.readdirSync("./DbanDB/", { withFileTypes: false });
-    if (corg.isServerCommandOrigin() == true) {
+    if (corg.isServerCommandOrigin()) {
         console.log(yellow(`차단된 플레이어 목록 : ${banlist}`));
         console.log(yellow(`디바이스 차단된 플레이어 목록 : ${Dbanlist}`));
     } else {
