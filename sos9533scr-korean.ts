@@ -523,7 +523,7 @@ if (usechatcut) {
                 return CANCEL;
             }
 
-            if (oldMsg.includes(msg) || msg.includes(msg)) {
+            if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
                 if (Math.abs(oldMsg.length - msg.length) < 3) {
                     LastChat[username] = msg;
                     actor.sendMessage(chatcutsametitle);
