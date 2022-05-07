@@ -301,15 +301,17 @@ const useCPSchecker: boolean = true;
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { Form } from "bdsx/bds/form";
+import { Level } from "bdsx/bds/level";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
-import { PlayerPermission, ServerPlayer } from "bdsx/bds/player";
+import { Player, PlayerPermission, ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
+import { procHacker } from "bdsx/prochacker";
 import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
@@ -330,7 +332,7 @@ function makeDir(dirname: string) {
 makeDir("./banDB");
 makeDir("./DbanDB");
 
-const PlayerDeviceID: any = {};
+const PlayerDeviceID = new Map<NetworkIdentifier, string>();
 const runCommand = bedrockServer.executeCommand;
 
 function leadZero(num: number, n: number) {
@@ -357,6 +359,13 @@ function dateWithZero() {
         "-"
     );
 }
+
+declare module "bdsx/bds/level" {
+    interface Level {
+        getPlayerByName(name: string): Player | null;
+    }
+}
+Level.prototype.getPlayerByName = procHacker.js("?getPlayer@Level@@UEBAPEAVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z", Player, { this: Level }, CxxString);
 
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
@@ -604,7 +613,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const op_count = onlineops.length;
 
     const username = connreq.cert.getId();
-    const deviceId = PlayerDeviceID[username] = connreq.getDeviceId();
+    const deviceId = connreq.getDeviceId();
+    PlayerDeviceID.set(ni, deviceId);
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
@@ -655,7 +665,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         return CANCEL;
     }
 
-    let Dbanlist = fs.readdirSync("./DbanDB");
+    const Dbanlist = fs.readdirSync("./DbanDB");
     if (Dbanlist.includes(deviceId)) {
         const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
         if (getbantime == null) {
@@ -751,26 +761,24 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     (inputs, corg) => {
         const plname = corg.getName();
         const Tname = inputs.player.getName();
-        if ( Tname === plname) {
+        if (Tname === plname) {
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
             return CANCEL;
         }
 
-        if (Tname == null || Tname == "") {
+        if (!Tname) {
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
             return CANCEL;
         }
 
-        let banlist = fs.readdirSync(`./banDB/`);
+        let banlist = fs.readdirSync("./banDB/");
         if (banlist.includes(Tname)) {
             if (corg.isServerCommandOrigin()) {
                 console.log(red(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`));
 
                 return CANCEL;
             } else {
-                runCommand(
-                    `tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다"}]}`,
-                );
+                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다"}]}`);
                 return CANCEL;
             }
         }
@@ -814,22 +822,23 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
 command.register(Devicebancommand, "플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)", CommandPermissionLevel.Operator,).overload(async (inputs, corg) => {
     const originName = corg.getName();
     const targetName = inputs.player.getName();
-    inputs.minutes = inputs.minutes ?? 0;
 
     if (targetName === originName) {
         runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
         return;
     }
 
-    if (targetName == null || targetName == "") {
+    if (!targetName) {
         runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
         return;
     }
 
-    if (runCommand(`testfor "${targetName}"`).isSuccess() === false) {
-        runCommand(
-            `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
-        );
+    const target = corg.getLevel().getPlayerByName(targetName);
+    const ni = target?.getNetworkIdentifier();
+    const deviceId = ni ? PlayerDeviceID.get(ni) ?? "" : "";
+
+    if (deviceId === "") {
+        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
         runCommand(
             `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
         );
@@ -840,9 +849,11 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
         return;
     }
 
+    inputs.minutes = inputs.minutes ?? 0;
+
     const banlist = fs.readdirSync("./banDB/");
     const banlist2 = fs.readdirSync("./DbanDB/");
-    if (banlist.includes(targetName) === true || banlist2.includes(PlayerDeviceID[targetName]) === true) {
+    if (banlist.includes(targetName) || banlist2.includes(deviceId)) {
         if (corg.isServerCommandOrigin()) {
             console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
             return;
@@ -863,9 +874,6 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
     const title_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-    const targets = inputs.player.newResults(corg);
-    const target = targets[0];
-    const deviceId = target.getNetworkIdentifier()!.getActor()!.deviceId;
 
     fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
@@ -873,7 +881,7 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
     console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
     dunbanenum.addValues(deviceId);
-    for (const player of targets) {
+    for (const player of inputs.player.newResults(corg)) {
         const ni = player.getNetworkIdentifier();
         if (!inputs.minutes) {
             kick(ni, bantitle);
@@ -883,11 +891,11 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
         return;
     }
 },
-    {
-        player: PlayerCommandSelector,
-        minutes: [int32_t, true],
-    },
-);
+        {
+            player: PlayerCommandSelector,
+            minutes: [int32_t, true],
+        },
+    );
 
 command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서버에 접속가능하도록 합니다", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
@@ -1321,27 +1329,6 @@ if (usechin === true) {
             }
         }, {});
     }
-}
-
-/** @deprecated useless, use {@link ServerPlayer.prototype.setBossBar} */
-export function setBossBar(target: NetworkIdentifier, title: string, percent: number, color?: BossEventPacket.Colors): void {
-    const pk = BossEventPacket.allocate();
-    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
-    pk.type = BossEventPacket.Types.Show;
-    pk.title = title;
-    pk.healthPercent = percent;
-    if (color) pk.color = color;
-    pk.sendTo(target);
-    pk.dispose();
-}
-
-/** @deprecated useless, use {@link ServerPlayer.prototype.removeBossBar} */
-export function removeBossBar(target: NetworkIdentifier, title?: string): void {
-    const pk = BossEventPacket.allocate();
-    pk.entityUniqueId = target.getActor()!.getUniqueIdPointer().getBin64();
-    pk.type = BossEventPacket.Types.Hide;
-    pk.sendTo(target);
-    pk.dispose();
 }
 
 command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
