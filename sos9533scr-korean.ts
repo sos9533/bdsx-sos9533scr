@@ -69,8 +69,8 @@ const showbanlistcommand = "밴목록";
 //플레이어가 접속하지 않았을때 device id 를 이용해 차단 (/빼고) - 관리자 전용 명령어
 const OfflinePlayerDeivceBanCommand = "미접속자-디바이스-밴";
 
-//밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
-const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다.";
+//밴 안내 메시지 - 밴 된 플레이어의 화면에 출력
+const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 밴 되셨습니다.\n§7재접속이 불가능합니다.";
 
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
 const usegetinfocommand: boolean = true;
@@ -501,16 +501,16 @@ if (usechatcut) {
         if (!LastChat[username]) {
             LastChat[username] = msg;
         } else
-        if (LastChat[username]) {
-            let msglength = msg.length;
-            const LastChatlength = LastChat[username].length;
-            if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
-                if (msglength === LastChatlength || msglength - 2 === LastChatlength || msglength + 2 === LastChatlength || msglength + 1 === LastChatlength || msglength - 1 === LastChatlength) {
-                    LastChat[username] = msg;
-                    actor.sendMessage(chatcutsametitle);
-                    return CANCEL;
+            if (LastChat[username]) {
+                let msglength = msg.length;
+                const LastChatlength = LastChat[username].length;
+                if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
+                    if (msglength === LastChatlength || msglength - 2 === LastChatlength || msglength + 2 === LastChatlength || msglength + 1 === LastChatlength || msglength - 1 === LastChatlength) {
+                        LastChat[username] = msg;
+                        actor.sendMessage(chatcutsametitle);
+                        return CANCEL;
+                    }
                 }
-            }
             }
         LastChat[username] = msg;
     });
@@ -693,7 +693,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(deviceId);
-            fs.unlink(`./DbanDB/${deviceId}`, (err) => {});
+            fs.unlink(`./DbanDB/${deviceId}`, (err) => { });
             return;
         }
 
@@ -716,7 +716,7 @@ cmd_unban.overload(
         const plname = ni.getName();
 
         if (plname === inputs.player) {
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e행운을 빌게요 :)"}]}`);
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c흐음.. 뭔가 이상한 것 같은데"}]}`);
             return 0;
         }
         if (inputs.player === "") {
@@ -751,8 +751,8 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     (inputs, corg) => {
         const plname = corg.getName();
         const Tname = inputs.player.getName();
-        if ( Tname === plname) {
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
+        if (Tname === plname) {
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c무언가 확실히 잘못되지 않았나요?"}]}`);
             return CANCEL;
         }
 
@@ -817,7 +817,7 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     inputs.minutes = inputs.minutes ?? 0;
 
     if (targetName === originName) {
-        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
+        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c확실히 잘못된게 분명하네요"}]}`);
         return;
     }
 
@@ -894,12 +894,13 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
         const originName = corg.getName();
 
         if (inputs.DeviceID === "") {
-            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: 이름을 적어주세요"}]}`);
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§cError: DeviceID 를 적어주세요"}]}`);
             return;
         }
+
         if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
             if (corg.isServerCommandOrigin()) {
-                console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+                console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8)"));
                 return;
             } else {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
@@ -948,7 +949,7 @@ command.register(OfflinePlayerDeivceBanCommand, "플레이어가 접속하지 �
     const targetDeviceId = input.DeviceID;
     if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
         if (corg.isServerCommandOrigin()) {
-            console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
+            console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8)"));
             return CANCEL;
         } else {
             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
@@ -1468,9 +1469,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(username))
-                    runCommand(
-                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 ------"}]}`,
-                    );
+                    player.getNetworkIdentifier()!.getActor()!.sendMessage(`§6${username}님에게 보낸 티피요청이 만료되었습니다`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1496,6 +1495,9 @@ if (usetpacommand) {
 
                 if (set.delete(originName)) {
                     runCommand(`tp "${username}" "${originName}"`);
+                    runCommand(
+                        `tellraw "${originName}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 ------"}]}`,
+                    );
                 }
             }
         },
