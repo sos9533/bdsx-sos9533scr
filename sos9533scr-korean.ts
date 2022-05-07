@@ -310,6 +310,7 @@ import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
+import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
 
@@ -478,10 +479,10 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
 if (usechatcut) {
     const lastChatTimes: Record<string, number> = {};
     const LastChat: Record<string, string> = {};
-    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+    events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
         const actor = ni.getActor()!;
         const username = actor.getName();
-        const msg = ptr.message;
+        const msg = pkt.message;
 
         if (msg.length > chatcutmessagelength) {
             runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
@@ -596,14 +597,14 @@ command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.",
 );
 
 events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
+    const connreq = pkt.connreq;
+    if (!connreq) return;
+
     const onlineops = bedrockServer.serverInstance.getPlayers().filter((p) => p.getPermissionLevel() === PlayerPermission.OPERATOR);
     const op_count = onlineops.length;
-    const connectionrequest = pkt.connreq;
 
-    if (!connectionrequest) return;
-
-    const username = connectionrequest.cert.getId();
-    PlayerDeviceID[username] = connectionrequest.getDeviceId();
+    const username = connreq.cert.getId();
+    const deviceId = PlayerDeviceID[username] = connreq.getDeviceId();
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
@@ -654,24 +655,24 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         return CANCEL;
     }
 
-    let Dbanlist = fs.readdirSync(`./DbanDB`);
-    if (Dbanlist.includes(PlayerDeviceID[username])) {
-        const getbantime = fs.readFileSync(`./DbanDB/${PlayerDeviceID[username]}`);
+    let Dbanlist = fs.readdirSync("./DbanDB");
+    if (Dbanlist.includes(deviceId)) {
+        const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
         if (getbantime == null) {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${PlayerDeviceID[username]})`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
-            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${PlayerDeviceID[username]})`));
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             return CANCEL;
         }
         const ToString = String(getbantime);
         if (ToString == "null") {
             kick(ni, bantitle);
             for (let i1 = 0; i1 < op_count; i1++) {
-                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${PlayerDeviceID[username]})`);
+                onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
-            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${PlayerDeviceID[username]})`));
+            console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             return CANCEL;
         }
 
@@ -691,16 +692,16 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         const nminutes = Number(Now[4]);
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
-            unbanenum.removeValues(PlayerDeviceID[username]);
-            fs.unlink(`./DbanDB/${PlayerDeviceID[username]}`, (err) => { });
+            unbanenum.removeValues(deviceId);
+            fs.unlink(`./DbanDB/${deviceId}`, (err) => {});
             return;
         }
 
         kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i1 = 0; i1 < op_count; i1++) {
-            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${PlayerDeviceID[username]})`);
+            onlineops[i1].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
         }
-        console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${PlayerDeviceID[username]})`));
+        console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
         return CANCEL;
     }
 });
@@ -826,9 +827,11 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     }
 
     if (runCommand(`testfor "${targetName}"`).isSuccess() === false) {
-        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
         runCommand(
-            `tellraw $"{originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
+            `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
+        );
+        runCommand(
+            `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
         );
         if (corg.isServerCommandOrigin()) {
             console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
@@ -1160,33 +1163,36 @@ if (useanticrasher) {
         FOOD_LAST.set(ni, Date.now());
     });
 
-    events.packetBefore(MinecraftPacketIds.PlayerAuthInput).on((pkt, ni) => {
-        switch (true) {
-            case pkt.moveX > 1073741823:
-            case pkt.moveZ > 1073741823:
-            case pkt.pos.x > 1073741823:
-            case pkt.pos.y > 1073741823:
-            case pkt.pos.z > 1073741823:
-                kick(ni);
-                return CANCEL;
-            default:
-        }
-    });
+    const opt_movement = serverProperties["server-authoritative-movement"];
+    if (opt_movement === "client-auth") {
+        events.packetBefore(MinecraftPacketIds.MovePlayer).on((pkt, ni) => {
+            const X = pkt.pos.x;
+            const Y = pkt.pos.y;
+            const Z = pkt.pos.z;
 
-    events.packetBefore(MinecraftPacketIds.MovePlayer).on((pkt, ni) => {
-        const X = pkt.pos.x;
-        const Y = pkt.pos.y;
-        const Z = pkt.pos.z;
-
-        switch (true) {
-            case X > 1073741823:
-            case Y > 1073741823:
-            case Z > 1073741823:
-                kick(ni);
-                return CANCEL;
-            default:
-        }
-    });
+            switch (true) {
+                case X > 1073741823:
+                case Y > 1073741823:
+                case Z > 1073741823:
+                    kick(ni);
+                    return CANCEL;
+                default:
+            }
+        });
+    } else {
+        events.packetBefore(MinecraftPacketIds.PlayerAuthInput).on((pkt, ni) => {
+            switch (true) {
+                case pkt.moveX > 1073741823:
+                case pkt.moveZ > 1073741823:
+                case pkt.pos.x > 1073741823:
+                case pkt.pos.y > 1073741823:
+                case pkt.pos.z > 1073741823:
+                    kick(ni);
+                    return CANCEL;
+                default:
+            }
+        });
+    }
 }
 
 makeFile(chin_json);
