@@ -517,6 +517,11 @@ if (usechatcut) {
         } else if (LastChat[username]) {
             const oldMsg = LastChat[username];
 
+            if (msg === oldMsg) {
+                actor.sendMessage(chatcutsametitle);
+                return CANCEL;
+            }
+
             let longer: string;
             let shorter: string;
             if (msg.length > oldMsg.length) {
