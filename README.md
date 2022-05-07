@@ -7,8 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.8.5 UPDATE
-Fix & Upgrade device ban / Fix tpa output / Fix long whisper blocker output / Fix sos9533scr command output / Change sos9533scr Logo
+### 1.8.6 UPDATE
+Fix BUGs / Add Block Same Message
 
 ![logo](sos9533scr_logo.png)
 
