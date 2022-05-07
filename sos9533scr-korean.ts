@@ -515,20 +515,22 @@ if (usechatcut) {
         if (!LastChat[username]) {
             LastChat[username] = msg;
         } else if (LastChat[username]) {
-            let msglength = msg.length;
-            const LastChatlength = LastChat[username].length;
-            if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
-                if (
-                    msglength === LastChatlength ||
-                    msglength - 2 === LastChatlength ||
-                    msglength + 2 === LastChatlength ||
-                    msglength + 1 === LastChatlength ||
-                    msglength - 1 === LastChatlength
-                ) {
-                    LastChat[username] = msg;
-                    actor.sendMessage(chatcutsametitle);
-                    return CANCEL;
-                }
+            const oldMsg = LastChat[username];
+
+            let longer: string;
+            let shorter: string;
+            if (msg.length > oldMsg.length) {
+                longer = msg;
+                shorter = oldMsg;
+            } else {
+                longer = oldMsg;
+                shorter = msg;
+            }
+
+            if (longer.length - shorter.length <= 2 && longer.includes(shorter)) {
+                LastChat[username] = msg;
+                actor.sendMessage(chatcutsametitle);
+                return CANCEL;
             }
         }
         LastChat[username] = msg;
