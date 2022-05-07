@@ -48,6 +48,7 @@ Made by sos9533
 │  ├ chatcut
 │     ├ block long chat
 │     ├ block fast chat
+│     ├ block same chat
 │     └ block long whisper
 │  ├ anti crasher
 │  ├ anti fakeOS
@@ -217,6 +218,7 @@ let chinchatset = "D";
 │  ├ 도배방지
 │     ├ 장문방지
 │     ├ 단타방지
+│     ├ 같거나 비슷한 채팅 방지
 │     └귓속말 장문방지
 │  ├ 크래셔 방지 (지퍼 크래셔 방지)
 │  ├ OS 조작 감지
