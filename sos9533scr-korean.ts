@@ -510,16 +510,16 @@ if (usechatcut) {
         if (!LastChat[username]) {
             LastChat[username] = msg;
         } else
-        if (LastChat[username]) {
-            let msglength = msg.length;
-            const LastChatlength = LastChat[username].length;
-            if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
-                if (msglength === LastChatlength || msglength - 2 === LastChatlength || msglength + 2 === LastChatlength || msglength + 1 === LastChatlength || msglength - 1 === LastChatlength) {
-                    LastChat[username] = msg;
-                    actor.sendMessage(chatcutsametitle);
-                    return CANCEL;
+            if (LastChat[username]) {
+                let msglength = msg.length;
+                const LastChatlength = LastChat[username].length;
+                if (msg.includes(LastChat[username]) || LastChat[username].includes(msg)) {
+                    if (msglength === LastChatlength || Math.abs(LastChatlength - msglength) < 3) {
+                        LastChat[username] = msg;
+                        actor.sendMessage(chatcutsametitle);
+                        return CANCEL;
+                    }
                 }
-            }
             }
         LastChat[username] = msg;
     });
@@ -703,7 +703,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(deviceId);
-            fs.unlink(`./DbanDB/${deviceId}`, (err) => {});
+            fs.unlink(`./DbanDB/${deviceId}`, (err) => { });
             return;
         }
 
@@ -891,11 +891,11 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
         return;
     }
 },
-        {
-            player: PlayerCommandSelector,
-            minutes: [int32_t, true],
-        },
-    );
+    {
+        player: PlayerCommandSelector,
+        minutes: [int32_t, true],
+    },
+);
 
 command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서버에 접속가능하도록 합니다", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
