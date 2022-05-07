@@ -577,9 +577,12 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const onlineops = bedrockServer.serverInstance.getPlayers().filter((p) => p.getPermissionLevel() === PlayerPermission.OPERATOR);
     const op_count = onlineops.length;
     const connectionrequest = pkt.connreq;
-    if (!connectionrequest) return;
-    const username = connectionrequest.cert.getId();
-    PlayerDeviceID[username] = connectionrequest.getDeviceId();
+
+    //버그로 인해 !connectionreqeust 제거
+    const username = connectionrequest?.cert.getId();
+    if (!username) return;
+
+    PlayerDeviceID[username] = connectionrequest?.getDeviceId();
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
@@ -803,7 +806,7 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
         return;
     }
 
-    if (runCommand(`testfor "${targetName}"`).isSuccess() === false || PlayerDeviceID[targetName] == null) {
+    if (runCommand(`testfor "${targetName}"`).isSuccess() === false) {
         runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`);
         runCommand(
             `tellraw $"{originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "c-d-ban <DeviceID>"로 차단 할 수 있습니다"}]}`,
@@ -838,7 +841,8 @@ command.register(Devicebancommand, "플레이어의 디바이스가 이 서버�
     const time_title = `${year}년 ${month}월 ${day}일 ${hours}시 ${minutes}분`;
     const title_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
-    const deviceId = PlayerDeviceID[targetName];
+    const target = inputs.player.newResults(corg)[0];
+    const deviceId = target.getNetworkIdentifier()!.getActor()!.deviceId;
 
     fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
