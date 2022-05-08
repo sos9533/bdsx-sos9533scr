@@ -433,7 +433,8 @@ if (usechatcut) {
         events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
             const actor = ni.getActor()!;
             const username = actor.getName();
-            const msg = pkt.message;
+            let msg = pkt.message;
+            msg = msg.replace(" ", "");
 
             if (msg.length > chatcutmessagelength) {
                 runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
