@@ -1165,8 +1165,9 @@ events.networkDisconnected.on(async (ni) => {
 });
 
 if (useanticrasher) {
+    const Ignored = new Set<number>([12, 26, 35, 42, 43]);
     events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
-        if ([12, 26, 35, 42, 43].includes(pkt.sound)) return;
+        if (Ignored.has(pkt.sound)) return;
 
         if (Date.now() - LAST.get(ni)! < DELAY_LIMIT) {
             const next = COUNT.get(ni)!;
