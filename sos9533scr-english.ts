@@ -240,10 +240,10 @@ const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§cyou use too long nickn
 //use chatcut (true/false)
 let usechatcut: boolean = true;
 
-//chatcut length
+//chatcut length - recommneded 1000
 const chatcutmessagelength = 100;
 
-//chatcut speedchat
+//chatcut speedchat - ms(recommended 1000)
 const chatcutmessagespeedtime = 1000;
 
 //chatcut message - too long chat
@@ -251,6 +251,9 @@ const chatcutlongtitle = "§l§cYour chat is too long!";
 
 //chatcut message - too fast chat
 const chatcutspeedtitle = "§l§cYour chat is too fast!";
+
+//chatcut message - same chat
+const chatcutsametitle = "§l§cDo not send same chat!";
 
 //whisper chatcut (to block /w @a @e @e @e @e @e @e @e)
 const wcutmessagelength = 30;
@@ -424,26 +427,53 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
     }
 });
 
-const time: Record<string, number> = {};
-events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-    const playername = ni.getActor()!.getName();
+if (usechatcut) {
+    const time: Record<string, number> = {};
+    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+        const playername = ni.getActor()!.getName();
+        const lastChatTimes: Record<string, number> = {};
+        const LastChat: Record<string, string> = {};
+        events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
+            const actor = ni.getActor()!;
+            const username = actor.getName();
+            const msg = pkt.message;
 
-    if (usechatcut) {
-        if (ptr.message.length > chatcutmessagelength) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
-            return CANCEL;
-        }
+            if (msg.length > chatcutmessagelength) {
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
+                return CANCEL;
+            }
 
-        if (time[playername] === undefined) {
-            time[playername] = Date.now();
-        } else if (Date.now() - time[playername] < chatcutmessagespeedtime) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
-            return CANCEL;
-        } else {
-            time[playername] = Date.now();
-        }
-    }
-});
+            if (lastChatTimes[username] === undefined) {
+                lastChatTimes[username] = Date.now();
+            } else if (Date.now() - lastChatTimes[username] < chatcutmessagespeedtime) {
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutspeedtitle}"}]}`);
+                return CANCEL;
+            } else {
+                lastChatTimes[username] = Date.now();
+            }
+
+            if (!LastChat[username]) {
+                LastChat[username] = msg;
+            } else if (LastChat[username]) {
+                const oldMsg = LastChat[username];
+
+                if (msg === oldMsg) {
+                    LastChat[username] = msg;
+                    actor.sendMessage(chatcutsametitle);
+                    return CANCEL;
+                }
+                if (Math.abs(oldMsg.length - msg.length) < 3) {
+                    if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
+                        LastChat[username] = msg;
+                        actor.sendMessage(chatcutsametitle);
+                        return CANCEL;
+                    }
+                }
+            }
+            LastChat[username] = msg;
+        });
+    });
+};
 
 events.command.on((command, origin) => {
     const cmdhead = command.split(" ")[0];
