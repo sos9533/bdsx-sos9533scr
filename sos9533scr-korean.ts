@@ -518,24 +518,17 @@ if (usechatcut) {
             const oldMsg = LastChat[username];
 
             if (msg === oldMsg) {
-                actor.sendMessage(chatcutsametitle);
-                return CANCEL;
-            }
-
-            let longer: string;
-            let shorter: string;
-            if (msg.length > oldMsg.length) {
-                longer = msg;
-                shorter = oldMsg;
-            } else {
-                longer = oldMsg;
-                shorter = msg;
-            }
-
-            if (longer.length - shorter.length <= 2 && longer.includes(shorter)) {
                 LastChat[username] = msg;
                 actor.sendMessage(chatcutsametitle);
                 return CANCEL;
+            }
+
+            if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
+                if (Math.abs(oldMsg.length - msg.length) < 3) {
+                    LastChat[username] = msg;
+                    actor.sendMessage(chatcutsametitle);
+                    return CANCEL;
+                }
             }
         }
         LastChat[username] = msg;
@@ -670,7 +663,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(username);
-            fs.unlink(`./banDB/${username}`, (err) => {});
+            fs.unlink(`./banDB/${username}`, (err) => { });
             return;
         }
 
@@ -720,7 +713,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(deviceId);
-            fs.unlink(`./DbanDB/${deviceId}`, (err) => {});
+            fs.unlink(`./DbanDB/${deviceId}`, (err) => { });
             return;
         }
 
@@ -763,7 +756,7 @@ cmd_unban.overload(
                 return CANCEL;
             }
         } else {
-            fs.unlink(`./banDB/${inputs.player}`, (err) => {});
+            fs.unlink(`./banDB/${inputs.player}`, (err) => { });
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
             unbanenum.removeValues(inputs.player);
@@ -955,7 +948,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
                 return;
             }
         } else {
-            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => {});
+            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
             dunbanenum.removeValues(inputs.DeviceID);
@@ -1039,8 +1032,7 @@ if (usegetinfocommand) {
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
                 runCommand(
-                    `tellraw @a[name="${originName}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                        BuildPlatform[os] || "UNKNOWN"
+                    `tellraw @a[name="${originName}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
                     }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
                 );
             }
@@ -1067,8 +1059,7 @@ if (usemyinfocommand) {
         const os = player.getPlatform();
 
         runCommand(
-            `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                BuildPlatform[os] || "UNKNOWN"
+            `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
             }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
         );
     }, {});
