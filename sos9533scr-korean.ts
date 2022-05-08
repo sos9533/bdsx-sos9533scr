@@ -496,7 +496,8 @@ if (usechatcut) {
     events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
         const actor = ni.getActor()!;
         const username = actor.getName();
-        const msg = pkt.message;
+        let msg = pkt.message;
+        msg = msg.replace(" ", "");
 
         if (msg.length > chatcutmessagelength) {
             runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
@@ -1529,4 +1530,4 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     runCommand("time set night");
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
-}, {}); 
+}, {});
