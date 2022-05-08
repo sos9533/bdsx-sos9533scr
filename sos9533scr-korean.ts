@@ -340,14 +340,15 @@ command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCop
   스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("[".white + " sos9533scr".yellow + " ]".white + " 플러그인의 일부 코드에 문제가 있습니다. 다시 플러그인을 설치, 적용해주세요.\n계속 이러한 문제가 발생한다면 해당 오류코드를 Omlet : sos9533 연락처로 문의해주세요\n오류코드 : No_Important_Code")); }; /*
  */
 
-//const filename = fs.createWriteStream("sos9533scr-korean.ts");
+//개발중
+/*//const filename = fs.createWriteStream("sos9533scr-korean.ts");
 
 function download(url: string, dest:string, dir: string) {
     const request = https.get(url);
     fs.writeFileSync(`${dir}${dest}`, request);
 };
 
-download("https://github.com/sos9533/bdsx-sos9533scr/blob/main/sos9533scr-korean.ts", 'test2.ts', './');
+download("https://github.com/sos9533/bdsx-sos9533scr/blob/main/sos9533scr-korean.ts", 'test2.ts', './');*/
 
 const chin_json = "chin.json";
 const sethome_json = "sethome_pos.json";
