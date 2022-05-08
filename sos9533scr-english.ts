@@ -1516,7 +1516,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(player.getName()))
-                    runCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §a${player.getName()}§f accept your tpa ------"}]}`);
+                    runCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §6Your tpa request §6has expired ------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1541,6 +1541,7 @@ if (usetpacommand) {
 
                 if (set.delete(origin.getName())) {
                     runCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                    runCommand(`tellraw "${player.getName()}" {"rawtext": [{"text":"§l§f------ §a${origin.getName()}§f accept your tpa ------"}]}`);
                 }
             }
         },
