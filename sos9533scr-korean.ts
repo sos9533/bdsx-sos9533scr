@@ -359,18 +359,6 @@ function dateWithZero() {
     );
 }
 
-declare module "bdsx/bds/level" {
-    interface Level {
-        getPlayerByName(name: string): Player | null;
-    }
-}
-Level.prototype.getPlayerByName = procHacker.js(
-    "?getPlayer@Level@@UEBAPEAVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
-    Player,
-    { this: Level },
-    CxxString,
-);
-
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
 events.serverOpen.on(() => {
@@ -837,10 +825,10 @@ command
             const originName = corg.getName();
             const targetName = inputs.player.getName();
 
-            if (targetName === originName) {
+            /* if (targetName === originName) {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§e자기자신은 가장 소중한 존재입니다"}]}`);
                 return;
-            }
+            } */
 
             if (!targetName) {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 이름을 적어주세요"}]}`);
