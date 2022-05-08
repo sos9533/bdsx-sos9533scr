@@ -428,11 +428,10 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
 });
 
 if (usechatcut) {
-    const time: Record<string, number> = {};
+    const lastChatTimes: Record<string, number> = {};
+    const LastChat: Record<string, string> = {};
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const playername = ni.getActor()!.getName();
-        const lastChatTimes: Record<string, number> = {};
-        const LastChat: Record<string, string> = {};
         events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
             const actor = ni.getActor()!;
             const username = actor.getName();
