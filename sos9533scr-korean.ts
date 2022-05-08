@@ -522,9 +522,8 @@ if (usechatcut) {
                 actor.sendMessage(chatcutsametitle);
                 return CANCEL;
             }
-
-            if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
-                if (Math.abs(oldMsg.length - msg.length) < 3) {
+            if (Math.abs(oldMsg.length - msg.length) < 3) {
+                if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
                     LastChat[username] = msg;
                     actor.sendMessage(chatcutsametitle);
                     return CANCEL;
