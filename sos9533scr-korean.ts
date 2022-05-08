@@ -676,7 +676,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const Dbanlist = fs.readdirSync("./DbanDB");
     if (Dbanlist.includes(deviceId)) {
         const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
-        if (getbantime == null) {
+        if (!getbantime) {
             kick(ni, bantitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
