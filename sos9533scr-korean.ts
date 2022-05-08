@@ -319,6 +319,25 @@ import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
 
+const runCommand = bedrockServer.executeCommand;
+
+//해당 명령어를 지우거나 변경하지 마시오
+command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+    if (origin.isServerCommandOrigin()) {
+        console.info("[ " + "sos9533scr".yellow + " ] " + " 본 서버는 sos9533scr를 사용중입니다. 제작자 : sos9533 (omlet)")
+        output.success("");
+    } else {
+        runCommand(
+            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c본서버는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533 (omlet)"}]}`,
+        );
+        output.success("");
+    };
+}, {});
+
+/*
+ * 스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("[".white + " sos9533scr".yellow + " ]".white + " 플러그인의 일부 코드에 문제가 있습니다. 다시 플러그인을 설치, 적용해주세요.\n계속 이러한 문제가 발생한다면 해당 오류코드를 Omlet : sos9533 연락처로 문의해주세요\n오류코드 : No_Important_Code")); }; /*
+ */
+
 const chin_json = "chin.json";
 const sethome_json = "sethome_pos.json";
 function makeFile(filepath: string, value = {}) {
@@ -334,8 +353,6 @@ function makeDir(dirname: string) {
 }
 makeDir("./banDB");
 makeDir("./DbanDB");
-
-const runCommand = bedrockServer.executeCommand;
 
 function leadZero(num: number, n: number) {
     var leadZero = "";
@@ -1134,11 +1151,7 @@ if (usestpcommandC) {
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${tpcommandtitleC}"}]}`);
     }, {});
 }
-command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
-    runCommand(
-        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c본서버는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533 (omlet)"}]}`,
-    );
-}, {});
+
 if (usebasicitemcommand) {
     command.register(basicitemcommand, "기본템을 지급합니다.").overload((param, origin, output) => {
         const username = origin.getName();
@@ -1245,6 +1258,7 @@ if (useanticrasher) {
         });
     }
 }
+
 
 makeFile(chin_json);
 
