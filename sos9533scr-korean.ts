@@ -1550,9 +1550,7 @@ events.packetBefore(MinecraftPacketIds.ActorEvent).on((ev, ni) => {
     if (packet !== XPPacket) return;
 
     const pl = ni.getActor()!;
-    const plpermission = pl.getCommandPermissionLevel();
-
-    const plname = ni.getActor()?.getName();
+    const plname = pl.getName();
 
     kick(ni, FakeXPdetectionTitle);
     const onlineops = bedrockServer.serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
