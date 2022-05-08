@@ -868,9 +868,9 @@ command
 
             inputs.minutes = inputs.minutes ?? 0;
 
-            const banlist = fs.readdirSync("./banDB/");
-            const banlist2 = fs.readdirSync("./DbanDB/");
-            if (banlist.includes(targetName) || banlist2.includes(deviceId)) {
+            const bannedPlayers = fs.readdirSync("./banDB/");
+            const bannedDevices = fs.readdirSync("./DbanDB/");
+            if (bannedPlayers.includes(targetName) || bannedDevices.includes(deviceId)) {
                 if (corg.isServerCommandOrigin()) {
                     console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
                     return;
