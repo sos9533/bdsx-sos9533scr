@@ -68,12 +68,10 @@ const showbanlistcommand = "banlist";
 const OfflinePlayerDeivceBanCommand = "offline-ban-device";
 
 const DEVICE_ID_FMT_LENGTH = 36;
+const DEVICE_ID_FMT_LENGTH_Android = 32;
 
 //ban message
 const bantitle = "§l§f[ §cBAN §f]\n\n§cYou are banned from this server\n§7You can't join the server again";
-
-//ban update command (with out /) - For OP
-const updatebancommand = "ban-update";
 
 //use get info command (true/false) (All OP can get user info(IP,Devcie ID,OS,Ping))
 let usegetinfocommand: boolean = true;
@@ -223,7 +221,7 @@ let usetoolboxkick: boolean = true;
 const toolboxkickmessage = "§l§eKicked toolbox";
 
 //toolbox - kick message - output kicked player
-const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use ToolBox";
+const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§cDon't use ToolBox";
 
 //use kick long name (true/false)
 let uselongnicknamekick: boolean = true;
@@ -259,7 +257,7 @@ const chatcutsametitle = "§l§cDo not send same chat!";
 const wcutmessagelength = 30;
 
 //whisper chatcut message
-const nowhispermessge = "§l§cYou cant chat long message by whisper";
+const nowhispermessge = "§l§cYou can't chat long message by whisper";
 
 //chatcut open source ( https://github.com/kdg7313/bdsx-script )
 
@@ -267,7 +265,7 @@ const nowhispermessge = "§l§cYou cant chat long message by whisper";
 let useanticrasher: boolean = true;
 
 //anti crasher kick message - output kicked player
-const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use crasher";
+const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDon't use crasher";
 
 //anti crasher open source (MIT) ( https://github.com/mdisprgm/bdsx-anticrasher )
 
@@ -279,7 +277,7 @@ const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use crasher";
 let useblockcolorword: boolean = false;
 
 //block § message
-const blockcolorwordtitle = "§l§ccolor word is not allow";
+const blockcolorwordtitle = "§l§ccolor word is not allowed";
 
 //set bossbar command (with out /)
 const setbossbarcommand = "setbossbar";
@@ -717,7 +715,7 @@ cmd_unban.overload(
                 console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using /banlist §e/banlist"}]}`);
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using §e/banlist"}]}`);
                 return CANCEL;
             }
         } else {
@@ -752,7 +750,7 @@ command.register(bancommand, "Ban Player (Minutes, 0 or null is never expired)",
 
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player.getName()} is already unbanned}]}`);
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player.getName()} is already banned}]}`);
                 return CANCEL;
             }
         }
@@ -934,7 +932,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type device id here"}]}`);
             return;
         }
-        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH) {
+        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_Android) {
             if (corg.isServerCommandOrigin()) {
                 console.log(red("Error: This command needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
@@ -951,7 +949,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
                 return CANCEL;
             } else {
                 runCommand(
-                    `tellraw ${inputs.DeviceID} { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using /banlist §e/banlist" }] }`,
+                    `tellraw ${inputs.DeviceID} { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using §e/banlist" }] }`,
                 );
                 return CANCEL;
             }
@@ -1541,7 +1539,7 @@ if (usetpacommand) {
 
                 if (set.delete(origin.getName())) {
                     runCommand(`tp "${player.getName()}" "${origin.getName()}"`);
-                    runCommand(`tellraw "${player.getName()}" {"rawtext": [{"text":"§l§f------ §a${origin.getName()}§f accept your tpa ------"}]}`);
+                    runCommand(`tellraw "${player.getName()}" {"rawtext": [{"text":"§l§f------ §a${origin.getName()}§f accept your tpa request ------"}]}`);
                 }
             }
         },
