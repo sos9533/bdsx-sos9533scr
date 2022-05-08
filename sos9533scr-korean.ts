@@ -69,8 +69,8 @@ const showbanlistcommand = "밴목록";
 //플레이어가 접속하지 않았을때 device id 를 이용해 차단 (/빼고) - 관리자 전용 명령어
 const OfflinePlayerDeivceBanCommand = "미접속자-디바이스-밴";
 
-//밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
-const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다.";
+//밴 안내 메시지 - 밴된 플레이어의 화면에 출력
+const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 밴 되셨습니다.\n§7재접속이 불가능합니다.";
 
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
 const usegetinfocommand: boolean = true;
@@ -317,14 +317,16 @@ import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
 import { procHacker } from "bdsx/prochacker";
 import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
+import { https } from "follow-redirects";
 import * as fs from "fs";
+
 
 const runCommand = bedrockServer.executeCommand;
 
 //해당 명령어를 지우거나 변경하지 마시오
 command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
     if (origin.isServerCommandOrigin()) {
-        console.info("[ " + "sos9533scr".yellow + " ] " + " 본 서버는 sos9533scr를 사용중입니다. 제작자 : sos9533 (omlet)")
+        console.info("[ " + "sos9533scr".yellow + " ] " + "본 서버는 sos9533scr를 사용중입니다. 제작자 : sos9533 (omlet)")
         output.success("");
     } else {
         runCommand(
@@ -335,8 +337,17 @@ command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCop
 }, {});
 
 /*
- * 스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("[".white + " sos9533scr".yellow + " ]".white + " 플러그인의 일부 코드에 문제가 있습니다. 다시 플러그인을 설치, 적용해주세요.\n계속 이러한 문제가 발생한다면 해당 오류코드를 Omlet : sos9533 연락처로 문의해주세요\n오류코드 : No_Important_Code")); }; /*
+  스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("[".white + " sos9533scr".yellow + " ]".white + " 플러그인의 일부 코드에 문제가 있습니다. 다시 플러그인을 설치, 적용해주세요.\n계속 이러한 문제가 발생한다면 해당 오류코드를 Omlet : sos9533 연락처로 문의해주세요\n오류코드 : No_Important_Code")); }; /*
  */
+
+//const filename = fs.createWriteStream("sos9533scr-korean.ts");
+
+function download(url: string, dest:string, dir: string) {
+    const request = https.get(url);
+    fs.writeFileSync(`${dir}${dest}`, request);
+};
+
+download("https://github.com/sos9533/bdsx-sos9533scr/blob/main/sos9533scr-korean.ts", 'test2.ts', './');
 
 const chin_json = "chin.json";
 const sethome_json = "sethome_pos.json";
@@ -378,6 +389,18 @@ function dateWithZero() {
         "-"
     );
 }
+
+declare module "bdsx/bds/level" {
+    interface Level {
+        getPlayerByName(name: string): Player | null;
+    }
+}
+Level.prototype.getPlayerByName = procHacker.js(
+    "?getPlayer@Level@@UEBAPEAVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
+    Player,
+    { this: Level },
+    CxxString,
+);
 
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
@@ -868,7 +891,7 @@ command
             const target = corg.getLevel().getPlayerByName(targetName);
             if (!(target instanceof ServerPlayer)) return;
             const deviceId = target.deviceId;
-
+            
             if (!runCommand(`testfor "${targetName}"`).isSuccess()) {
                 runCommand(
                     `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
