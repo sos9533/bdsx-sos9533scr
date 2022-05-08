@@ -230,6 +230,9 @@ const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 �
 //가짜 OS 강퇴 안내 메시지 - 가짜 OS 사용 플레이어의 화면에 출력
 const FakeOSdetectionTitle = "§l§f[ §7Kick §f]\n\n§c가짜 OS가 감지되어 서버에서 추방되셨습니다.";
 
+//가짜 XP 강퇴 안내 메시지 - 잘못된 경로로 XP를 얻은 플레이어의 화면에 출력
+const FakeXPdetectionTitle = "§l§f[ §esos9533scr §f]§f\n§l§e가짜 XP가 감지되어 서버에서 추방되셨습니다.";
+
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
 const uselongnicknamekick: boolean = true;
 
@@ -420,11 +423,21 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     if (deviceModel !== "No Model" && OS === BuildPlatform.WINDOWS_10) {
         kick(networkIdentifier, FakeOSdetectionTitle);
+        const onlineops = bedrockServer.serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+        const OP_Count = onlineops.length;
+        for (let i = 0; i < OP_Count; i++) {
+            onlineops[i].sendMessage(`§l§f[§esos9533scr §f]§r§c ${username} Fake OS Detection [조작된 OS]`);
+        };
         console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
     }
 
     if (deviceModel === "No Model" && OS !== BuildPlatform.WINDOWS_10) {
         kick(networkIdentifier, FakeOSdetectionTitle);
+        const onlineops = bedrockServer.serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+        const OP_Count = onlineops.length;
+        for (let i = 0; i < OP_Count; i++) {
+            onlineops[i].sendMessage(`§l§f[§esos9533scr §f]§r§c ${username} Fake OS Detection [조작된 OS]`);
+        };
         console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
     }
 
@@ -1530,3 +1543,23 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
 }, {});
+
+events.packetBefore(MinecraftPacketIds.ActorEvent).on((ev, ni) => {
+    const packet = ev.event;
+    const XPPacket = ActorEventPacket.Events.PlayerAddXpLevels;
+    if (packet !== XPPacket) return;
+
+    const pl = ni.getActor()!;
+    const plpermission = pl.getCommandPermissionLevel();
+
+    const plname = ni.getActor()?.getName();
+
+    kick(ni, FakeXPdetectionTitle);
+    const onlineops = bedrockServer.serverInstance.getPlayers().filter(p => p.getPermissionLevel() === PlayerPermission.OPERATOR);
+    const OP_Count = onlineops.length;
+    for (let i = 0; i < OP_Count; i++) {
+        onlineops[i].sendMessage(`§l§f[§esos9533scr §f]§r§c ${plname} Fake Xp Detection [잘못된 경로로 XP 획득]`);
+    };
+    console.info(red(`[ sos9533scr ] ${plname} | Fake XP Dection [잘못된 경로로 XP 획득]`));
+    return CANCEL;
+});
