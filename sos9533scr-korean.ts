@@ -1441,7 +1441,7 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
     if (useCPSchecker) {
         const playerName = ni.getActor()!.getName();
         if (pkt.sound === 42 || pkt.sound === 43) {
-            if (isNaN(playerCPS[playerName])) {
+            if (!playerCPS[playerName]) {
                 playerCPS[playerName] = 0;
             }
             playerCPS[playerName]++;
