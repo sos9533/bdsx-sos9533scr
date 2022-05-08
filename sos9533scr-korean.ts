@@ -1403,13 +1403,14 @@ command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPerm
 if (usesethomecommand) {
     makeFile(sethome_json);
     command.register(sethomecommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
-        const username = origin.getName();
         const player = origin.getEntity();
 
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
         }
+
+        const username = origin.getName();
         const pos = player.getPosition();
         const DeviceId = player.deviceId;
 
@@ -1421,13 +1422,13 @@ if (usesethomecommand) {
     }, {});
 
     command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
-        const username = origin.getName();
         const player = origin.getEntity();
-
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
         }
+
+        const username = origin.getName();
         const DeviceId = player.deviceId;
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
@@ -1460,7 +1461,6 @@ if (usetpacommand) {
     command.register(tpacommand, "티피를 요청합니다.").overload(
         (param, origin) => {
             const players = param.player.newResults(origin);
-            const originName = origin.getName();
 
             if (players.length > 1 || players.length < 1) {
                 const oPlayer = origin.getEntity();
@@ -1471,6 +1471,7 @@ if (usetpacommand) {
                 return;
             }
 
+            const originName = origin.getName();
             const player = players[0];
             const username = player.getName();
 
