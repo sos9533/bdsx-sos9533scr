@@ -849,8 +849,8 @@ command
             }
 
             const target = corg.getLevel().getPlayerByName(targetName);
-            const ni = target!.getNetworkIdentifier()!;
-            const deviceId = ni.getActor()!.deviceId;
+            if (!(target instanceof ServerPlayer)) return;
+            const deviceId = target.deviceId;
 
             if (!runCommand(`testfor "${targetName}"`).isSuccess()) {
                 runCommand(
