@@ -68,7 +68,7 @@ const showbanlistcommand = "banlist";
 const OfflinePlayerDeivceBanCommand = "offline-ban-device";
 
 const DEVICE_ID_FMT_LENGTH = 36;
-const DEVICE_ID_FMT_LENGTH_Android = 32;
+const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 
 //ban message
 const bantitle = "§l§f[ §cBAN §f]\n\n§cYou are banned from this server\n§7You can't join the server again";
@@ -933,7 +933,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type device id here"}]}`);
             return;
         }
-        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_Android) {
+        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
             if (corg.isServerCommandOrigin()) {
                 console.log(red("Error: This command needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
