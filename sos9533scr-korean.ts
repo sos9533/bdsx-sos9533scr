@@ -1485,7 +1485,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(username))
-                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 ------"}]}`);
+                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"§l§f------ §a${username}§f님에게 보낸 티피요청이 만료되었습니다 ------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1510,6 +1510,7 @@ if (usetpacommand) {
                 if (!set) return;
 
                 if (set.delete(originName)) {
+                    runCommand(`tellraw "${username}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 ------"}]}`);
                     runCommand(`tp "${username}" "${originName}"`);
                 }
             }
@@ -1528,4 +1529,4 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     runCommand("time set night");
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
-}, {});
+}, {}); 
