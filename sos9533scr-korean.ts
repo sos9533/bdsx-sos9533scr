@@ -332,7 +332,6 @@ function makeDir(dirname: string) {
 makeDir("./banDB");
 makeDir("./DbanDB");
 
-const PlayerDeviceID = new Map<NetworkIdentifier, string>();
 const runCommand = bedrockServer.executeCommand;
 
 function leadZero(num: number, n: number) {
@@ -496,7 +495,7 @@ if (usechatcut) {
     events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
         const actor = ni.getActor()!;
         const username = actor.getName();
-        const msg = pkt.message;
+        const msg = pkt.message.replace(" ", "");
 
         if (msg.length > chatcutmessagelength) {
             runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
@@ -623,11 +622,10 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
     const username = connreq.cert.getId();
     const deviceId = connreq.getDeviceId();
-    PlayerDeviceID.set(ni, deviceId);
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
-        if (getbantime == null) {
+        if (!getbantime) {
             kick(ni, bantitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
@@ -677,7 +675,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const Dbanlist = fs.readdirSync("./DbanDB");
     if (Dbanlist.includes(deviceId)) {
         const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
-        if (getbantime == null) {
+        if (!getbantime) {
             kick(ni, bantitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
@@ -850,10 +848,10 @@ command
             }
 
             const target = corg.getLevel().getPlayerByName(targetName);
-            const ni = target?.getNetworkIdentifier();
-            const deviceId = ni ? PlayerDeviceID.get(ni) ?? "" : "";
+            if (!(target instanceof ServerPlayer)) return;
+            const deviceId = target.deviceId;
 
-            if (deviceId === "") {
+            if (!runCommand(`testfor "${targetName}"`).isSuccess()) {
                 runCommand(
                     `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
                 );
@@ -869,9 +867,9 @@ command
 
             inputs.minutes = inputs.minutes ?? 0;
 
-            const banlist = fs.readdirSync("./banDB/");
-            const banlist2 = fs.readdirSync("./DbanDB/");
-            if (banlist.includes(targetName) || banlist2.includes(deviceId)) {
+            const bannedPlayers = fs.readdirSync("./banDB/");
+            const bannedDevices = fs.readdirSync("./DbanDB/");
+            if (bannedPlayers.includes(targetName) || bannedDevices.includes(deviceId)) {
                 if (corg.isServerCommandOrigin()) {
                     console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
                     return;
@@ -1404,13 +1402,14 @@ command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPerm
 if (usesethomecommand) {
     makeFile(sethome_json);
     command.register(sethomecommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
-        const username = origin.getName();
         const player = origin.getEntity();
 
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
         }
+
+        const username = origin.getName();
         const pos = player.getPosition();
         const DeviceId = player.deviceId;
 
@@ -1422,13 +1421,13 @@ if (usesethomecommand) {
     }, {});
 
     command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
-        const username = origin.getName();
         const player = origin.getEntity();
-
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
             return;
         }
+
+        const username = origin.getName();
         const DeviceId = player.deviceId;
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
@@ -1442,7 +1441,7 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
     if (useCPSchecker) {
         const playerName = ni.getActor()!.getName();
         if (pkt.sound === 42 || pkt.sound === 43) {
-            if (isNaN(playerCPS[playerName])) {
+            if (!playerCPS[playerName]) {
                 playerCPS[playerName] = 0;
             }
             playerCPS[playerName]++;
@@ -1461,7 +1460,6 @@ if (usetpacommand) {
     command.register(tpacommand, "티피를 요청합니다.").overload(
         (param, origin) => {
             const players = param.player.newResults(origin);
-            const originName = origin.getName();
 
             if (players.length > 1 || players.length < 1) {
                 const oPlayer = origin.getEntity();
@@ -1472,6 +1470,7 @@ if (usetpacommand) {
                 return;
             }
 
+            const originName = origin.getName();
             const player = players[0];
             const username = player.getName();
 
@@ -1485,7 +1484,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(username))
-                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${username}§f 님에게 이동됩니다 ------"}]}`);
+                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"§l§f------ §a${username}§f님에게 보낸 티피요청이 만료되었습니다 ------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1510,6 +1509,7 @@ if (usetpacommand) {
                 if (!set) return;
 
                 if (set.delete(originName)) {
+                    runCommand(`tellraw "${username}" {"rawtext": [{"text":"§l§f------ 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 ------"}]}`);
                     runCommand(`tp "${username}" "${originName}"`);
                 }
             }

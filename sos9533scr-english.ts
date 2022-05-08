@@ -68,12 +68,10 @@ const showbanlistcommand = "banlist";
 const OfflinePlayerDeivceBanCommand = "offline-ban-device";
 
 const DEVICE_ID_FMT_LENGTH = 36;
+const DEVICE_ID_FMT_LENGTH_Android = 32;
 
 //ban message
 const bantitle = "§l§f[ §cBAN §f]\n\n§cYou are banned from this server\n§7You can't join the server again";
-
-//ban update command (with out /) - For OP
-const updatebancommand = "ban-update";
 
 //use get info command (true/false) (All OP can get user info(IP,Devcie ID,OS,Ping))
 let usegetinfocommand: boolean = true;
@@ -223,7 +221,7 @@ let usetoolboxkick: boolean = true;
 const toolboxkickmessage = "§l§eKicked toolbox";
 
 //toolbox - kick message - output kicked player
-const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use ToolBox";
+const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§cDon't use ToolBox";
 
 //use kick long name (true/false)
 let uselongnicknamekick: boolean = true;
@@ -240,10 +238,10 @@ const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§cyou use too long nickn
 //use chatcut (true/false)
 let usechatcut: boolean = true;
 
-//chatcut length
+//chatcut length - recommneded 1000
 const chatcutmessagelength = 100;
 
-//chatcut speedchat
+//chatcut speedchat - ms(recommended 1000)
 const chatcutmessagespeedtime = 1000;
 
 //chatcut message - too long chat
@@ -252,11 +250,14 @@ const chatcutlongtitle = "§l§cYour chat is too long!";
 //chatcut message - too fast chat
 const chatcutspeedtitle = "§l§cYour chat is too fast!";
 
+//chatcut message - same chat
+const chatcutsametitle = "§l§cDo not send same chat!";
+
 //whisper chatcut (to block /w @a @e @e @e @e @e @e @e)
 const wcutmessagelength = 30;
 
 //whisper chatcut message
-const nowhispermessge = "§l§cYou cant chat long message by whisper";
+const nowhispermessge = "§l§cYou can't chat long message by whisper";
 
 //chatcut open source ( https://github.com/kdg7313/bdsx-script )
 
@@ -264,7 +265,7 @@ const nowhispermessge = "§l§cYou cant chat long message by whisper";
 let useanticrasher: boolean = true;
 
 //anti crasher kick message - output kicked player
-const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use crasher";
+const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDon't use crasher";
 
 //anti crasher open source (MIT) ( https://github.com/mdisprgm/bdsx-anticrasher )
 
@@ -276,7 +277,7 @@ const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§cDont use crasher";
 let useblockcolorword: boolean = false;
 
 //block § message
-const blockcolorwordtitle = "§l§ccolor word is not allow";
+const blockcolorwordtitle = "§l§ccolor word is not allowed";
 
 //set bossbar command (with out /)
 const setbossbarcommand = "setbossbar";
@@ -424,26 +425,53 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
     }
 });
 
-const time: Record<string, number> = {};
-events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-    const playername = ni.getActor()!.getName();
+if (usechatcut) {
+    const lastChatTimes: Record<string, number> = {};
+    const LastChat: Record<string, string> = {};
+    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+        const playername = ni.getActor()!.getName();
+        events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
+            const actor = ni.getActor()!;
+            const username = actor.getName();
+            let msg = pkt.message;
+            msg = msg.replace(" ", "");
 
-    if (usechatcut) {
-        if (ptr.message.length > chatcutmessagelength) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutlongtitle}"}]}`);
-            return CANCEL;
-        }
+            if (msg.length > chatcutmessagelength) {
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
+                return CANCEL;
+            }
 
-        if (time[playername] === undefined) {
-            time[playername] = Date.now();
-        } else if (Date.now() - time[playername] < chatcutmessagespeedtime) {
-            runCommand(`tellraw @a[name="${playername}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r ${chatcutspeedtitle}"}]}`);
-            return CANCEL;
-        } else {
-            time[playername] = Date.now();
-        }
-    }
-});
+            if (lastChatTimes[username] === undefined) {
+                lastChatTimes[username] = Date.now();
+            } else if (Date.now() - lastChatTimes[username] < chatcutmessagespeedtime) {
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutspeedtitle}"}]}`);
+                return CANCEL;
+            } else {
+                lastChatTimes[username] = Date.now();
+            }
+
+            if (!LastChat[username]) {
+                LastChat[username] = msg;
+            } else if (LastChat[username]) {
+                const oldMsg = LastChat[username];
+
+                if (msg === oldMsg) {
+                    LastChat[username] = msg;
+                    actor.sendMessage(chatcutsametitle);
+                    return CANCEL;
+                }
+                if (Math.abs(oldMsg.length - msg.length) < 3) {
+                    if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
+                        LastChat[username] = msg;
+                        actor.sendMessage(chatcutsametitle);
+                        return CANCEL;
+                    }
+                }
+            }
+            LastChat[username] = msg;
+        });
+    });
+};
 
 events.command.on((command, origin) => {
     const cmdhead = command.split(" ")[0];
@@ -688,7 +716,7 @@ cmd_unban.overload(
                 console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using /banlist §e/banlist"}]}`);
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player} is already unbanned\n§cYou can see banlist using §e/banlist"}]}`);
                 return CANCEL;
             }
         } else {
@@ -723,7 +751,7 @@ command.register(bancommand, "Ban Player (Minutes, 0 or null is never expired)",
 
                 return CANCEL;
             } else {
-                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player.getName()} is already unbanned}]}`);
+                runCommand(`tellraw ${plname} {"rawtext":[{"text":"${inputs.player.getName()} is already banned}]}`);
                 return CANCEL;
             }
         }
@@ -905,7 +933,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
             runCommand(`tellraw ${originName} {"rawtext":[{"text":"§cError: Please type device id here"}]}`);
             return;
         }
-        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH) {
+        if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_Android) {
             if (corg.isServerCommandOrigin()) {
                 console.log(red("Error: This command needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
                 return;
@@ -922,7 +950,7 @@ command.register(Deviceunbancommand, "Unban player device", CommandPermissionLev
                 return CANCEL;
             } else {
                 runCommand(
-                    `tellraw ${inputs.DeviceID} { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using /banlist §e/banlist" }] }`,
+                    `tellraw ${inputs.DeviceID} { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using §e/banlist" }] }`,
                 );
                 return CANCEL;
             }
@@ -1487,7 +1515,7 @@ if (usetpacommand) {
 
             setTimeout(() => {
                 if (set.delete(player.getName()))
-                    runCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §a${player.getName()}§f accept your tpa ------"}]}`);
+                    runCommand(`tellraw "${origin.getName()}" {"rawtext": [{"text":"§l§f------ §6Your tpa request §6has expired ------"}]}`);
             }, 60 * 1000);
         },
         { player: PlayerCommandSelector },
@@ -1512,6 +1540,7 @@ if (usetpacommand) {
 
                 if (set.delete(origin.getName())) {
                     runCommand(`tp "${player.getName()}" "${origin.getName()}"`);
+                    runCommand(`tellraw "${player.getName()}" {"rawtext": [{"text":"§l§f------ §a${origin.getName()}§f accept your tpa request ------"}]}`);
                 }
             }
         },
