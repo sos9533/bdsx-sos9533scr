@@ -10,6 +10,8 @@ let language = "english";
 
 ////////////////////////////////////////////////////////////
 
+require("./bds");
+
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 

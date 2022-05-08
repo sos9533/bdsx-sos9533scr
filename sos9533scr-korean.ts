@@ -379,18 +379,6 @@ function dateWithZero() {
     );
 }
 
-declare module "bdsx/bds/level" {
-    interface Level {
-        getPlayerByName(name: string): Player | null;
-    }
-}
-Level.prototype.getPlayerByName = procHacker.js(
-    "?getPlayer@Level@@UEBAPEAVPlayer@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z",
-    Player,
-    { this: Level },
-    CxxString,
-);
-
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
 events.serverOpen.on(() => {
