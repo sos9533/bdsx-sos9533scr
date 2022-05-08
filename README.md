@@ -17,7 +17,7 @@ Fix BUGs / Add Block Same Message
 # sos9533scr-english
 Made by sos9533
 
-## function
+## Features
 
 ```
 ┌
