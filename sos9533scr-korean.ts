@@ -332,7 +332,6 @@ function makeDir(dirname: string) {
 makeDir("./banDB");
 makeDir("./DbanDB");
 
-const PlayerDeviceID = new Map<NetworkIdentifier, string>();
 const runCommand = bedrockServer.executeCommand;
 
 function leadZero(num: number, n: number) {
@@ -624,11 +623,10 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
     const username = connreq.cert.getId();
     const deviceId = connreq.getDeviceId();
-    PlayerDeviceID.set(ni, deviceId);
     let banlist = fs.readdirSync("./banDB/");
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
-        if (getbantime == null) {
+        if (!getbantime) {
             kick(ni, bantitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
@@ -851,10 +849,10 @@ command
             }
 
             const target = corg.getLevel().getPlayerByName(targetName);
-            const ni = target?.getNetworkIdentifier();
-            const deviceId = ni ? PlayerDeviceID.get(ni) ?? "" : "";
+            const ni = target!.getNetworkIdentifier()!;
+            const deviceId = ni.getActor()!.deviceId;
 
-            if (deviceId === "") {
+            if (!runCommand(`testfor "${targetName}"`).isSuccess()) {
                 runCommand(
                     `tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
                 );
