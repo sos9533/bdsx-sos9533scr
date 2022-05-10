@@ -1,5 +1,5 @@
 # sos9533scr
-### Basic Setting Plugin for BDSX.
+### Basic Setting Plugin for BDSX. 
 
 [[ Features and usage ]](#sos9533scr-english)
 
@@ -15,36 +15,44 @@ Fix BUGs / Add Block Same Message
 
 -------------------------------------------------
 # sos9533scr-english
-Made by sos9533
+
+Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 
 ## Features
 
 ```
 ┌
 ├ join event
-│  ├ output join/exit log
+│  ├ output join log
+│  ├ output join user INFO log
+│  ├ output exit log
 │  └ welcome message
 │
 ├ chat event
-│  └ output chat log
+│  ├ output chat log
+│  ├ prefix
+│     ├ /prefix (prefix) - user command
+│     ├ /prefix (name) (prefix) - op command
+│     └ /prefix - user command [UI]
+│  └ block §
 │
-├ OP(command, execute) command
+├ OP command
 │  ├ kick command
 │  ├ mute command
 │  ├ ban command
 │  ├ simple time set command
-│  └ get info command
+│  └ get INFO command
 │
 ├ user command
 │  ├ spawn command
 │  ├ custom tp command (3)
 │  ├ sethome command
 │  ├ tpa command
-│  ├ my info command
-│  └ basic command
+│  ├ my INFO command
+│  └ basic item command
 │
 ├ anti cheat
-│  ├ kick toolbox
+│  ├ kick samsung toolbox user
 │  ├ chatcut
 │     ├ block long chat
 │     ├ block fast chat
@@ -55,14 +63,8 @@ Made by sos9533
 │  └ kick long nickname
 │
 ├ etc
-│  ├ block §
 │  ├ bossbar command
 │  └ cps scoreboard & display cps score on the actionbar
-│
-├ prefix
-│  ├ /prefix (prefix) - user command
-│  ├ /prefix (name) (prefix) - op command
-│  └ /prefix - user command [UI]
 └
 ```
 
@@ -182,30 +184,36 @@ let chinchatset = "D";
 
 # sos9533scr-korean
 
-본 플러그인은 sos9533이 제작한 기본 세팅 플러그인입니다.
-
-기본적인 지식으로 만든 연습겸 공유 플러그인입니다.
+본 플러그인은 [`sos9533`](https://open.kakao.com/me/sos9533)을 포함한 유저들이 제작한 BDSX 기본세팅 플러그인입니다. 
 
 ## 기능
 
 ```
 ┌
-├ 참가 이벤트
-│  ├ 참가/퇴장 로그 출력
-│  └ 참가 환영 메시지
+├ 참가/퇴장 이벤트
+│  ├ 참가 로그 출력
+│  ├ 참가자 정보 로그 출력
+│  ├ 퇴장 로그 출력
+│  └ 참가자 환영 메시지
 │
 ├ 채팅 이벤트
-│  └ 채팅 로그 출력
+│  ├ 채팅 로그 출력
+│  ├ 칭호
+│     ├ /칭호 (칭호) - 일반유저 명령어
+│     ├ /칭호 (닉네임) (칭호) - op유저 명령어
+│     └ /칭호 - 일반유저 명령어 [UI]
+│  └ § 사용 제한
 │
-├ 관리자(커멘드, execute) 전용 명령어
+├ 관리자 명령어
 │  ├ 강제퇴장 명령어
-│  ├ 뮤트 명령어
-│  ├ 디바이스 영구 밴 명령어
+│  ├ 채팅금지 명령어
+│  ├ 디바이스 시간 밴 명령어
+│  ├ 닉네임 시간 밴 명령어
 │  ├ 낮, 밤 간단 변경 명령어
 │  └ 유저정보 확인 명령어
 │
 │
-├ 일반인 명령어
+├ 일반유저 명령어
 │  ├ 스폰 명령어
 │  ├ 커스텀 tp명령어 (3개)
 │  ├ 셋홈 명령어(sethome)
@@ -213,26 +221,20 @@ let chinchatset = "D";
 │  ├ 내정보 확인 명령어
 │  └ 기본템 명령어
 │
-├ 핵방지
-│  ├ 툴박스 접속방지 (툴박방지)
+├ 안전한 서버관리
+│  ├ 삼성 툴박스 유저 접속방지
 │  ├ 도배방지
 │     ├ 장문방지
 │     ├ 단타방지
 │     ├ 똑같거나 비슷한 채팅 방지
-│     └귓속말 장문방지
+│     └ 귓속말 장문방지
 │  ├ 크래셔 방지 (지퍼 크래셔 방지)
-│  ├ OS 조작 감지
-│  └ 참가시 긴 닉네임 강제퇴장시키기 (닉핵방지)
+│  ├ OS 조작 핵 감지
+│  └ 참가시 긴 닉네임 강제퇴장시키기
 │
 ├ 기타기능
 │  ├ 보스바 명령어
-│  ├ § 사용 제한시키기
 │  └ cps 스코어보드 & 액션바에 표시
-│
-├ 칭호
-│  ├ /칭호 (칭호) - 일반유저 명령어
-│  ├ /칭호 (닉네임) (칭호) - op유저 명령어
-│  └ /칭호 - 일반유저 명령어 (칭호적는 창같은거 나오는거)
 └
 ```
 
