@@ -301,17 +301,15 @@ const useCPSchecker: boolean = true;
 
 import { ActorWildcardCommandSelector, CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { Form } from "bdsx/bds/form";
-import { Level } from "bdsx/bds/level";
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { ActorEventPacket, BossEventPacket } from "bdsx/bds/packets";
-import { Player, PlayerPermission, ServerPlayer } from "bdsx/bds/player";
+import { PlayerPermission, ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { BuildPlatform, CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { CxxString, float32_t, int32_t } from "bdsx/nativetype";
-import { procHacker } from "bdsx/prochacker";
 import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
@@ -648,7 +646,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(username);
-            fs.unlink(`./banDB/${username}`, (err) => { });
+            fs.unlink(`./banDB/${username}`, (err) => {});
             return;
         }
 
@@ -698,7 +696,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
         if (nyear >= year && nmonth >= month && nday >= day && nhours >= hours && nminutes >= minutes) {
             unbanenum.removeValues(deviceId);
-            fs.unlink(`./DbanDB/${deviceId}`, (err) => { });
+            fs.unlink(`./DbanDB/${deviceId}`, (err) => {});
             return;
         }
 
@@ -741,7 +739,7 @@ cmd_unban.overload(
                 return CANCEL;
             }
         } else {
-            fs.unlink(`./banDB/${inputs.player}`, (err) => { });
+            fs.unlink(`./banDB/${inputs.player}`, (err) => {});
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
             unbanenum.removeValues(inputs.player);
@@ -933,7 +931,7 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
                 return;
             }
         } else {
-            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => { });
+            fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => {});
             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
             console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
             dunbanenum.removeValues(inputs.DeviceID);
@@ -1017,7 +1015,8 @@ if (usegetinfocommand) {
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
                 runCommand(
-                    `tellraw @a[name="${originName}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
+                    `tellraw @a[name="${originName}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                        BuildPlatform[os] || "UNKNOWN"
                     }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
                 );
             }
@@ -1044,7 +1043,8 @@ if (usemyinfocommand) {
         const os = player.getPlatform();
 
         runCommand(
-            `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${BuildPlatform[os] || "UNKNOWN"
+            `tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                BuildPlatform[os] || "UNKNOWN"
             }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
         );
     }, {});
