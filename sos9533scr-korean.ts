@@ -964,8 +964,8 @@ command
     .overload(
         (input, corg) => {
             const originName = corg.getName();
-            const input_length = input.DeviceID.length;
-            const targetDeviceId = input.DeviceID;
+            const input_length = input.deviceId.length;
+            const targetDeviceId = input.deviceId;
             if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
                 if (corg.isServerCommandOrigin()) {
                     console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
@@ -992,7 +992,7 @@ command
             console.log(yellow(`${originName} : ${targetDeviceId}(을)를 차단했습니다`));
         },
         {
-            DeviceID: CxxString,
+            deviceId: CxxString,
         },
     );
 
@@ -1008,7 +1008,7 @@ if (usegetinfocommand) {
 
             for (const player of param.target.newResults(origin, ServerPlayer)) {
                 const originName = origin.getName();
-                const DeviceId = player.deviceId;
+                const deviceId = player.deviceId;
                 const ni = player.getNetworkIdentifier();
                 const username = player.getName();
                 const xuid = player.getXuid();
@@ -1017,7 +1017,7 @@ if (usegetinfocommand) {
                 runCommand(
                     `tellraw @a[name="${originName}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§r §b${username}§b님의 정보\n\n§l§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
                         BuildPlatform[os] || "UNKNOWN"
-                    }\n§eDeviceID §f: §7${DeviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
+                    }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
                 );
             }
         },
@@ -1400,11 +1400,11 @@ if (usesethomecommand) {
 
         const username = origin.getName();
         const pos = player.getPosition();
-        const DeviceId = player.deviceId;
+        const deviceId = player.deviceId;
 
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
         const homePos = `${pos?.x ?? "??"} ${pos?.y ?? "??"} ${pos?.z ?? "??"}`;
-        jsonObj[DeviceId] = homePos;
+        jsonObj[deviceId] = homePos;
         fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
         runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a현재 위치가 집으로 설정되었습니다."}]}`);
     }, {});
@@ -1417,10 +1417,10 @@ if (usesethomecommand) {
         }
 
         const username = origin.getName();
-        const DeviceId = player.deviceId;
+        const deviceId = player.deviceId;
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
-        runCommand(`tp @a[name="${username}"] ${jsonObj[DeviceId]}`);
+        runCommand(`tp @a[name="${username}"] ${jsonObj[deviceId]}`);
         runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a집으로 이동되었습니다!"}]}`);
     }, {});
 }
