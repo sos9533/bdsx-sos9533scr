@@ -7,8 +7,7 @@
 
 [[ Note ]](#Note)
 
-### 1.8.6 UPDATE
-Fix BUGs / Add Block Same Message
+### 1.8.7 UPDATE
 
 ![logo](sos9533scr_logo.png)
 
