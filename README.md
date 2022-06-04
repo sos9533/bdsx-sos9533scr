@@ -7,7 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.8.7 UPDATE
+### 1.8.8 UPDATE
+Fix TEXTs , Add loading , Add BUG Tracker
 
 ![logo](sos9533scr_logo.png)
 
