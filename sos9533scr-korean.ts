@@ -2,22 +2,20 @@
 // (  ____ \(  ___  )(  ____ \ / ___ \ (  ____ \/ ___  \ / ___  \
 // | (    \/| (   ) || (    \/( (   ) )| (    \/\/   \  \\/   \  \
 // | (_____ | |   | || (_____ ( (___) || (____     ___) /   ___) /
-// (_____  )| |   | |(_____  ) \____  |(_____ \   (___ (   (___ (
+// (_____  )| |   | |(_____  ) \____  |(_____ \   (___ (   (___ ( 
 //       ) || |   | |      ) |      ) |      ) )      ) \      ) \
 // /\____) || (___) |/\____) |/\____) )/\____) )/\___/  //\___/  /
 // \_______)(_______)\_______)\______/ \______/ \______/ \______/
 
-//  Made by sos9533
-// ..
-
-// This code was created by a beginner. Plz dont laugh...
-// This plugin was made for Korean Omlet Arcade user
+//  Made by sos9533, mdisprgm, job-gut, Blue00123, kdg7313
 
 /*
     사용법, 적용법, 기능, 안내 (README.md)
      ㄴ  https://github.com/sos9533/sos9533scr/blob/main/README.md
+     
     저작권 안내 (LICENSE.md)
      ㄴ  https://github.com/sos9533/sos9533scr/blob/main/LICENSE.md
+
      ctrl를 누른 상태로 링크를 클릭하고 open을 클릭하면 바로 이동됩니다.
 */
 
@@ -30,75 +28,99 @@
 //참가 이벤트
 
 //참여 환영 메시지 사용여부 (true/false)
-const usewelcomemessage: boolean = true;
+const UseWelcomeMessage: boolean = true;
 
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-const welcomemessage = "§l§7환영합니다!";
+const WelcomeMessage = "§l§f[ §esos9533 §f] §7환영합니다!";
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 
-//관리자 명령어
+//서버관리 명령어
 
 //강퇴 명령어 (/빼고) - 관리자 전용 명령어
-const kickcommand = "강퇴";
+const KickCommand = "강퇴";
 
 //강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
-const kicktitle = "§l§f[ §7Kick §f]\n\n§c당신은 서버에서 추방되셨습니다.\n§7재접속이 가능합니다.";
+const KickTitle = "§l§f[ §7Kick §f]\n\n§c당신은 서버에서 추방되셨습니다.\n§7재접속이 가능합니다.";
+
+
 
 //뮤트 명령어 (/빼고) - 관리자 전용 명령어
-const mutecommand = "뮤트";
+const MuteCommand = "뮤트";
 
 //뮤트해제 명령어 (/빼고) - 관리자 전용 명령어
-const unmutecommand = "뮤트해제";
+const UnmuteCommand = "뮤트해제";
+
+
 
 //플레이어 디바이스 차단 명령어 (/빼고) - 관리자 전용 명령어
-const Devicebancommand = "디바이스-밴";
+const DeviceBanCommand = "디바이스-밴";
 
-//플레이어 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
-const Deviceunbancommand = "디바이스-밴해제";
+//플레이어 디바이스 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
+const DeviceUnbanCommand = "디바이스-밴해제";
 
-//플레이어 차단 명령어 (/빼고) - 관리자 전용 명령어
-const bancommand = "밴";
 
-//플레이어 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
-const unbancommand = "밴해제";
+
+//플레이어 닉네임 차단 명령어 (/빼고) - 관리자 전용 명령어
+const NameBanCommand = "닉네임-밴";
+
+//플레이어 닉네임 차단 해제 명령어 (/빼고) - 관리자 전용 명령어
+const NameUnBanCommand = "닉네임-밴해제";
+
+
 
 //영구밴 플레이어 확인 (/빼고) - 관리자 전용 명령어
-const showbanlistcommand = "밴목록";
+const ShowBanListCommand = "닉네임-밴목록";
 
 //플레이어가 접속하지 않았을때 device id 를 이용해 차단 (/빼고) - 관리자 전용 명령어
 const OfflinePlayerDeivceBanCommand = "미접속자-디바이스-밴";
 
+
+
 //밴 안내 메시지 - 영구밴된 플레이어의 화면에 출력
-const bantitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 영구밴 되셨습니다.\n§7재접속이 불가능합니다.";
+const BanTitle = "§l§f[ §cBAN §f]\n\n§c당신은 서버에서 접속차단 되셨습니다.\n§7재접속이 불가능합니다.";
+
+
 
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
-const usegetinfocommand: boolean = true;
+const UseGetInfoCommand: boolean = true;
 
 //정보확인 명령어 (/빼고) - 관리자 전용 명령어 (원하는 유저의 정보 확인가능)
-const getinfocommand = "정보확인";
+const GetInfoCommand = "정보확인";
+
+
+
+
 
 /////////////////////////////////////////////////////////////////////
 
 //일반인 명령어
 
 //내정보 명령어 사용여부 (true/false) (자신의 정보만 확인가능)
-const usemyinfocommand: boolean = true;
+const UseMyInfoCommand: boolean = true;
 
 //내정보 명령어 (/빼고) - 일반유저 명령어
-const myinfocommand = "내정보";
+const MyInfoCommand = "내정보";
+
+
 
 //스폰 명령어 사용여부 (true/false)
-const usespawncommand: boolean = true;
+const UseSpawnCommand: boolean = true;
 
 //스폰 명령어 (/빼고) - 일반유저 명령어
-const spawncommand = "스폰";
+const SpawnCommand = "스폰";
 
 //스폰 좌표 (x y z)
-const spawncoordinate = "0 10 0";
+const SpawnCoordinate = "0 10 0";
 
 //스폰 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
-const spawncommandtitle = "§l§e스폰 이동 완료!";
+const SpawnCommandTitle = "§l§e스폰 이동 완료!";
+
+
 
 //기타 tp 명령어1 사용여부 (true/false)
 const usestpcommandA: boolean = false;
@@ -133,32 +155,38 @@ const tpcoordinateC = "110 10 110";
 //기타 tp 명령어3 이동 안내메시지 - 이동된 플레이어의 채팅창에 출력
 const tpcommandtitleC = "§l§7점프맵 이동 완료!";
 
+
+
 //셋홈 명령어 사용여부
-const usesethomecommand: boolean = true;
+const UseSethomeCommand: boolean = true;
 
 //셋홈 명령어 (/빼고) - 일반유저 명령어
-const sethomecommand = "집설정";
+const SethomeCommand = "집설정";
 
 //홈이동 명령어 (/빼고) - 일반유저 명령어
-const homecommand = "집이동";
+const HomeCommand = "집이동";
+
+
 
 //티피요청 명령어 사용여부 (true/false)
-const usetpacommand: boolean = true;
+const UseTpaCommand: boolean = true;
 
 //티피요청 명령어 (/빼고) - 일반유저 명령어
-const tpacommand = "티피요청";
+const TpaCommand = "티피요청";
 
 //티피요청 수락 명령어 (/빼고) - 일반유저 명령어
-const tpacceptcommand = "티피수락";
+const TpacceptCommand = "티피수락";
+
+
 
 //기본템 명령어 사용여부 (true/false)
-const usebasicitemcommand: boolean = true;
+const UseBasicitemCommand: boolean = true;
 
 //기본템 명령어 (/빼고) - 일반유저 명령어
-const basicitemcommand = "기본템";
+const BasicitemCommand = "기본템";
 
 //처음 접속시 자동으로 기본템 지급 (true/false)
-const joingivebasicitem: boolean = true;
+const JoinGiveBasictem: boolean = true;
 
 //아이템 1
 const basicitemA = "wooden_sword 1";
@@ -178,102 +206,115 @@ const basicitemG = "leather_leggings 1";
 const basicitemH = "cooked_beef 64";
 //(아이템 부분 비워놔도 버그 안남)
 
+
+
+
+
 /////////////////////////////////////////////////////////////////////
 
 //칭호
 
 //칭호 사용여부
-const usechin: boolean = true;
+const UsePrefix: boolean = true;
 
 //칭호 형식 설정
 //형식A     <칭호> <닉네임> : 채팅
 //형식B     <칭호> 닉네임 : 채팅
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅
-const chinchatset = "A";
+const PrefixChatOutputType = "A";
 
 //칭호 사용법 - " " 써야함
 //형식A     오피유저(커멘드)가 일반유저의 칭호 설정 - /칭호 (닉네임) "(칭호)"
 //형식B     모든유저가 자신의 칭호를 설정 - /칭호 "(칭호)"
 //형식C     모든유저가 UI를 사용하여 자신의 칭호를 설정 - /칭호  - (그 창같은거 나와서 칭호적는 칸 나오는거)
-const howusechin: string = "A";
+const PrefixCommandType: string = "A";
 
 //칭호 명령어 (/빼고)
-const chincommand = "칭호";
+const PrefixCommand = "칭호";
 
 //칭호 명령어 설명
-const chincommandexplanation = "칭호를 설정합니다.";
+const PrefixCommandExplanation = "칭호를 설정합니다.";
 
 //칭호 글자수 제한 (칭호 사용법 형식A 제외)
-const chinlength = 10;
+const PrefixLength = 10;
 
 //기본 칭호 - 아무칭호도 없을때 대신 출력될 칭호
-const basicchin = "§l§7일반인";
+const BasicPrefix = "§l§7일반인";
 
 /////////////////////////////////////////////////////////////////////
 
-const DEFAULT_KICK_MESSAGE = "§c강제 퇴장 조치합니다";
 const DEVICE_ID_FMT_LENGTH = 36;
 const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 
-//불법 프로그램 (핵) 방지
+//안전한 서버관리
 
-//참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false) - 툴박방지
-const usetoolboxkick: boolean = true;
+
+
+//참가시 삼성 툴박스 유저 강퇴하기 사용여부 (true/false)
+const UseAntiToolbox: boolean = true;
 
 //툴박스 강퇴 안내 메시지 - 전체 유저에게 출력
-const toolboxkickmessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다.";
+const AntiToolboxMessage = "§e툴박스§f를 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다.";
 
 //툴박스 강퇴 안내 메시지 - 툴박스 사용 플레이어의 화면에 출력
-const toolboxkicktitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다.";
+const AntiToolBoxTitle = "§l§f[ §7Kick §f]\n\n§c툴박스가 감지되어 서버에서 추방되셨습니다.";
+
+
+
+//가짜 OS 강퇴하기 사용여부 (true/false)
+const UseFakeOSdetection: boolean = true;
 
 //가짜 OS 강퇴 안내 메시지 - 가짜 OS 사용 플레이어의 화면에 출력
 const FakeOSdetectionTitle = "§l§f[ §7Kick §f]\n\n§c가짜 OS가 감지되어 서버에서 추방되셨습니다.";
 
+
+
 //참가시 긴 닉네임 강퇴하기 사용여부 (true/false) - 닉핵방지
-const uselongnicknamekick: boolean = true;
+const UseAntiLongNickname: boolean = true;
 
 //긴 닉네임 길이 (권장:30)
-const longnicknamekicklength = 30;
+const AntiLongNicknameLength = 30;
 
 //긴 닉네임 강퇴 안내 메시지 - 전체 유저에게 출력
-const longnicknamekickmessage = "§e비정상적인 닉네임§f을 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다.";
+const AntiLongNicknameMessage = "§e비정상적인 닉네임§f을 감지하여 접속중이던 플레이어를 강제퇴장조치 합니다.";
 
 //긴 닉네임 강퇴 안내 메시지 - 강퇴된 플레이어의 화면에 출력
-const longnicknamekicktitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다.";
+const AntiLongNicknameTitle = "§l§f[ §7Kick §f]\n\n§c비정상적인 닉네임이 감지되어 서버에서 추방되셨습니다.";
+
+
 
 //도배방지 사용여부 (true/false)
-const usechatcut: boolean = true;
+const UseChatCut: boolean = true;
 
 //일반채팅 도배방지-장문방지 글자수 (권장:100)
-const chatcutmessagelength = 100;
+const ChatCutLongMessageLength = 100;
 
 //일반채팅 도배방지-단타방지 시간 (권장:1000)
-const chatcutmessagespeedtime = 1000;
-
-//일반채팅 도배방지-장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
-const chatcutlongtitle = "§l§c채팅이 너무 깁니다!";
-
-//일반채팅 도배방지-단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
-const chatcutspeedtitle = "§l§c채팅이 너무 빠릅니다!";
-
-//일반채팅 도배방지-똑같은 메세지 안내 메시지 - 똑같은 채팅 또는 전 채팅이랑 2글자 이상 차이나지않는 플레이어의 채팅창에 출력
-const chatcutsametitle = "§l§c똑같거나 비슷한 채팅을 치지마세요!";
+const ChatCutSpeedMessageTime = 1000;
 
 //귓속말 도배방지-장문방지 (권장:30) (/w @a @e @e @e @e @e @e @e과 같은 방식으로 서버를 터트리는 방법이 있음)
-const wcutmessagelength = 30;
+const ChatCutWhisperMessageLength = 30;
+
+//일반채팅 도배방지-장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
+const ChatCutLongMessageTitle = "§l§c채팅이 너무 깁니다!";
+
+//일반채팅 도배방지-단타방지 안내 메시지 - 단타를 한 플레이어의 채팅창에 출력
+const ChatCutSpeedMessageTitle = "§l§c채팅이 너무 빠릅니다!";
+
+//일반채팅 도배방지-똑같은 메세지 안내 메시지 - 똑같은 채팅 또는 전 채팅이랑 2글자 이상 차이나지않는 플레이어의 채팅창에 출력
+const ChatCutSameMessageTitle = "§l§c똑같거나 비슷한 채팅입니다!";
 
 //귓속말 도배방지-장문방지 안내 메시지 - 장문을 한 플레이어의 채팅창에 출력
-const nowhispermessge = "§l§c귓속말을 이용한 강종을 막기위해 귓속말은 길게 사용이 금지되어 있습니다!";
+const ChatCutWhisperMessageTitle = "§l§c귓속말이 너무 깁니다!";
 
-//도배방지 오픈소스 출처 ( https://github.com/kdg7313/bdsx-script )
-//해당 도배방지 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
 
-//안티크래셔 사용여부 (true/false) ----- Made By mdisprgm
-const useanticrasher: boolean = true;
 
-//안티크래셔 강퇴 안내 메시지 - 강종 사용 플레이어의 화면에 출력 ----- Made By mdisprgm
-const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되어 서버에서 추방되셨습니다.";
+//안티크래셔 사용여부 (true/false)
+const UseAntiCrasher: boolean = true;
+
+//안티크래셔 강퇴 안내 메시지 - 강종 사용 플레이어의 화면에 출력
+const AntiCrasherTitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되어 서버에서 추방되셨습니다.";
 
 //안티크래셔 오픈소스 출처 ( https://github.com/mdisprgm/bdsx-anticrasher )
 //해당 안티 크래셔 코드는 MIT 라이센스로써 출처 삽입후 사용할수 있는 오픈소스입니다.
@@ -283,19 +324,23 @@ const anticrasherkicktitle = "§l§f[ §7Kick §f]\n\n§c크래셔가 감지되�
 //기타기능
 
 //§ 사용 막기 사용여부 (true/false)
-const useblockcolorword: boolean = true;
+const UseBlockColorWord: boolean = true;
 
 //§ 사용시 안내메시지 - §를 입력한 플레이어의 채팅창에 출력
-const blockcolorwordtitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!";
+const BlockColorWordTitle = "§l§c색깔기호는 사용이 금지되어 있습니다! 평범하게 말하세요!";
+
+
 
 //보스바 생성 명령어 (/빼고)
-const setbossbarcommand = "보스바생성";
+const SetBossBarCommand = "보스바생성";
 
 //보스바 삭제 명령어 (/빼고)
-const removebossbarcommand = "보스바삭제";
+const RemoveBossBarCommand = "보스바삭제";
+
+
 
 //cps 액션바 표시 사용여부 (true/false) - false 시 cps 측정 & 표시 안 함
-const useCPSchecker: boolean = true;
+const UseCpsChecker: boolean = false;
 
 /////////////////////////////////////////////////////////////////////
 
@@ -314,27 +359,36 @@ import { serverProperties } from "bdsx/serverproperties";
 import { gray, green, red, yellow } from "colors";
 import * as fs from "fs";
 
+const levelname = serverProperties["level-name"]
+
+if (serverProperties["allow-cheats"] === "false") { throw (red("".white +"\n[".white + " sos9533scr".yellow + " ]".white + " ERROR / Allow Cheat is fasle!".red + " / CODE : ACF-sos9533scr / Need-Help? : https://open.kakao.com/o/sZscajId".gray)); };
+
 const runCommand = bedrockServer.executeCommand;
 
-//sos9533scr 저작권에 따라 아래 코드를 삭제하지 마시오.
-command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+//sos9533scr의 MIT 저작권에 따라 아래 코드를 삭제하지마세요.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCopyright (c) 2022 sos9533 §7MIT 저작권§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
     if (origin.isServerCommandOrigin()) {
-        console.info("[ " + "sos9533scr".yellow + " ] " + " 본 서버는 sos9533scr를 사용중입니다. 제작자 : sos9533 (omlet)")
         output.success("");
     } else {
         runCommand(
-            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c본서버는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533 (omlet)"}]}`,
+            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§c본서버, ${levelname}는 sos9533scr를 사용중입니다. \n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \n제작자 : sos9533"}]}`,
         );
         output.success("");
     };
 }, {});
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 /*
- * 스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("".white +"\n[".white + " sos9533scr".yellow + " ]".white + " 플러그인의 일부 코드에 문제가 있습니다. 다시 플러그인을 설치, 적용해주세요. 계속 이러한 문제가 발생한다면 해당 오류코드를 Omlet : sos9533 연락처로 문의해주세요. 오류코드 : No_Important_Code")); }; /*
+ * 스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("".white +"\n[".white + " sos9533scr".yellow + " ]".white + " ERROR / Can't Find Important Code !".red + " / CODE : CFIC-sos9533scr / NeedHelp? : https://open.kakao.com/o/sZscajId".gray)); }; /*
  */
+
+ console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 0/5`.gray)
 
 const chin_json = "chin.json";
 const sethome_json = "sethome_pos.json";
+
 function makeFile(filepath: string, value = {}) {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
@@ -403,19 +457,19 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     if (username) playerList.set(networkIdentifier, username);
 
-    if (uselongnicknamekick) {
-        if (username.length > longnicknamekicklength) {
-            kick(networkIdentifier, longnicknamekicktitle);
-            console.log("\x1b[41m", `${username} kicked > [ Kicked by long nickname ]`, "\x1b[0m");
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${longnicknamekickmessage}"}]}`);
+    if (UseAntiLongNickname) {
+        if (username.length > AntiLongNicknameLength) {
+            kick(networkIdentifier, AntiLongNicknameTitle);
+            console.log("\x1b[41m", `${username} kicked > [ Kicked by anti long nickname ]`, "\x1b[0m");
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${AntiLongNicknameMessage}"}]}`);
         }
     }
 
-    if (usetoolboxkick) {
+    if (UseAntiToolbox) {
         if (deviceModel.includes("samsung")) {
-            kick(networkIdentifier, toolboxkicktitle);
-            console.log("\x1b[41m", `${username} kicked > [ Kicked by toolbox ]`, "\x1b[0m");
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${toolboxkickmessage}"}]}`);
+            kick(networkIdentifier, AntiToolBoxTitle);
+            console.log("\x1b[41m", `${username} kicked > [ Kicked by antitoolbox ]`, "\x1b[0m");
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${AntiToolboxMessage}"}]}`);
         }
     }
 
@@ -424,13 +478,17 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const OS = connreq.getDeviceOS();
 
     if (deviceModel !== "No Model" && OS === BuildPlatform.WINDOWS_10) {
-        kick(networkIdentifier, FakeOSdetectionTitle);
-        console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+        if (UseFakeOSdetection) {
+            kick(networkIdentifier, FakeOSdetectionTitle);
+            console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+        }
     }
 
     if (deviceModel === "No Model" && OS !== BuildPlatform.WINDOWS_10) {
-        kick(networkIdentifier, FakeOSdetectionTitle);
-        console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+        if (UseFakeOSdetection) {
+            kick(networkIdentifier, FakeOSdetectionTitle);
+            console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection [조작된 OS]`));
+        }
     }
 
     console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}`));
@@ -445,12 +503,12 @@ events.networkDisconnected.on((networkIdentifier) => {
 events.playerJoin.on((ev) => {
     const username = ev.player.getName();
 
-    if (usewelcomemessage) {
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${welcomemessage}"}]}`);
+    if (UseWelcomeMessage) {
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${WelcomeMessage}"}]}`);
     }
 
-    if (usebasicitemcommand) {
-        if (joingivebasicitem) {
+    if (UseBasicitemCommand) {
+        if (JoinGiveBasictem) {
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemA}`);
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemB}`);
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemC}`);
@@ -464,6 +522,8 @@ events.playerJoin.on((ev) => {
         runCommand(`ability @a[name="${username}",tag=mute] mute true`);
     }
 });
+
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 1/5`.gray)
 
 events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     const today = new Date();
@@ -494,7 +554,7 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
     }
 });
 
-if (usechatcut) {
+if (UseChatCut) {
     const lastChatTimes: Record<string, number> = {};
     const LastChat: Record<string, string> = {};
     events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
@@ -502,15 +562,15 @@ if (usechatcut) {
         const username = actor.getName();
         const msg = pkt.message.replace(" ", "");
 
-        if (msg.length > chatcutmessagelength) {
-            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutlongtitle}"}]}`);
+        if (msg.length > ChatCutLongMessageLength) {
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutLongMessageTitle}"}]}`);
             return CANCEL;
         }
 
         if (lastChatTimes[username] === undefined) {
             lastChatTimes[username] = Date.now();
-        } else if (Date.now() - lastChatTimes[username] < chatcutmessagespeedtime) {
-            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${chatcutspeedtitle}"}]}`);
+        } else if (Date.now() - lastChatTimes[username] < ChatCutSpeedMessageTime) {
+            runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutSpeedMessageTitle}"}]}`);
             return CANCEL;
         } else {
             lastChatTimes[username] = Date.now();
@@ -523,13 +583,13 @@ if (usechatcut) {
 
             if (msg === oldMsg) {
                 LastChat[username] = msg;
-                actor.sendMessage(chatcutsametitle);
+                actor.sendMessage(ChatCutSameMessageTitle);
                 return CANCEL;
             }
             if (Math.abs(oldMsg.length - msg.length) < 3) {
                 if (oldMsg.includes(msg) || msg.includes(oldMsg)) {
                     LastChat[username] = msg;
-                    actor.sendMessage(chatcutsametitle);
+                    actor.sendMessage(ChatCutSameMessageTitle);
                     return CANCEL;
                 }
             }
@@ -540,43 +600,43 @@ if (usechatcut) {
 
 events.command.on((command, origin) => {
     const cmdhead = command.split(" ")[0];
-    if (usechatcut) {
+    if (UseChatCut) {
         if (cmdhead === "/w") {
-            if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
+            if (command.length > ChatCutWhisperMessageLength) {
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutWhisperMessageTitle}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/tell") {
-            if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
+            if (command.length > ChatCutWhisperMessageLength) {
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutWhisperMessageTitle}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/msg") {
-            if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
+            if (command.length > ChatCutWhisperMessageLength) {
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutWhisperMessageTitle}"}]}`);
                 return 0;
             }
         }
 
         if (cmdhead === "/me") {
-            if (command.length > wcutmessagelength) {
-                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${nowhispermessge}"}]}`);
+            if (command.length > ChatCutWhisperMessageLength) {
+                runCommand(`tellraw "${origin}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${ChatCutWhisperMessageTitle}"}]}`);
                 return 0;
             }
         }
     }
 });
 
-command.register(kickcommand, "플레이어를 강퇴합니다.", CommandPermissionLevel.Operator).overload(
+command.register(KickCommand, "플레이어를 강퇴합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
         for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
             const ni = target.getNetworkIdentifier();
-            kick(ni, kicktitle);
+            kick(ni, KickTitle);
             runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §c${username}§f님이 서버에서 추방되셨습니다."}]}`);
             console.log("\x1b[41m", `${username} kicked > [ Kicked by ${origin.getName()} ]`, "\x1b[0m");
         }
@@ -586,7 +646,7 @@ command.register(kickcommand, "플레이어를 강퇴합니다.", CommandPermiss
     },
 );
 
-command.register(mutecommand, "플레이어를 뮤트처리 합니다.", CommandPermissionLevel.Operator).overload(
+command.register(MuteCommand, "플레이어를 뮤트처리 합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
         for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
@@ -602,7 +662,7 @@ command.register(mutecommand, "플레이어를 뮤트처리 합니다.", Command
     },
 );
 
-command.register(unmutecommand, "플레이어를 뮤트해제처리 합니다.", CommandPermissionLevel.Operator).overload(
+command.register(UnmuteCommand, "플레이어를 뮤트해제처리 합니다.", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
         for (const target of param.target.newResults(origin, ServerPlayer)) {
             const username = target.getName();
@@ -631,7 +691,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     if (banlist.includes(username)) {
         const getbantime = fs.readFileSync(`./banDB/${username}`);
         if (!getbantime) {
-            kick(ni, bantitle);
+            kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
@@ -640,7 +700,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         }
         const ToString = String(getbantime);
         if (ToString == "null") {
-            kick(ni, bantitle);
+            kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
             }
@@ -669,7 +729,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return;
         }
 
-        kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
+        kick(ni, `${BanTitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i = 0; i < op_count; i++) {
             onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Name Ban Player]`);
         }
@@ -681,7 +741,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     if (Dbanlist.includes(deviceId)) {
         const getbantime = fs.readFileSync(`./DbanDB/${deviceId}`);
         if (!getbantime) {
-            kick(ni, bantitle);
+            kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
@@ -690,7 +750,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         }
         const ToString = String(getbantime);
         if (ToString == "null") {
-            kick(ni, bantitle);
+            kick(ni, BanTitle
+);
             for (let i = 0; i < op_count; i++) {
                 onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
             }
@@ -719,7 +780,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return;
         }
 
-        kick(ni, `${bantitle}\n§f차단은 §l${banTime}§r까지입니다`);
+        kick(ni, `${BanTitle}\n§f차단은 §l${banTime}§r까지입니다`);
         for (let i = 0; i < op_count; i++) {
             onlineops[i].sendMessage(`§l§f[ §esos9533scr §f]§f§l §c${username}(이)가 연결을 시도했습니다 [Device Ban Player] (${deviceId})`);
         }
@@ -728,7 +789,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     }
 });
 
-const cmd_unban = command.register(unbancommand, "차단된 플레이어를 서버에 접속가능하도록 합니다", CommandPermissionLevel.Operator);
+const cmd_unban = command.register(NameUnBanCommand, "닉네임이 차단된 플레이어를 서버에 접속가능하게 변경 합니다", CommandPermissionLevel.Operator);
 
 const unbanenum = command.softEnum("player", fs.readdirSync("./banDB/"));
 const dunbanenum = command.softEnum("DeviceID", fs.readdirSync("./DbanDB/"));
@@ -769,7 +830,7 @@ cmd_unban.overload(
     },
 );
 
-command.register(bancommand, "플레이어가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)", CommandPermissionLevel.Operator).overload(
+command.register(NameBanCommand, "선택한 플레이어의 닉네임을 접속 차단조치합니다.", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
         const plname = corg.getName();
         const Tname = inputs.player.getName();
@@ -817,9 +878,9 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
             for (const pl of inputs.player.newResults(corg)) {
                 const Ni = pl.getNetworkIdentifier();
                 if (!inputs.minutes) {
-                    kick(Ni, bantitle);
+                    kick(Ni, BanTitle);
                 } else {
-                    kick(Ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
+                    kick(Ni, `${BanTitle}\n§f차단은 §l${time_title}§r까지입니다`);
                 }
                 return CANCEL;
             }
@@ -831,12 +892,7 @@ command.register(bancommand, "플레이어가 이 서버에 접속하지 못하�
     },
 );
 
-command
-    .register(
-        Devicebancommand,
-        "플레이어의 디바이스가 이 서버에 접속하지 못하도록 합니다 (시간은 분 단위, 0이나 입력하지 않으면 영구)",
-        CommandPermissionLevel.Operator,
-    )
+command.register(DeviceBanCommand,"선택한 플레이어의 디바이스 아이디를 접속 차단조치합니다.",CommandPermissionLevel.Operator,)
     .overload(
         async (inputs, corg) => {
             const originName = corg.getName();
@@ -906,9 +962,9 @@ command
             for (const player of inputs.player.newResults(corg)) {
                 const ni = player.getNetworkIdentifier();
                 if (!inputs.minutes) {
-                    kick(ni, bantitle);
+                    kick(ni, BanTitle);
                 } else {
-                    kick(ni, `${bantitle}\n§f차단은 §l${time_title}§r까지입니다`);
+                    kick(ni, `${BanTitle}\n§f차단은 §l${time_title}§r까지입니다`);
                 }
                 return;
             }
@@ -919,7 +975,7 @@ command
         },
     );
 
-command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서버에 접속가능하도록 합니다", CommandPermissionLevel.Operator).overload(
+command.register(DeviceUnbanCommand, "디바이스 차단된 플레이어를 서버에 접속가능하게 변경 합니다", CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
         const originName = corg.getName();
 
@@ -961,12 +1017,12 @@ command.register(Deviceunbancommand, "디바이스 차단된 플레이어를 서
     },
 );
 
-command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목록을 보여줍니다", CommandPermissionLevel.Operator).overload((asdf, corg) => {
+command.register(ShowBanListCommand, "서버에서 차단당한 플레이어 목록을 보여줍니다", CommandPermissionLevel.Operator).overload((asdf, corg) => {
     const plname = corg.getName();
     const banlist = fs.readdirSync("./banDB/", { withFileTypes: false });
     const Dbanlist = fs.readdirSync("./DbanDB/", { withFileTypes: false });
     if (corg.isServerCommandOrigin()) {
-        console.log(yellow(`차단된 플레이어 목록 : ${banlist}`));
+        console.log(yellow(`닉네임 차단된 플레이어 목록 : ${banlist}`));
         console.log(yellow(`디바이스 차단된 플레이어 목록 : ${Dbanlist}`));
     } else {
         runCommand(`tellraw "${plname}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 차단된 플레이어 목록 : ${banlist}"}]}`);
@@ -974,12 +1030,7 @@ command.register(showbanlistcommand, "서버에서 차단당한 플레이어 목
     }
 }, {});
 
-command
-    .register(
-        OfflinePlayerDeivceBanCommand,
-        "플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)",
-        CommandPermissionLevel.Operator,
-    )
+command.register(OfflinePlayerDeivceBanCommand,"플레이어가 접속하지 않더라도 디바이스 아이디를 이용해 차단합니다 (시간제 차단이 되지 않습니다)",CommandPermissionLevel.Operator,)
     .overload(
         (input, corg) => {
             const originName = corg.getName();
@@ -1017,8 +1068,10 @@ command
 
 const RakPeer = bedrockServer.rakPeer;
 
-if (usegetinfocommand) {
-    command.register(getinfocommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 2/5`.gray)
+
+if (UseGetInfoCommand) {
+    command.register(GetInfoCommand, "원하는 유저의 정보를 확인합니다.", CommandPermissionLevel.Operator).overload(
         (param, origin, output) => {
             if (!origin.getEntity()?.isPlayer()) {
                 console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
@@ -1046,8 +1099,8 @@ if (usegetinfocommand) {
     );
 }
 
-if (usemyinfocommand) {
-    command.register(myinfocommand, "내정보를 확인합니다.").overload((param, origin, output) => {
+if (UseMyInfoCommand) {
+    command.register(MyInfoCommand, "내정보를 확인합니다.").overload((param, origin, output) => {
         const player = origin.getEntity();
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
@@ -1069,8 +1122,8 @@ if (usemyinfocommand) {
     }, {});
 }
 
-if (usespawncommand) {
-    command.register(spawncommand, "스폰으로 이동합니다.").overload((param, origin, output) => {
+if (UseSpawnCommand) {
+    command.register(SpawnCommand, "스폰으로 이동합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -1079,8 +1132,8 @@ if (usespawncommand) {
             return;
         }
 
-        runCommand(`tp @a[name="${username}"] ${spawncoordinate}`);
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${spawncommandtitle}"}]}`);
+        runCommand(`tp @a[name="${username}"] ${SpawnCoordinate}`);
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §r${SpawnCommandTitle}"}]}`);
     }, {});
 }
 
@@ -1129,8 +1182,8 @@ if (usestpcommandC) {
     }, {});
 }
 
-if (usebasicitemcommand) {
-    command.register(basicitemcommand, "기본템을 지급합니다.").overload((param, origin, output) => {
+if (UseBasicitemCommand) {
+    command.register(BasicitemCommand, "기본템을 지급합니다.").overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
@@ -1150,11 +1203,13 @@ if (usebasicitemcommand) {
     }, {});
 }
 
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 3/5`.gray)
+
 const LAST = new Map<NetworkIdentifier, number>();
 const COUNT = new Map<NetworkIdentifier, number>();
 const DELAY_LIMIT = 3;
 
-function kick(target: NetworkIdentifier, message = DEFAULT_KICK_MESSAGE) {
+function kick(target: NetworkIdentifier, message = KickTitle) {
     bedrockServer.serverInstance.disconnectClient(target, message);
 }
 
@@ -1167,7 +1222,7 @@ events.networkDisconnected.on(async (ni) => {
     COUNT.delete(ni);
 });
 
-if (useanticrasher) {
+if (UseAntiCrasher) {
     const Ignored = new Set<number>([12, 26, 35, 42, 43]);
     events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
         if (Ignored.has(pkt.sound)) return;
@@ -1243,40 +1298,40 @@ function saveChin() {
     fs.writeFileSync(chin_json, JSON.stringify(ChinData), "utf8");
 }
 
-if (useblockcolorword === true) {
+if (UseBlockColorWord === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const actor = ni.getActor()!;
         const username = actor.getName();
 
-        if (useblockcolorword === true) {
+        if (UseBlockColorWord === true) {
             if (ptr.message?.includes("§")) {
-                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${blockcolorwordtitle}"}]}`);
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l ${BlockColorWordTitle}"}]}`);
                 return CANCEL;
             }
         }
     });
 }
 
-if (usechin === true) {
+if (UsePrefix === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const actor = ni.getActor()!;
         const username = actor.getName();
         const message = ptr.message.replace(/"/gi, `''`);
 
-        if (chinchatset === "A") {
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${ChinData[username] || basicchin}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        } else if (chinchatset === "B") {
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${ChinData[username] || basicchin}§f> §r${ptr.name}§r : ${message}"}]}`);
-        } else if (chinchatset === "C") {
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${ChinData[username] || basicchin}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
-        } else if (chinchatset === "D") {
-            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${ChinData[username] || basicchin}§f] §r${ptr.name}§r : ${message}"}]}`);
+        if (PrefixChatOutputType === "A") {
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${ChinData[username] || BasicPrefix}§f> §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        } else if (PrefixChatOutputType === "B") {
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f<${ChinData[username] || BasicPrefix}§f> §r${ptr.name}§r : ${message}"}]}`);
+        } else if (PrefixChatOutputType === "C") {
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${ChinData[username] || BasicPrefix}§f] §r<§r${ptr.name}§r>§r : ${message}"}]}`);
+        } else if (PrefixChatOutputType === "D") {
+            runCommand(`tellraw @a {"rawtext":[{"text":"§l§f[${ChinData[username] || BasicPrefix}§f] §r${ptr.name}§r : ${message}"}]}`);
         }
         return CANCEL;
     });
 
-    if (howusechin === "A") {
-        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Operator).overload(
+    if (PrefixCommandType === "A") {
+        command.register(PrefixCommand, PrefixCommandExplanation, CommandPermissionLevel.Operator).overload(
             (params, origin, output) => {
                 if (params.prefix !== undefined && params.target !== undefined) {
                     for (const player of params.target.newResults(origin, ServerPlayer)) {
@@ -1301,13 +1356,13 @@ if (usechin === true) {
         );
     }
 
-    if (howusechin === "B") {
-        command.register(chincommand, chincommandexplanation, CommandPermissionLevel.Normal).overload(
+    if (PrefixCommandType === "B") {
+        command.register(PrefixCommand, PrefixCommandExplanation, CommandPermissionLevel.Normal).overload(
             (params, origin, output) => {
                 const originName = origin.getName();
                 if (params.prefix !== undefined && origin.getEntity() !== undefined) {
                     const prefix = params.prefix;
-                    if (prefix.length < chinlength) {
+                    if (prefix.length < PrefixLength) {
                         ChinData[originName] = prefix;
                         saveChin();
                         runCommand(`playsound random.levelup @a[name="${originName}"]`);
@@ -1324,8 +1379,8 @@ if (usechin === true) {
         );
     }
 
-    if (howusechin === "C") {
-        command.register(chincommand, chincommandexplanation).overload(async (params, origin, output) => {
+    if (PrefixCommandType === "C") {
+        command.register(PrefixCommand, PrefixCommandExplanation).overload(async (params, origin, output) => {
             const actor = origin.getEntity();
             if (!actor?.isPlayer()) {
                 console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
@@ -1348,7 +1403,7 @@ if (usechin === true) {
 
             if (res === null) return;
 
-            if (res[0]?.length < chinlength && username) {
+            if (res[0]?.length < PrefixLength && username) {
                 const prefix = res[0];
                 ChinData[username] = prefix;
                 saveChin();
@@ -1363,7 +1418,9 @@ if (usechin === true) {
     }
 }
 
-command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 4/5`.gray)
+
+command.register(RemoveBossBarCommand, "보스바를 삭제합니다.", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
             target.removeBossBar();
@@ -1375,7 +1432,7 @@ command.register(removebossbarcommand, "보스바를 삭제합니다.", CommandP
     },
 );
 
-command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPermissionLevel.Operator).overload(
+command.register(SetBossBarCommand, "보스바를 생성합니다.", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
             let color: BossEventPacket.Colors = BossEventPacket.Colors.Purple;
@@ -1403,9 +1460,9 @@ command.register(setbossbarcommand, "보스바를 생성합니다.", CommandPerm
     },
 );
 
-if (usesethomecommand) {
+if (UseSethomeCommand) {
     makeFile(sethome_json);
-    command.register(sethomecommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
+    command.register(SethomeCommand, "현재 좌표를 집으로 등록합니다.").overload((param, origin, output) => {
         const player = origin.getEntity();
 
         if (!player?.isPlayer()) {
@@ -1424,7 +1481,7 @@ if (usesethomecommand) {
         runCommand(`tellraw "${username}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l §l§a현재 위치가 집으로 설정되었습니다."}]}`);
     }, {});
 
-    command.register(homecommand, "집으로 이동합니다.").overload((param, origin, output) => {
+    command.register(HomeCommand, "집으로 이동합니다.").overload((param, origin, output) => {
         const player = origin.getEntity();
         if (!player?.isPlayer()) {
             console.log(red("본 명령어는 콘솔에서 사용할수 없습니다."));
@@ -1442,7 +1499,7 @@ if (usesethomecommand) {
 
 const playerCPS: any = {};
 events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
-    if (useCPSchecker) {
+    if (UseCpsChecker) {
         const playerName = ni.getActor()!.getName();
         if (pkt.sound === 42 || pkt.sound === 43) {
             if (!playerCPS[playerName]) {
@@ -1458,10 +1515,10 @@ events.packetBefore(MinecraftPacketIds.LevelSoundEvent).on((pkt, ni) => {
     }
 });
 
-if (usetpacommand) {
+if (UseTpaCommand) {
     const reqs = new Map<string, Set<string>>();
 
-    command.register(tpacommand, "티피를 요청합니다.").overload(
+    command.register(TpaCommand, "티피를 요청합니다.").overload(
         (param, origin) => {
             const players = param.player.newResults(origin);
 
@@ -1479,7 +1536,7 @@ if (usetpacommand) {
             const username = player.getName();
 
             runCommand(
-                `tellraw "${username}" {"rawtext": [{"text": "§l§f------ ${originName}님이 §a§l티피요청§f을 원합니다 ------\n§l§f------§c '/${tpacceptcommand} ${originName}'§f 명령어로 수락하세요. ------"}]}`,
+                `tellraw "${username}" {"rawtext": [{"text": "§l§f------ ${originName}님이 §a§l티피요청§f을 원합니다 ------\n§l§f------§c '/${TpacceptCommand} ${originName}'§f 명령어로 수락하세요. ------"}]}`,
             );
 
             const set = reqs.get(originName) ?? new Set();
@@ -1494,7 +1551,7 @@ if (usetpacommand) {
         { player: PlayerCommandSelector },
     );
 
-    command.register(tpacceptcommand, "티피요청를 수락합니다").overload(
+    command.register(TpacceptCommand, "티피요청를 수락합니다").overload(
         (param, origin) => {
             const players = param.target.newResults(origin);
             if (players.length !== 1) {
@@ -1533,3 +1590,6 @@ command.register("밤", "서버의 시간을 밤으로 바꿉니다", CommandPer
     const player = corg.getEntity();
     if (player?.isPlayer()) player.sendMessage("§l§f[ §esos9533scr §f]§f§l §6서버의 시간이 밤으로 변경되었습니다.");
 }, {});
+
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 5/5`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading Completed Successfully`.gray)
