@@ -453,6 +453,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     const ip = networkIdentifier.getAddress();
     const xuid = cert.getXuid();
     const username = cert.getId();
+    const deviceid = connreq.getDeviceId();
     let deviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
@@ -491,7 +492,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
         }
     }
 
-    console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}`));
+    console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`));
 });
 
 events.networkDisconnected.on((networkIdentifier) => {
