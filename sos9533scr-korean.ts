@@ -222,13 +222,13 @@ const UsePrefix: boolean = true;
 //형식B     <칭호> 닉네임 : 채팅
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅
-const PrefixChatOutputType = "A";
+let PrefixChatOutputType = "A";
 
 //칭호 사용법 - " " 써야함
 //형식A     오피유저(커멘드)가 일반유저의 칭호 설정 - /칭호 (닉네임) "(칭호)"
 //형식B     모든유저가 자신의 칭호를 설정 - /칭호 "(칭호)"
 //형식C     모든유저가 UI를 사용하여 자신의 칭호를 설정 - /칭호  - (그 창같은거 나와서 칭호적는 칸 나오는거)
-const PrefixCommandType: string = "A";
+let PrefixCommandType: string = "A";
 
 //칭호 명령어 (/빼고)
 const PrefixCommand = "칭호";
@@ -379,12 +379,12 @@ command.register("sos9533scr", "§r§l§fBDSX 기본세팅 플러그인 - §cCop
 }, {});
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 0/5`.gray)
+
 
 /*
  * 스크립트 시작                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            */if (!runCommand("sos9533scr").isSuccess()) { throw (red("".white +"\n[".white + " sos9533scr".yellow + " ]".white + " ERROR / Can't Find Important Code !".red + " / CODE : CFIC-sos9533scr / NeedHelp? : https://open.kakao.com/o/sZscajId".gray)); }; /*
  */
-
- console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Loading... 0/5`.gray)
 
 const chin_json = "chin.json";
 const sethome_json = "sethome_pos.json";
