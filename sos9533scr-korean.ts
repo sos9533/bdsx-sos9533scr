@@ -1232,7 +1232,7 @@ if (UseAntiCrasher) {
             const next = COUNT.get(ni)!;
             COUNT.set(ni, next + 1);
             if (next > 3) {
-                kick(ni);
+                kick(ni, KickTitle);
             }
 
             return CANCEL;
@@ -1251,7 +1251,7 @@ if (UseAntiCrasher) {
             const next = FOOD_COUNT.get(ni)!;
             FOOD_COUNT.set(ni, next + 1);
             if (next > 3) {
-                kick(ni);
+                kick(ni, KickTitle);
             }
 
             return CANCEL;
@@ -1271,7 +1271,7 @@ if (UseAntiCrasher) {
                 case X > 1073741823:
                 case Y > 1073741823:
                 case Z > 1073741823:
-                    kick(ni);
+                    kick(ni, KickTitle);
                     return CANCEL;
                 default:
             }
@@ -1284,7 +1284,7 @@ if (UseAntiCrasher) {
                 case pkt.pos.x > 1073741823:
                 case pkt.pos.y > 1073741823:
                 case pkt.pos.z > 1073741823:
-                    kick(ni);
+                    kick(ni, KickTitle);
                     return CANCEL;
                 default:
             }
