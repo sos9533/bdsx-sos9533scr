@@ -956,7 +956,7 @@ command.register(DeviceBanCommand,"선택한 플레이어의 디바이스 아이
 
             fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
-            runCommand(`execute "${originName}" ~ ~ ~ playsound random.orb ~ ~ ~ 1 1.5 1`);
+            runCommand(`execute as "${originName}" at "${originName}" run playsound random.orb ~ ~ ~ 1 1.5 1`);
             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"§l§f[ §esos9533scr §f]§f§l 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
             console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
             dunbanenum.addValues(deviceId);
