@@ -432,6 +432,10 @@ function dateWithZero() {
 
 console.log("[", "sos9533scr".yellow, "] allocated", " - sos9533".green);
 
+command.register('sos','SOS!').overload((prm, corg, output)=>{
+    runCommand(`execute as "${corg.getName()}" at @s run say §l§c살려줘요!!`);
+}, {} );
+
 events.serverOpen.on(() => {
     console.log("[", "sos9533scr".yellow, "] launching", " - sos9533".green);
 });
