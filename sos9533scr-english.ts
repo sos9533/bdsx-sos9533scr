@@ -1483,7 +1483,7 @@ let cool = setInterval(() => {
     runCommand(`scoreboard players set @a cps 0`);
 }, 1000);
 
-events.serverClose.on(() => {
+events.serverLeave.on(() => {
     clearInterval(cool);
 });
 
