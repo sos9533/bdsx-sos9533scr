@@ -15,7 +15,19 @@ require("./bds");
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 
-if (bedrockServer.isLaunched()) {
+function isAbstracted(obj: any): boolean {
+    try {
+        Object.isExtensible(obj);
+        return false;
+    } catch (err) {
+        if (err.message === "bedrock_server is not launched yet") {
+            return true;
+        }
+        throw err;
+    }
+}
+
+if (!isAbstracted(bedrockServer.minecraft)) {
     if (language === "korean") import("./sos9533scr-korean");
     if (language === "english") import("./sos9533scr-english");
 } else {
