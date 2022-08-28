@@ -16,6 +16,7 @@
   ],
   "author": "sos9533",
   "license": "MIT",
+  "bdsxPlugin": true,
   "bugs": {
     "url": "https://github.com/sos9533/sos9533scr/issues"
   },
