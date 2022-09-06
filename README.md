@@ -7,8 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.8.8 UPDATE
-Fix TEXTs , Add loading , Add BUG Tracker
+### 1.9.0 UPDATE
+Integrated sos9533scr-english and sos9533scr-korean. Add SystemMessageTitle. Mute function upgrade. Fix AntiCrasherTitle. Rename prefix variable. Remove CPS function. Fix error messages. 
 
 ![logo](sos9533scr_logo.png)
 
