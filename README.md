@@ -93,15 +93,7 @@ ex)
             └─ sos9533scr-korean.ts
 ```
 
-2. In `bdsx-master/plugins/bdsx-sos9533-main/index.ts`, enter your language as `english`.
-```ts
-//what is your language
-//english / korean
-
-let language = "english"
-```
-
-3. Refer to below and set `bdsx-master/sos9533scr-english.ts`
+2. Refer to below and set `bdsx-master/sos9533scr.ts`
 
 > when you choose y/n, write true/false behind  ': boolean ='
 
@@ -263,17 +255,7 @@ let chinchatset = "D";
             └─ sos9533scr-korean.ts
 ```
 
-2. `bdsx-master/plugins/bdsx-sos9533-main/index.ts` 안에서 언어를 `korean`으로 입력합니다.
-```ts
-//what is your language / 당신의 언어는 무엇인가요
-//english / korean
-
-let language = "korean"
-```
-
-3. "[ sos9533scr ] allocated - sos9533"가 bdsx 콘솔(cmd)에 뜨면 정상 적용된겁니다.
-
-4. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
+2. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
 > 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
