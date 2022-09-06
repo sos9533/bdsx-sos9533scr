@@ -370,12 +370,7 @@ Or indicate that you used sos9533scr in-gamer.`
 - [`Blue00123`](https://github.com/Blue00123)
 
 
-## About sos9533scr
-- [`Discord`](https://discord.gg/w9NHc5BZve)
-- [`Pull requests`](https://github.com/sos9533/bdsx-sos9533scr/pulls)
-- [`KakaoTalk OPEN CHAT`](https://open.kakao.com/o/gbISJxrd)
-
 ## About sos9533
 - [`OmletArcade`](https://omlet.gg/profile/sos9533)
-- [`KakaoTalk`](https://open.kakao.com/me/sos9533)
+- `Discord : sos9533#9533`
 
