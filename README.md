@@ -8,7 +8,7 @@
 [[ Note ]](#Note)
 
 ### 1.9.0 UPDATE
-Integrated sos9533scr-english and sos9533scr-korean. Add SystemMessageTitle. Mute function upgrade. Fix AntiCrasherTitle. Rename prefix variable. Remove CPS function. Fix error messages. 
+Integrated sos9533scr-english and sos9533scr-korean.<br> Add `SystemMessageTitle`.<br> Mute function upgrade.<br> Fix `AntiCrasherTitle`.<br> Rename `chin` variable.<br> Remove CPS function.<br> Fix error messages. <br>
 
 ![logo](sos9533scr_logo.png)
 
