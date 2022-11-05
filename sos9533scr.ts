@@ -444,23 +444,6 @@ const AntiToolBoxTitle = "§l§f[ §7Kick §f]\n\n§cDon't use ToolBox";
 
 
 /////////////////////////////////////////////////////////////////////
-//anti fake os 
-//가까 OS 방지
-
-
-//use kick fake OS user 
-//가짜 OS 강퇴하기 사용여부 (true/false)
-const UseFakeOSdetection: boolean = true;
-
-
-//fakeOS - kick message - output kicked player
-//가짜 OS 강퇴 안내 메시지 - 가짜 OS 사용 플레이어의 화면에 출력
-const FakeOSdetectionTitle = "§l§f[ §7Kick §f]\n\n§cDon't use FakeOS";
-
-
-
-
-/////////////////////////////////////////////////////////////////////
 //anti long nickname
 //닉핵 방지
 
@@ -629,7 +612,7 @@ import * as fs from "fs";
 
 const levelname = serverProperties["level-name"]
 
-if (serverProperties["allow-cheats"] === "false") { throw (red("\n".white +"[".white + " sos9533scr".yellow + " ]".white + " ERROR / Allow Cheat is fasle!".red+"\n\n\n"+"Enable cheat in 'bdsx-master/bedrock_server/server.properties'".gray+"\n\n"+"월드의 치트가 꺼져있습니다. 'bdsx-master/bedrock_server/server.properties'에서 치트를 활성화 하주세요.\n\n\n".gray + " / ".white+"CODE : ACF-sos9533scr".gray+"\n"+" / ".white+"Need help? Discord : sos9533#9533 ".green+"\n\n\n")); };
+if (serverProperties["allow-cheats"] === "false") { throw (red("\n".white +"[".white + " sos9533scr".yellow + " ]".white + " ERROR / 'Allow Cheat' is false!".red+"\n\n\n"+"Enable cheat in 'bdsx-master/bedrock_server/server.properties'".gray+"\n\n"+"월드의 치트가 꺼져있습니다. 'bdsx-master/bedrock_server/server.properties'에서 치트를 활성화 하주세요.\n\n\n".gray + " / ".white+"CODE : ACF-sos9533scr".gray+"\n"+" / ".white+"Need help? Discord : sos9533#9533 ".green+"\n\n\n")); };
 
 const runCommand = bedrockServer.executeCommand;
 
@@ -642,7 +625,7 @@ command.register("sos9533scr", "§r§l§fThis server is using sos9533scr - §cCo
         output.success("");
     } else {
         runCommand(
-            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313"}]}`,
+            `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\nDiscord : sos9533#9533"}]}`,
         );
         output.success("");
     };
@@ -704,10 +687,6 @@ function dateWithZero() {
 
 export const playerList = new Map<NetworkIdentifier, string>();
 
-events.levelTick.once((ev) => {
-    runCommand("scoreboard objectives add cps dummy");
-});
-
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const connreq = ptr.connreq;
     if (connreq === null) return;
@@ -737,22 +716,6 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     }
 
     if (deviceModel === "") deviceModel = "No Model";
-
-    const OS = connreq.getDeviceOS();
-
-    if (deviceModel !== "No Model" && OS === BuildPlatform.WINDOWS_10) {
-        if (UseFakeOSdetection) {
-            kick(networkIdentifier, FakeOSdetectionTitle);
-            console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection`));
-        }
-    }
-
-    if (deviceModel === "No Model" && OS !== BuildPlatform.WINDOWS_10) {
-        if (UseFakeOSdetection) {
-            kick(networkIdentifier, FakeOSdetectionTitle);
-            console.log(red(`[ sos9533scr ] ${username} | Fake OS Detection`));
-        }
-    }
 
     console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`));
 });
