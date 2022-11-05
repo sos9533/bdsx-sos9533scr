@@ -7,8 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.9.0 UPDATE [09/06]
-Integrated sos9533scr-english and sos9533scr-korean.<br> Add `SystemMessageTitle`.<br> Mute function upgrade.<br> Fix `AntiCrasherTitle`.<br> Rename `chin` variable.<br> Remove CPS function.<br> Fix error messages. <br>
+### 1.9.1 UPDATE [11/05]
+Remove `Fake OS` function 
 
 ![logo](sos9533scr_logo.png)
 
@@ -59,12 +59,10 @@ Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 │     ├ block same chat
 │     └ block long whisper
 │  ├ anti crasher
-│  ├ anti fakeOS
 │  └ kick long nickname
 │
 ├ etc
-│  ├ bossbar command
-│  └ cps scoreboard & display cps score on the actionbar
+│  └ bossbar command
 └
 ```
 
@@ -221,12 +219,10 @@ let chinchatset = "D";
 │     ├ 똑같거나 비슷한 채팅 방지
 │     └ 귓속말 장문방지
 │  ├ 크래셔 방지 (지퍼 크래셔 방지)
-│  ├ OS 조작 핵 감지
 │  └ 참가시 긴 닉네임 강제퇴장시키기
 │
 ├ 기타기능
-│  ├ 보스바 명령어
-│  └ cps 스코어보드 & 액션바에 표시
+│  └ 보스바 명령어
 └
 ```
 
