@@ -7,8 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.9.1 UPDATE [11/05]
-Remove `Fake OS` function 
+### 1.9.2 UPDATE [12/19]
+Fix `mute` function 
 
 ![logo](sos9533scr_logo.png)
 
