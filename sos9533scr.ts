@@ -761,7 +761,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     const username = ni.getActor()!.getName();
 
 
-    if (ni.getActor()?.getTags().includes("mute")) {
+    if (ni.getActor()?.hasTag("mute")) {
         console.log(gray(`[${month}/${day}/${hours}/${minutes}/${seconds}] <${username}> : ${message}`));
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} ${MuteMessage}"}]}`);
         return CANCEL;
