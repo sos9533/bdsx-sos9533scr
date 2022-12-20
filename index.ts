@@ -8,7 +8,7 @@ function isAbstracted(obj: any): boolean {
         Object.isExtensible(obj);
         return false;
     } catch (err) {
-        if (err.message === "bedrock_server is not launched yet") {
+        if (err.message === "BDS is not loaded yet") {
             return true;
         }
         throw err;
