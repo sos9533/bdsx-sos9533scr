@@ -7,8 +7,8 @@
 
 [[ Note ]](#Note)
 
-### 1.9.2 UPDATE [12/19]
-Fix `mute` function 
+### 2.0.0 UPDATE [12/21]
+sos9533scr has been renewed to 2.0.
 
 ![logo](sos9533scr_logo.png)
 
@@ -82,16 +82,20 @@ ex)
 └─bdsx-master
     └─plugins
         └─bdsx-sos9533scr-main
+            └─ bds
+            └─ scr
+                └─ anticrasher.ts
+                └─ ....
             └─ .gitignore
             └─ .npmignore
             └─ index.ts
+            └─ setting.ts
+            └─ functions.ts
             └─ LICENSE
             └─ package.json
-            └─ sos9533scr-english.ts
-            └─ sos9533scr-korean.ts
 ```
 
-2. Refer to below and set `bdsx-master/sos9533scr.ts`
+2. Refer to below and set `bdsx-master/setting.ts`
 
 > when you choose y/n, write true/false behind  ': boolean ='
 
@@ -174,7 +178,7 @@ let chinchatset = "D";
 
 # sos9533scr-korean
 
-본 플러그인은 [`sos9533`](https://open.kakao.com/me/sos9533)을 포함한 유저들이 제작한 BDSX 기본세팅 플러그인입니다. 
+본 플러그인은 [`sos9533`](https://omlet.gg/profile/sos9533)을 포함한 유저들이 제작한 BDSX 기본세팅 플러그인입니다. 
 
 ## 기능
 
@@ -242,16 +246,20 @@ let chinchatset = "D";
 └─bdsx-master
     └─plugins
         └─bdsx-sos9533scr-main
+            └─ bds
+            └─ scr
+                └─ anticrasher.ts
+                └─ ....
             └─ .gitignore
             └─ .npmignore
             └─ index.ts
+            └─ setting.ts
+            └─ functions.ts
             └─ LICENSE
             └─ package.json
-            └─ sos9533scr-english.ts
-            └─ sos9533scr-korean.ts
 ```
 
-2. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/sos9533scr.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
+2. 위와같이 적용한 후 아래와 같이 `bdsx-master/plugins/bdsx-sos9533scr-main/setting.ts` 파일 안에서 const또는 let부분을 원하는대로 변경하시면 됩니다.
 
 > 아래와 같은 사용여부를 선택할때는 : boolean = 뒤에 true또는 false를 입력합니다.
 > (true=네, false=아니요)
