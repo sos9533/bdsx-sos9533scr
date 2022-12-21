@@ -1,5 +1,4 @@
 require("./bds");
-require("./scr");
 
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
