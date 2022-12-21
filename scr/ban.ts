@@ -595,4 +595,30 @@ command.register(OfflinePlayerDeivceBanCommand,"device ban even if the player is
 
 const RakPeer = bedrockServer.rakPeer;
 
+if (language === "english") {
+    command.register("sos9533scr", "§r§l§fThis server is using sos9533scr - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+        if (origin.isServerCommandOrigin()) {
+            output.success("");
+        } else {
+            runCommand(
+                `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\nDiscord : sos9533#9533"}]}`,
+            );
+            output.success("");
+        };
+    }, {});
+}
+
+if (language === "korean") {
+    command.register("sos9533scr", "§r§l§f이 서버는 sos9533scr 플러그인을 사용중입니다. - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal).overload((param, origin, output) => {
+        if (origin.isServerCommandOrigin()) {
+            output.success("");
+        } else {
+            runCommand(
+                `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\n디스코드 : sos9533#9533"}]}`,
+            );
+            output.success("");
+        };
+    }, {});
+}
+
 console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - ban.ts loaded`.gray)
