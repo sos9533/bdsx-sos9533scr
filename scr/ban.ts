@@ -3,7 +3,7 @@ import { PlayerPermission, ServerPlayer } from "bdsx/bds/player";
 import { CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
-import { dateWithZero, kick } from "../functions";
+import { dateWithZero, kick, makeDir } from "../functions";
 import { red, yellow } from "colors";
 import { command } from "bdsx/command";
 import { CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
@@ -16,6 +16,8 @@ import { serverProperties } from "bdsx/serverproperties";
 const levelname = serverProperties["level-name"]
 require("../bds");
 
+makeDir("./banDB");
+makeDir("./DbanDB");
 
 events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     const connreq = pkt.connreq;
