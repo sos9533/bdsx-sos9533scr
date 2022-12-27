@@ -2,6 +2,7 @@ import { command } from "bdsx/command";
 import { runCommand, SpawnCommand, Spawncommandexplanation, SpawnCommandTitle, SpawnCoordinate, SystemMessageTitle, tpcommandA, tpcommandB, tpcommandC, tpcommandexplanationA, tpcommandexplanationB, tpcommandexplanationC, tpcommandtitleA, tpcommandtitleB, tpcommandtitleC, tpcoordinateA, tpcoordinateB, tpcoordinateC, UseSpawnCommand, usestpcommandA, usestpcommandB, usestpcommandC } from "../setting";
 import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 if (UseSpawnCommand) {
@@ -16,6 +17,7 @@ if (UseSpawnCommand) {
 
         runCommand(`tp @a[name="${username}"] ${SpawnCoordinate}`);
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §r${SpawnCommandTitle}"}]}`);
+        addlog(`${username} tp to spawn`)
     }, {});
 }
 
@@ -31,6 +33,7 @@ if (usestpcommandA) {
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateA}`);
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §r${tpcommandtitleA}"}]}`);
+        addlog(`${username} tp to  ${tpcoordinateA}`)
     }, {});
 }
 
@@ -46,6 +49,7 @@ if (usestpcommandB) {
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateB}`);
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §r${tpcommandtitleB}"}]}`);
+        addlog(`${username} tp to  ${tpcoordinateB}`)
     }, {});
 }
 
@@ -61,6 +65,7 @@ if (usestpcommandC) {
 
         runCommand(`tp @a[name="${username}"] ${tpcoordinateC}`);
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §r${tpcommandtitleC}"}]}`);
+        addlog(`${username} tp to  ${tpcoordinateC}`)
     }, {});
 }
 
