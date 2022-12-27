@@ -11,6 +11,7 @@ import { CxxString, int32_t } from "bdsx/nativetype";
 import * as fs from "fs";
 import { BanTitle, DeviceBanCommand, DeviceUnbanCommand, DEVICE_ID_FMT_LENGTH, DEVICE_ID_FMT_LENGTH_ANDROID, language, NameBanCommand, NameUnBanCommand, OfflinePlayerDeivceBanCommand, runCommand, ShowBanListCommand, SystemMessageTitle } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
+import { addlog } from "./log";
 
 
 const levelname = serverProperties["level-name"]
@@ -43,6 +44,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
 
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+            addlog('[ sos9533scr ] ${username} tried connection [Name Ban Player]')
             return CANCEL;
         }
         const ToString = String(getbantime);
@@ -57,6 +59,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
                 }
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+            addlog(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`)
             return CANCEL;
         }
 
@@ -93,6 +96,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Name Ban Player]`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
+        addlog(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`)
+
         return CANCEL;
     }
 
@@ -105,6 +110,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
                 onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
+            addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`)
             return CANCEL;
         }
         const ToString = String(getbantime);
@@ -115,6 +121,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
                 onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
+            addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`)
             return CANCEL;
         }
 
@@ -151,6 +158,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
+        addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`)
         return CANCEL;
     }
 });
@@ -191,9 +199,11 @@ cmd_unban.overload(
             if (ni.isServerCommandOrigin() === true) {
                 if (language === "english") {
                     console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
+                    addlog(`${inputs.player} is already unbanned\nYou can see banlist using banlist`)
                 }
                 if (language === "korean") {
                     console.log(red(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`));
+                    addlog(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`)
                 }
                 return CANCEL;
             } else {
@@ -210,10 +220,12 @@ cmd_unban.overload(
             if (language === "korean"){
                 runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
                 console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
+                addlog(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`)
             }
             if(language === "english") {
                 runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Unbanned ${inputs.player}"}]}`);
                 console.log(yellow(`${plname} : Unbanned ${inputs.player}`));
+                addlog(`${plname} : Unbanned ${inputs.player}`)
             }
 
             unbanenum.removeValues(inputs.player);
@@ -253,9 +265,11 @@ command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Ope
             if (corg.isServerCommandOrigin()) {
                 if (language === "english") {
                     console.log(red(`${inputs.player.getName()} is already unbanned`));
+                    addlog(`${inputs.player.getName()} is already unbanned`)
                 }
                 if (language === "korean") {
                     console.log(red(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`));
+                    addlog(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`)
                 }
 
                 return CANCEL;
@@ -287,10 +301,12 @@ command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Ope
 
         if (language === "english") {
             console.log(yellow(`${plname} : Banned ${inputs.player.getName()}`));
+            addlog(`${plname} : Banned ${inputs.player.getName()}`)
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Banned ${inputs.player.getName()}"}]}`);
         }
         if (language === "korean") {
             console.log(yellow(`${plname} : ${Tname}(을)를 차단했습니다`));
+            addlog(`${plname} : ${Tname}(을)를 차단했습니다`)
             runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${Tname}(을)를 차단했습니다"}]}`);
         }
 
@@ -412,10 +428,12 @@ command.register(DeviceBanCommand,"Ban player's Device ID",CommandPermissionLeve
             if (language === "korean") {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
                 console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
+                addlog(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`)
             }
             if (language === "english") {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} Banned ${targetName} (${deviceId})"}]}`);
                 console.log(yellow(`${originName} : Banned ${targetName} (${deviceId})`));
+                addlog(`${originName} : Banned ${targetName} (${deviceId})`)
             }
             dunbanenum.addValues(deviceId);
             for (const player of inputs.player.newResults(corg)) {
@@ -495,10 +513,12 @@ command.register(DeviceUnbanCommand, "Unban player's device ID", CommandPermissi
             if (language === "english") {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"Unbanned device ID ${inputs.DeviceID}"}]}`);
                 console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
+                addlog(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`)
             }
             if (language === "korean") {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} 디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
                 console.log(yellow(`${originName} : Unbanned device ID ${inputs.DeviceID}`));
+                addlog(`${originName} : Unbanned device ID ${inputs.DeviceID}`)
             }
             fs.unlink(`./DbanDB/${inputs.DeviceID}`, (err) => {});
             dunbanenum.removeValues(inputs.DeviceID);
@@ -584,9 +604,11 @@ command.register(OfflinePlayerDeivceBanCommand,"device ban even if the player is
             fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
             if (language === "english") {
                 console.log(yellow(`${originName} : banned ${targetDeviceId}`));
+                addlog(`${originName} : banned ${targetDeviceId}`)
             }
             if (language === "korean") {
                 console.log(yellow(`${originName} : ${targetDeviceId}(을)를 차단했습니다`));
+                addlog(`${originName} : ${targetDeviceId}(을)를 차단했습니다`)
             }
 
         },
