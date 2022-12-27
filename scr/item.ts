@@ -3,6 +3,7 @@ import { basicitemA, basicitemB, basicitemC, BasicitemCommand, basicitemD, basic
 import { red } from "colors";
 import { events } from "bdsx/event";
 import { serverProperties } from "bdsx/serverproperties";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 if (UseBasicitemCommand) {
@@ -23,6 +24,7 @@ if (UseBasicitemCommand) {
         runCommand(`give @a[name="${username}"] ${basicitemF}`);
         runCommand(`give @a[name="${username}"] ${basicitemG}`);
         runCommand(`give @a[name="${username}"] ${basicitemH}`);
+        addlog(`${username} get items`)
     }, {});
 }
 
@@ -44,6 +46,7 @@ events.playerJoin.on((ev) => {
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemG}`);
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemH}`);
             runCommand(`tag @a[name="${username}",tag=!joinbasicitem] add joinbasicitem`);
+            addlog(`${username} get items`)
         }
     }
 });
