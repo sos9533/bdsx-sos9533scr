@@ -7,8 +7,9 @@
 
 [[ Note ]](#Note)
 
-### 2.0.0 UPDATE [12/21]
+### 2.1.0 UPDATE [12/27]
 sos9533scr has been renewed to 2.0.
+add `logging`
 
 ![logo](sos9533scr_logo.png)
 
@@ -62,6 +63,7 @@ Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 │  └ kick long nickname
 │
 ├ etc
+│  ├ logging
 │  └ bossbar command
 └
 ```
@@ -226,6 +228,7 @@ let chinchatset = "D";
 │  └ 참가시 긴 닉네임 강제퇴장시키기
 │
 ├ 기타기능
+│  ├ 로깅
 │  └ 보스바 명령어
 └
 ```
