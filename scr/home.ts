@@ -4,6 +4,7 @@ import { HomeCommand, language, runCommand, SethomeCommand, sethome_json, System
 import * as fs from "fs";
 import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 if (UseSethomeCommand) {
@@ -44,6 +45,8 @@ if (UseSethomeCommand) {
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
         runCommand(`tp @a[name="${username}"] ${jsonObj[deviceId]}`);
+        addlog(`${username} tp to ${jsonObj[deviceId]}`)
+
         if (language === "english") {
             runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §l§eWarp Complete!"}]}`);   
         }
