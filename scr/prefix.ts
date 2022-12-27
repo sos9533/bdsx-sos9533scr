@@ -20,20 +20,6 @@ function savePrefix() {
     fs.writeFileSync(Prefix_json, JSON.stringify(PrefixData), "utf8");
 }
 
-if (UseBlockColorWord === true) {
-    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
-        const actor = ni.getActor()!;
-        const username = actor.getName();
-
-        if (UseBlockColorWord === true) {
-            if (ptr.message?.includes("§")) {
-                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} ${BlockColorWordTitle}"}]}`);
-                return CANCEL;
-            }
-        }
-    });
-}
-
 if (UsePrefix === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const actor = ni.getActor()!;
