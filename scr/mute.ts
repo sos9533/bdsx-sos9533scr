@@ -3,6 +3,7 @@ import { ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { serverProperties } from "bdsx/serverproperties";
 import { language, MuteCommand, runCommand, SystemMessageTitle, UnmuteCommand } from "../setting";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 command.register(MuteCommand, "mute player", CommandPermissionLevel.Operator).overload(
@@ -19,6 +20,7 @@ command.register(MuteCommand, "mute player", CommandPermissionLevel.Operator).ov
             }
 
             console.log("\x1b[41m", `${username} Mute > [ Muted by ${origin.getName()} ]`, "\x1b[0m");
+            addlog(`${username} Muted > [ Muted by ${origin.getName()} ]`)
         }
     },
     {
@@ -39,6 +41,7 @@ command.register(UnmuteCommand, "unmute player", CommandPermissionLevel.Operator
             }
             runCommand(`tag @a[name="${username}"] remove mute`);
             console.log("\x1b[41m", `${username} UnMute > [ UnMuted by ${origin.getName()} ]`, "\x1b[0m");
+            addlog(`${username} unMuted > [ unMuted by ${origin.getName()} ]`)
 
         }
     },
