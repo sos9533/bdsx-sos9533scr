@@ -4,7 +4,8 @@ import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { gray } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
-import { ChatCutLongMessageLength, ChatCutLongMessageTitle, ChatCutSameMessageTitle, ChatCutSpeedMessageTime, ChatCutSpeedMessageTitle, ChatCutWhisperMessageLength, ChatCutWhisperMessageTitle, MuteMessage, SystemMessageTitle, UseChatCut } from "../setting";
+import { BlockColorWordTitle, ChatCutLongMessageLength, ChatCutLongMessageTitle, ChatCutSameMessageTitle, ChatCutSpeedMessageTime, ChatCutSpeedMessageTitle, ChatCutWhisperMessageLength, ChatCutWhisperMessageTitle, MuteMessage, SystemMessageTitle, UseBlockColorWord, UseChatCut } from "../setting";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 const runCommand = bedrockServer.executeCommand;
@@ -26,6 +27,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         return CANCEL;
     }
     console.log(gray(`[${month}/${day}/${hours}/${minutes}/${seconds}] <${username}> : ${message}`));
+    addlog(`<${username}> : ${message}`)
 });
 
 events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
@@ -41,6 +43,7 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
         const username = ni.getActor()?.getName();
 
         console.log(gray(`[${month}/${day}/${hours}:${minutes}:${seconds}] <${username}> : ${message}`));
+        addlog(`<${username}> : ${message}`)
     }
 });
 
@@ -120,5 +123,19 @@ events.command.on((command, origin) => {
         }
     }
 });
+
+if (UseBlockColorWord === true) {
+    events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
+        const actor = ni.getActor()!;
+        const username = actor.getName();
+
+        if (UseBlockColorWord === true) {
+            if (ptr.message?.includes("§")) {
+                runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} ${BlockColorWordTitle}"}]}`);
+                return CANCEL;
+            }
+        }
+    });
+}
 
 console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - message.ts loaded`.gray)
