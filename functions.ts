@@ -2,9 +2,11 @@ import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { CANCEL } from "bdsx/common";
 import { bedrockServer } from "bdsx/launcher";
 import * as fs from "fs";
+import { addlog } from "./scr/log";
 
 export function kick(target: NetworkIdentifier, message: string): CANCEL {
     bedrockServer.serverInstance.disconnectClient(target, message);
+    addlog(`${target.getActor()?.getName()} kicked`)
     return CANCEL;
 };
 
