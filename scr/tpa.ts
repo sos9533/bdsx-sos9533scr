@@ -2,6 +2,7 @@ import { PlayerCommandSelector } from "bdsx/bds/command";
 import { command } from "bdsx/command";
 import { language, runCommand, SystemMessageTitle, TpacceptCommand, TpaCommand, UseTpaCommand } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
+import { addlog } from "./log";
 const levelname = serverProperties["level-name"]
 
 if (UseTpaCommand) {
@@ -82,10 +83,12 @@ if (UseTpaCommand) {
                     if (language === "english") {
                         runCommand(`tp "${username}" "${originName}"`);
                         runCommand(`tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §a${origin.getName()}§f accept your tpa request ------"}]}`);
+                        addlog(`${username} tp to ${originName} by tpa`)
                     }
                     if (language === "korean") {
                         runCommand(`tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 ------"}]}`);
                         runCommand(`tp "${username}" "${originName}"`);
+                        addlog(`${username} tp to ${originName} by tpa`)
                     }
                 }
             }
