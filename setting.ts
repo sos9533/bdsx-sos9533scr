@@ -49,6 +49,9 @@ export let language = "english";
 export const SystemMessageTitle = "§l§f[ §dSERVER §f]§r";
 
 
+//use logging (true/false)
+//로그 수집 사용여부 (true/false)
+export const UseLog: boolean = true;
 
 
 /////////////////////////////////////////////////////////////////////
@@ -614,3 +617,4 @@ export const DEVICE_ID_FMT_LENGTH = 36;
 export const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 export const Prefix_json = "Prefix.json";
 export const sethome_json = "sethome_pos.json";
+export const log_json = "server.log";
