@@ -7,9 +7,10 @@
 
 [[ Note ]](#Note)
 
-### 2.1.0 UPDATE [12/27]
-sos9533scr has been renewed to 2.0.
-add `logging`
+### 2.1.1 UPDATE [12/31]
+sos9533scr has been renewed to 2.0. </br>
+Add `logging` </br>
+Fix `log.ts`
 
 ![logo](sos9533scr_logo.png)
 
