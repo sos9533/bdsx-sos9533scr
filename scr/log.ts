@@ -3,9 +3,12 @@ import { makeFile } from "../functions";
 import { log_json, UseLog } from "../setting";
 
 
-makeFile(log_json);
 
-export function addlog(content: string) {
+
+export function addlog(content: any) {
+
+  makeFile(log_json);
+  
   if (UseLog) {
     const today = new Date();
     const hours = today.getHours();
