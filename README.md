@@ -3,13 +3,16 @@
 <h3>Basic Setting Plugin for BDSX. </h3>
 
 [![Discord](https://img.shields.io/discord/1062009314128179261?color=%235865F2&label=DISCORD&logo=Discord&logoColor=white&style=for-the-badge)](https://discord.gg/mSfeVprMkv) 
-[![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE)
-    
-[[ Features and usage ]](#sos9533scr-english) <br><br>
-[[ 기능 및 사용법 ]](#sos9533scr-korean) <br><br>
-[[ Note ]](#Note) <br>
+[![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE)<br><br><br>
+   
+   
+[![how_to_use](https://img.shields.io/badge/help menu-blue&?style=for-the-badge&color=blue)](#sos9533scr-english)  
+[![기능 및 사용법](https://img.shields.io/badge/한국어 도움말-blue&?style=for-the-badge&color=blue)](#sos9533scr-korean)  
+[![Note](https://img.shields.io/badge/Note-blue&?style=for-the-badge&color=blue)](#Note)
+<h5>위 버튼을 클릭하여 사용법을 확인하세요. <br> Click the button above to see how to use this.</h5>
+
 </div>
-<br><br><br>
+<br>
 
 
 ### 2.1.1 UPDATE [12/31]
