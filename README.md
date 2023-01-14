@@ -7,10 +7,7 @@
     
 [[ Features and usage ]](#sos9533scr-english)ㅤㅤ[[ 기능 및 사용법 ]](#sos9533scr-korean)ㅤㅤ[[ Note ]](#Note)
 </div>
-
-test 
-
-
+<br><br><br>
 
 ### 2.1.1 UPDATE [12/31]
 sos9533scr has been renewed to 2.0. </br>
