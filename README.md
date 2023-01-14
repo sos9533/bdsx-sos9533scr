@@ -1,18 +1,23 @@
-# sos9533scr
-### Basic Setting Plugin for BDSX. 
+<div align="center">   
+<img src="sos9533scr_logo.png" height="300">
+<h1>Basic Setting Plugin for BDSX. </h1>
 
-[[ Features and usage ]](#sos9533scr-english)
+[![Discord](https://img.shields.io/discord/1062009314128179261?color=%235865F2&label=DISCORD&logo=Discord&logoColor=white&style=for-the-badge)](https://discord.gg/mSfeVprMkv) 
+[![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE)
+    
+[[ Features and usage ]](#sos9533scr-english)ㅤㅤ[[ 기능 및 사용법 ]](#sos9533scr-korean)ㅤㅤ[[ Note ]](#Note)
+</div>
 
-[[ 기능 및 사용법 ]](#sos9533scr-korean)
 
-[[ Note ]](#Note)
+
+
 
 ### 2.1.1 UPDATE [12/31]
 sos9533scr has been renewed to 2.0. </br>
 Add `logging` </br>
 Fix `log.ts`
 
-![logo](sos9533scr_logo.png)
+
 
 
 -------------------------------------------------
@@ -340,6 +345,7 @@ let chinchatset = "A"
 //형식D     [칭호] 닉네임 : 채팅
 let chinchatset = "D"
 ```
+
 # Note
 
 ## LICENSE
