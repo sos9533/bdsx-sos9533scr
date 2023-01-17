@@ -4,8 +4,8 @@
 
 [![Discord](https://img.shields.io/discord/1062009314128179261?color=%235865F2&label=DISCORD&logo=Discord&logoColor=white&style=for-the-badge)](https://discord.gg/mSfeVprMkv) 
 [![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE) <br>
-[![star](https://img.shields.io/github/stars/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](LICENSE)
-[![contributor](https://img.shields.io/github/contributors/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](LICENSE)<br><br>
+[![star](https://img.shields.io/github/stars/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](https://github.com/sos9533/bdsx-sos9533scr/stargazers)
+[![contributor](https://img.shields.io/github/contributors/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](https://github.com/sos9533/bdsx-sos9533scr/graphs/contributors)<br><br>
 Made by [sos9533](https://omlet.gg/profile/sos9533)
 </div>
 
