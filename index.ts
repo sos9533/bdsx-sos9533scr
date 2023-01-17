@@ -20,7 +20,7 @@ export function isAbstracted(obj: any): boolean {
 
 const levelname = serverProperties["level-name"];
 
-if (!isAbstracted(bedrockServer.minecraft)) {
+function Import(): void {
     console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - Plugin Strat Loading...`.gray);
     import("./scr/anticrasher");
     import("./scr/ban");
@@ -37,23 +37,10 @@ if (!isAbstracted(bedrockServer.minecraft)) {
     import("./scr/timecommand");
     import("./scr/tpcommand");
     import("./scr/tpa");
+}
+
+if (!isAbstracted(bedrockServer.minecraft)) {
+    Import();
 } else {
-    events.serverOpen.on(() => {
-        console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - Plugin Strat Loading...`.gray);
-        import("./scr/anticrasher");
-        import("./scr/ban");
-        import("./scr/bossbar");
-        import("./scr/exit");
-        import("./scr/home");
-        import("./scr/info");
-        import("./scr/item");
-        import("./scr/join");
-        import("./scr/kick");
-        import("./scr/message");
-        import("./scr/mute");
-        import("./scr/prefix");
-        import("./scr/timecommand");
-        import("./scr/tpcommand");
-        import("./scr/tpa");
-    });
+    events.serverOpen.on(Import);
 }
