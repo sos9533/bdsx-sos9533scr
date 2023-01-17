@@ -6,25 +6,25 @@ import { addlog } from "./scr/log";
 
 export function kick(target: NetworkIdentifier, message: string): CANCEL {
     bedrockServer.serverInstance.disconnectClient(target, message);
-    addlog(`${target.getActor()?.getName()} kicked`)
+    addlog(`${target.getActor()?.getNameTag()} kicked`);
     return CANCEL;
-};
+}
 
-export function makeFile(filepath: string, value = {}) {
+export function makeFile(filepath: string, value = {}): void {
     if (!fs.existsSync(filepath)) {
         fs.writeFileSync(filepath, JSON.stringify(value));
         console.log("[", "sos9533scr".yellow, "]", `Made '${filepath}'`.gray, " - sos9533".green);
     }
 }
 
-export function makeDir(dirname: string) {
+export function makeDir(dirname: string): void {
     if (!fs.existsSync(dirname)) {
         fs.mkdirSync(dirname);
         console.log("[", "sos9533scr".yellow, "]", `Made '${dirname}'`.gray, " - sos9533".green);
     }
 }
 
-export function leadZero(num: number, n: number) {
+export function leadZero(num: number, n: number): string {
     var leadZero = "";
     let num2 = num.toString();
     if (num2.length < n) {
@@ -33,7 +33,7 @@ export function leadZero(num: number, n: number) {
     return leadZero + num;
 }
 
-export function dateWithZero() {
+export function dateWithZero(): string {
     var d = new Date();
     return (
         d.getFullYear() +

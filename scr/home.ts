@@ -5,7 +5,7 @@ import * as fs from "fs";
 import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 if (UseSethomeCommand) {
     makeFile(sethome_json);
@@ -45,10 +45,10 @@ if (UseSethomeCommand) {
         const jsonObj = JSON.parse(fs.readFileSync(sethome_json, "utf8"));
 
         runCommand(`tp @a[name="${username}"] ${jsonObj[deviceId]}`);
-        addlog(`${username} tp to ${jsonObj[deviceId]}`)
+        addlog(`${username} tp to ${jsonObj[deviceId]}`);
 
         if (language === "english") {
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §l§eWarp Complete!"}]}`);   
+            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §l§eWarp Complete!"}]}`);
         }
         if (language === "korean") {
             runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §a집으로 이동되었습니다!"}]}`);
@@ -56,4 +56,4 @@ if (UseSethomeCommand) {
     }, {});
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - home.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - home.ts loaded`.gray);

@@ -3,7 +3,7 @@ import { command } from "bdsx/command";
 import { language, runCommand, SystemMessageTitle, TpacceptCommand, TpaCommand, UseTpaCommand } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 if (UseTpaCommand) {
     const reqs = new Map<string, Set<string>>();
@@ -22,22 +22,24 @@ if (UseTpaCommand) {
                     if (language === "korean") {
                         oPlayer.sendMessage(`${SystemMessageTitle} §c유저 한명을 정확하게 선택해주세요.`);
                     }
-
                 }
                 return;
             }
 
             const originName = origin.getName();
             const player = players[0];
-            const username = player.getName();
+            const username = player.getNameTag();
 
             if (language === "english") {
-                runCommand(`tellraw "${username}" {"rawtext": [{"text": "${SystemMessageTitle}\n§f------ ${originName} want tp to you ------\n§f------§c use '/${TpacceptCommand} ${originName}'§f ------"}]}`,);
+                runCommand(
+                    `tellraw "${username}" {"rawtext": [{"text": "${SystemMessageTitle}\n§f------ ${originName} want tp to you ------\n§f------§c use '/${TpacceptCommand} ${originName}'§f ------"}]}`,
+                );
             }
             if (language === "korean") {
-                runCommand(`tellraw "${username}" {"rawtext": [{"text": "${SystemMessageTitle}\n§f------ ${originName}님이 §a티피요청§f을 원합니다 ------\n§f------§c '/${TpacceptCommand} ${originName}'§f 명령어로 수락하세요. ------"}]}`,);
+                runCommand(
+                    `tellraw "${username}" {"rawtext": [{"text": "${SystemMessageTitle}\n§f------ ${originName}님이 §a티피요청§f을 원합니다 ------\n§f------§c '/${TpacceptCommand} ${originName}'§f 명령어로 수락하세요. ------"}]}`,
+                );
             }
-            
 
             const set = reqs.get(originName) ?? new Set();
             if (!reqs.has(originName)) reqs.set(originName, set);
@@ -45,11 +47,13 @@ if (UseTpaCommand) {
 
             setTimeout(() => {
                 if (set.delete(username))
-                if (language === "english") {
-                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §6Your tpa request §6has expired ------"}]}`); 
-                }
+                    if (language === "english") {
+                        runCommand(`tellraw "${originName}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §6Your tpa request §6has expired ------"}]}`);
+                    }
                 if (language === "korean") {
-                    runCommand(`tellraw "${originName}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §a${username}§f님에게 보낸 티피요청이 만료되었습니다 ------"}]}`);
+                    runCommand(
+                        `tellraw "${originName}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §a${username}§f님에게 보낸 티피요청이 만료되었습니다 ------"}]}`,
+                    );
                 }
             }, 60 * 1000);
         },
@@ -66,7 +70,7 @@ if (UseTpaCommand) {
                         oPlayer.sendMessage(`${SystemMessageTitle} §cselect one user correctly`);
                     }
                     if (language === "korean") {
-                        oPlayer.sendMessage(`${SystemMessageTitle} §c유저 한명을 정확하게 선택해주세요.`); 
+                        oPlayer.sendMessage(`${SystemMessageTitle} §c유저 한명을 정확하게 선택해주세요.`);
                     }
                 }
                 return;
@@ -74,7 +78,7 @@ if (UseTpaCommand) {
 
             const player = players[0];
             const originName = origin.getName();
-            const username = player.getName();
+            const username = player.getNameTag();
             if (reqs.has(username)) {
                 const set = reqs.get(username);
                 if (!set) return;
@@ -82,13 +86,17 @@ if (UseTpaCommand) {
                 if (set.delete(originName)) {
                     if (language === "english") {
                         runCommand(`tp "${username}" "${originName}"`);
-                        runCommand(`tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §a${origin.getName()}§f accept your tpa request ------"}]}`);
-                        addlog(`${username} tp to ${originName} by tpa`)
+                        runCommand(
+                            `tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ §a${origin.getName()}§f accept your tpa request ------"}]}`,
+                        );
+                        addlog(`${username} tp to ${originName} by tpa`);
                     }
                     if (language === "korean") {
-                        runCommand(`tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 ------"}]}`);
+                        runCommand(
+                            `tellraw "${username}" {"rawtext": [{"text":"${SystemMessageTitle}\n§f------ 상대가 수락을 하여 §a${originName}§f 님에게 이동됩니다 ------"}]}`,
+                        );
                         runCommand(`tp "${username}" "${originName}"`);
-                        addlog(`${username} tp to ${originName} by tpa`)
+                        addlog(`${username} tp to ${originName} by tpa`);
                     }
                 }
             }
@@ -97,4 +105,4 @@ if (UseTpaCommand) {
     );
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - tpa.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - tpa.ts loaded`.gray);

@@ -6,7 +6,7 @@ import { events } from "bdsx/event";
 import { serverProperties } from "bdsx/serverproperties";
 import { kick } from "../functions";
 import { AntiCrasherTitle, UseAntiCrasher } from "../setting";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 export const LAST = new Map<NetworkIdentifier, number>();
 export const COUNT = new Map<NetworkIdentifier, number>();
@@ -16,7 +16,7 @@ events.packetAfter(MinecraftPacketIds.Login).on(async (pkt, ni) => {
     LAST.set(ni, 0);
     COUNT.set(ni, 0);
 });
-events.networkDisconnected.on(async (ni) => {
+events.networkDisconnected.on(async ni => {
     LAST.delete(ni);
     COUNT.delete(ni);
 });
@@ -90,4 +90,4 @@ if (UseAntiCrasher) {
     }
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - anticrasher.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - anticrasher.ts loaded`.gray);

@@ -4,9 +4,22 @@ import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
 import { gray } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
-import { BlockColorWordTitle, ChatCutLongMessageLength, ChatCutLongMessageTitle, ChatCutSameMessageTitle, ChatCutSpeedMessageTime, ChatCutSpeedMessageTitle, ChatCutWhisperMessageLength, ChatCutWhisperMessageTitle, MuteMessage, SystemMessageTitle, UseBlockColorWord, UseChatCut } from "../setting";
+import {
+    BlockColorWordTitle,
+    ChatCutLongMessageLength,
+    ChatCutLongMessageTitle,
+    ChatCutSameMessageTitle,
+    ChatCutSpeedMessageTime,
+    ChatCutSpeedMessageTitle,
+    ChatCutWhisperMessageLength,
+    ChatCutWhisperMessageTitle,
+    MuteMessage,
+    SystemMessageTitle,
+    UseBlockColorWord,
+    UseChatCut,
+} from "../setting";
 import { addlog } from "./log";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 const runCommand = bedrockServer.executeCommand;
 
@@ -18,8 +31,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
     const month = today.getMonth() + 1;
     const day = today.getDate();
     const message = ptr.message.replace(/"/g, "''");
-    const username = ni.getActor()!.getName();
-
+    const username = ni.getActor()!.getNameTag();
 
     if (ni.getActor()?.hasTag("mute")) {
         console.log(gray(`[${month}/${day}/${hours}/${minutes}/${seconds}] <${username}> : ${message}`));
@@ -27,7 +39,7 @@ events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         return CANCEL;
     }
     console.log(gray(`[${month}/${day}/${hours}/${minutes}/${seconds}] <${username}> : ${message}`));
-    addlog(`<${username}> : ${message}`)
+    addlog(`<${username}> : ${message}`);
 });
 
 events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
@@ -40,10 +52,10 @@ events.packetAfter(MinecraftPacketIds.CommandRequest).on((pkt, ni, id) => {
         const seconds = today.getSeconds();
         const month = today.getMonth() + 1;
         const day = today.getDate();
-        const username = ni.getActor()?.getName();
+        const username = ni.getActor()?.getNameTag();
 
         console.log(gray(`[${month}/${day}/${hours}:${minutes}:${seconds}] <${username}> : ${message}`));
-        addlog(`<${username}> : ${message}`)
+        addlog(`<${username}> : ${message}`);
     }
 });
 
@@ -52,7 +64,7 @@ if (UseChatCut) {
     const LastChat: Record<string, string> = {};
     events.packetBefore(MinecraftPacketIds.Text).on((pkt, ni, id) => {
         const actor = ni.getActor()!;
-        const username = actor.getName();
+        const username = actor.getNameTag();
         const msg = pkt.message.replace(" ", "");
 
         if (msg.length > ChatCutLongMessageLength) {
@@ -127,7 +139,7 @@ events.command.on((command, origin) => {
 if (UseBlockColorWord === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const actor = ni.getActor()!;
-        const username = actor.getName();
+        const username = actor.getNameTag();
 
         if (UseBlockColorWord === true) {
             if (ptr.message?.includes("§")) {
@@ -138,4 +150,4 @@ if (UseBlockColorWord === true) {
     });
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - message.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - message.ts loaded`.gray);

@@ -5,7 +5,7 @@ import { command } from "bdsx/command";
 import { CxxString, float32_t } from "bdsx/nativetype";
 import { RemoveBossBarCommand, SetBossBarCommand } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 command.register(RemoveBossBarCommand, "remove bossbar", CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
@@ -47,4 +47,4 @@ command.register(SetBossBarCommand, "set bossbar", CommandPermissionLevel.Operat
     },
 );
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - bossbar.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - bossbar.ts loaded`.gray);

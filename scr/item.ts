@@ -1,10 +1,25 @@
 import { command } from "bdsx/command";
-import { basicitemA, basicitemB, basicitemC, BasicitemCommand, basicitemD, basicitemE, basicitemF, basicitemG, basicitemH, JoinGiveBasictem, runCommand, UseBasicitemCommand, UseWelcomeMessage, WelcomeMessage } from "../setting";
+import {
+    basicitemA,
+    basicitemB,
+    basicitemC,
+    BasicitemCommand,
+    basicitemD,
+    basicitemE,
+    basicitemF,
+    basicitemG,
+    basicitemH,
+    JoinGiveBasictem,
+    runCommand,
+    UseBasicitemCommand,
+    UseWelcomeMessage,
+    WelcomeMessage,
+} from "../setting";
 import { red } from "colors";
 import { events } from "bdsx/event";
 import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 if (UseBasicitemCommand) {
     command.register(BasicitemCommand, "기본템을 지급합니다.").overload((param, origin, output) => {
@@ -24,12 +39,12 @@ if (UseBasicitemCommand) {
         runCommand(`give @a[name="${username}"] ${basicitemF}`);
         runCommand(`give @a[name="${username}"] ${basicitemG}`);
         runCommand(`give @a[name="${username}"] ${basicitemH}`);
-        addlog(`${username} get items`)
+        addlog(`${username} get items`);
     }, {});
 }
 
-events.playerJoin.on((ev) => {
-    const username = ev.player.getName();
+events.playerJoin.on(ev => {
+    const username = ev.player.getNameTag();
 
     if (UseWelcomeMessage) {
         runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${WelcomeMessage}"}]}`);
@@ -46,9 +61,9 @@ events.playerJoin.on((ev) => {
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemG}`);
             runCommand(`give @a[name="${username}",tag=!joinbasicitem] ${basicitemH}`);
             runCommand(`tag @a[name="${username}",tag=!joinbasicitem] add joinbasicitem`);
-            addlog(`${username} get items`)
+            addlog(`${username} get items`);
         }
     }
 });
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - item.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - item.ts loaded`.gray);

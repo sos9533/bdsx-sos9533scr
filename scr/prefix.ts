@@ -1,5 +1,19 @@
 import { makeFile } from "../functions";
-import { BasicPrefix, BlockColorWordTitle, language, PrefixChatOutputType, PrefixCommand, PrefixCommandExplanation, PrefixCommandType, PrefixLength, Prefix_json, runCommand, SystemMessageTitle, UseBlockColorWord, UsePrefix } from "../setting";
+import {
+    BasicPrefix,
+    BlockColorWordTitle,
+    language,
+    PrefixChatOutputType,
+    PrefixCommand,
+    PrefixCommandExplanation,
+    PrefixCommandType,
+    PrefixLength,
+    Prefix_json,
+    runCommand,
+    SystemMessageTitle,
+    UseBlockColorWord,
+    UsePrefix,
+} from "../setting";
 import * as fs from "fs";
 import { events } from "bdsx/event";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
@@ -11,7 +25,7 @@ import { ServerPlayer } from "bdsx/bds/player";
 import { Form } from "bdsx/bds/form";
 import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 makeFile(Prefix_json);
 
@@ -23,7 +37,7 @@ function savePrefix() {
 if (UsePrefix === true) {
     events.packetBefore(MinecraftPacketIds.Text).on((ptr, ni, id) => {
         const actor = ni.getActor()!;
-        const username = actor.getName();
+        const username = actor.getNameTag();
         const message = ptr.message.replace(/"/gi, `''`);
 
         if (PrefixChatOutputType === "A") {
@@ -43,7 +57,7 @@ if (UsePrefix === true) {
             (params, origin, output) => {
                 if (params.Prefix !== undefined && params.target !== undefined) {
                     for (const player of params.target.newResults(origin, ServerPlayer)) {
-                        const username = player.getName();
+                        const username = player.getNameTag();
                         const target = params.target.newResults(origin)!;
                         const Prefix = params.Prefix;
                         const legnth = target.length;
@@ -90,7 +104,7 @@ if (UsePrefix === true) {
                             runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cthe Prefix is too long!"}]}`);
                         }
                         if (language === "korean") {
-                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c칭호가 너무 깁니다!"}]}`);  
+                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c칭호가 너무 깁니다!"}]}`);
                         }
                         runCommand(`playsound random.orb @a[name="${originName}"]`);
                     }
@@ -110,7 +124,7 @@ if (UsePrefix === true) {
                 return;
             }
             const ni = actor.getNetworkIdentifier();
-            const username = actor.getName();
+            const username = actor.getNameTag();
             if (language === "english") {
                 const res = await Form.sendTo(ni, {
                     type: "custom_form",
@@ -123,14 +137,14 @@ if (UsePrefix === true) {
                         },
                     ],
                 });
-    
+
                 if (res === null) return;
-    
+
                 if (res[0]?.length < PrefixLength && username) {
                     const Prefix = res[0];
                     PrefixData[username] = Prefix;
                     savePrefix();
-    
+
                     runCommand(`playsound random.levelup @a[name="${username}"]`);
                     runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §aprocessed successfully"}]}`);
                 } else {
@@ -157,7 +171,7 @@ if (UsePrefix === true) {
                     const Prefix = res[0];
                     PrefixData[username] = Prefix;
                     savePrefix();
-    
+
                     runCommand(`playsound random.levelup @a[name="${username}"]`);
                     runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §a칭호가 적용됬습니다!"}]}`);
                 } else {
@@ -169,4 +183,4 @@ if (UsePrefix === true) {
     }
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - prefix.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - prefix.ts loaded`.gray);

@@ -4,13 +4,12 @@ import { command } from "bdsx/command";
 import { serverProperties } from "bdsx/serverproperties";
 import { kick } from "../functions";
 import { KickCommand, KickTitle, language, runCommand, SystemMessageTitle } from "../setting";
-const levelname = serverProperties["level-name"]
-
+const levelname = serverProperties["level-name"];
 
 command.register(KickCommand, "kick player", CommandPermissionLevel.Operator).overload(
     (param, origin, output) => {
         for (const target of param.target.newResults(origin, ServerPlayer)) {
-            const username = target.getName();
+            const username = target.getNameTag();
             const ni = target.getNetworkIdentifier();
             kick(ni, KickTitle);
             if (language === "english") {
@@ -28,4 +27,4 @@ command.register(KickCommand, "kick player", CommandPermissionLevel.Operator).ov
     },
 );
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - kick.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - kick.ts loaded`.gray);

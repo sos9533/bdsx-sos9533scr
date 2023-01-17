@@ -5,7 +5,7 @@ import { BuildPlatform } from "bdsx/common";
 import { GetInfoCommand, language, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
 import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 if (UseGetInfoCommand) {
     command.register(GetInfoCommand, "get player's info", CommandPermissionLevel.Operator).overload(
@@ -19,7 +19,7 @@ if (UseGetInfoCommand) {
                 const originName = origin.getName();
                 const deviceId = player.deviceId;
                 const ni = player.getNetworkIdentifier();
-                const username = player.getName();
+                const username = player.getNameTag();
                 const xuid = player.getXuid();
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
@@ -37,8 +37,6 @@ if (UseGetInfoCommand) {
                         }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
                     );
                 }
-
-
             }
         },
         {
@@ -79,4 +77,4 @@ if (UseMyInfoCommand) {
     }, {});
 }
 
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - info.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - info.ts loaded`.gray);

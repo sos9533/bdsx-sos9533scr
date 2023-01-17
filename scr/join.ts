@@ -1,4 +1,3 @@
-
 import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { BuildPlatform } from "bdsx/common";
@@ -6,9 +5,19 @@ import { events } from "bdsx/event";
 import { kick } from "../functions";
 import { green } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
-import { AntiLongNicknameLength, AntiLongNicknameMessage, AntiLongNicknameTitle, AntiToolboxMessage, AntiToolBoxTitle, runCommand, SystemMessageTitle, UseAntiLongNickname, UseAntiToolbox } from "../setting";
+import {
+    AntiLongNicknameLength,
+    AntiLongNicknameMessage,
+    AntiLongNicknameTitle,
+    AntiToolboxMessage,
+    AntiToolBoxTitle,
+    runCommand,
+    SystemMessageTitle,
+    UseAntiLongNickname,
+    UseAntiToolbox,
+} from "../setting";
 import { addlog } from "./log";
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 export const playerList = new Map<NetworkIdentifier, string>();
 
@@ -43,9 +52,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     if (deviceModel === "") deviceModel = "No Model";
 
     console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`));
-    addlog(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`)
+    addlog(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`);
 });
 
-
-
-console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - join.ts loaded`.gray)
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - join.ts loaded`.gray);
