@@ -1,13 +1,13 @@
-//     .d88888b     .88888.    .d88888b    .d888b.   888888P   d8888b.   d8888b.                            
-//     88.    "'   d8'   `8b   88.    "'   Y8' `88   88'           `88       `88                            
-//     `Y88888b.   88     88   `Y88888b.   `8bad88   88baaa.    aaad8'    aaad8'   .d8888b.   .d8888b.   88d888b. 
-//           `8b   88     88         `8b       `88       `88       `88       `88   Y8ooooo.   88'  `""   88'  `88 
-//     d8'   .8P   Y8.   .8P   d8'   .8P   d.  .88        88       .88       .88         88   88.  ...   88       
-//      Y88888P     `8888P'     Y88888P    `8888P    d88888P   d88888P   d88888P   `88888P'   `88888P'   dP       
-//                                                                  
+//     .d88888b     .88888.    .d88888b    .d888b.   888888P   d8888b.   d8888b.
+//     88.    "'   d8'   `8b   88.    "'   Y8' `88   88'           `88       `88
+//     `Y88888b.   88     88   `Y88888b.   `8bad88   88baaa.    aaad8'    aaad8'   .d8888b.   .d8888b.   88d888b.
+//           `8b   88     88         `8b       `88       `88       `88       `88   Y8ooooo.   88'  `""   88'  `88
+//     d8'   .8P   Y8.   .8P   d8'   .8P   d.  .88        88       .88       .88         88   88.  ...   88
+//      Y88888P     `8888P'     Y88888P    `8888P    d88888P   d88888P   d88888P   `88888P'   `88888P'   dP
+//
 
 //  Made by sos9533, mdisprgm, job-gut, Blue00123, kdg7313
-//  Recommend using 'visual studio code'(https://code.visualstudio.com/) 
+//  Recommend using 'visual studio code'(https://code.visualstudio.com/)
 
 
 /*
@@ -146,7 +146,7 @@ export const ShowBanListCommand = "banlist";
 
 //Offline Player Device Ban command [Only DeviceID] (with out /) - For OP
 //플레이어가 접속하지 않았을때 device id 를 이용해 차단 (/빼고) - 관리자 전용 명령어
-export const OfflinePlayerDeivceBanCommand = "offline-ban-device";
+export const OfflinePlayerDeviceBanCommand = "offline-ban-device";
 
 
 
@@ -289,7 +289,7 @@ export const tpcommandtitleC = "§eWarp Complete!";
 
 
 /////////////////////////////////////////////////////////////////////
-//sethome command 
+//sethome command
 //집설정 명령어
 
 
@@ -392,7 +392,7 @@ export const UsePrefix: boolean = true;
 //style B     <Prefix> Name : message
 //style C     [Prefix] <Name> : message
 //style D     [Prefix] Name : message
-//형식A     <칭호> <닉네임> : 채팅 
+//형식A     <칭호> <닉네임> : 채팅
 //형식B     <칭호> 닉네임 : 채팅
 //형식C     [칭호] <닉네임> : 채팅
 //형식D     [칭호] 닉네임 : 채팅

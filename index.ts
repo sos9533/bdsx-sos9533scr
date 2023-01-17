@@ -18,10 +18,10 @@ export function isAbstracted(obj: any): boolean {
     }
 }
 
-const levelname = serverProperties["level-name"]
+const levelname = serverProperties["level-name"];
 
 if (!isAbstracted(bedrockServer.minecraft)) {
-    console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Strat Loading...`.gray)
+    console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - Plugin Strat Loading...`.gray);
     import("./scr/anticrasher");
     import("./scr/ban");
     import("./scr/bossbar");
@@ -39,7 +39,7 @@ if (!isAbstracted(bedrockServer.minecraft)) {
     import("./scr/tpa");
 } else {
     events.serverOpen.on(() => {
-        console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red +` - Plugin Strat Loading...`.gray)
+        console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - Plugin Strat Loading...`.gray);
         import("./scr/anticrasher");
         import("./scr/ban");
         import("./scr/bossbar");
@@ -57,4 +57,3 @@ if (!isAbstracted(bedrockServer.minecraft)) {
         import("./scr/tpa");
     });
 }
-

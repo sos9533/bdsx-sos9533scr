@@ -18,7 +18,7 @@ import {
     language,
     NameBanCommand,
     NameUnBanCommand,
-    OfflinePlayerDeivceBanCommand,
+    OfflinePlayerDeviceBanCommand,
     runCommand,
     ShowBanListCommand,
     SystemMessageTitle,
@@ -380,24 +380,24 @@ command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLe
                     `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
                 );
                 runCommand(
-                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "/${OfflinePlayerDeivceBanCommand} <DeviceID>"로 차단 할 수 있습니다"}]}`,
+                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "/${OfflinePlayerDeviceBanCommand} <DeviceID>"로 차단 할 수 있습니다"}]}`,
                 );
             }
             if (language === "english") {
                 runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: You can not use this command for offline player"}]}`);
                 runCommand(
-                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: If you know player deviceID use "/${OfflinePlayerDeivceBanCommand} <DeviceID>"}]}`,
+                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: If you know player deviceID use "/${OfflinePlayerDeviceBanCommand} <DeviceID>"}]}`,
                 );
             }
 
             if (corg.isServerCommandOrigin()) {
                 if (language === "korean") {
                     console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
-                    console.log(yellow(`접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "${OfflinePlayerDeivceBanCommand} <DeviceID>"`));
+                    console.log(yellow(`접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "${OfflinePlayerDeviceBanCommand} <DeviceID>"`));
                 }
                 if (language === "english") {
                     console.log(red("Error: You can not use this command for offline player"));
-                    console.log(yellow(`If you know player device ID use "${OfflinePlayerDeivceBanCommand} <DeviceID>"`));
+                    console.log(yellow(`If you know player device ID use "${OfflinePlayerDeviceBanCommand} <DeviceID>"`));
                 }
             }
             return;
@@ -574,7 +574,7 @@ command.register(ShowBanListCommand, "Shows server ban list", CommandPermissionL
     }
 }, {});
 
-command.register(OfflinePlayerDeivceBanCommand, "device ban even if the player is offline", CommandPermissionLevel.Operator).overload(
+command.register(OfflinePlayerDeviceBanCommand, "device ban even if the player is offline", CommandPermissionLevel.Operator).overload(
     (input, corg) => {
         const originName = corg.getName();
         const input_length = input.deviceId.length;
