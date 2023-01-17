@@ -1,15 +1,24 @@
 <div align="center">   
-<img src="sos9533scr_logo.png" height="300">
-<h3>Basic Setting Plugin for BDSX. </h3>
+<img src="sos9533scr_logo.png" height="250">
+<h2>Basic Setting Plugin for BDSX. </h2>
 
 [![Discord](https://img.shields.io/discord/1062009314128179261?color=%235865F2&label=DISCORD&logo=Discord&logoColor=white&style=for-the-badge)](https://discord.gg/mSfeVprMkv) 
-[![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE)<br><br><br>
-   
-   
+[![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE) <br>
+[![star](https://img.shields.io/github/stars/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](LICENSE)
+[![contributor](https://img.shields.io/github/contributors/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](LICENSE)<br><br>
+Made by [sos9533](https://omlet.gg/profile/sos9533)
+</div>
+
+------------------------------------------------- 
+
+<br><br><br>
+<div align="center">   
+
+<h5>아래 버튼을 클릭하여 사용법을 확인하세요. <br>Click the button below to see how to use it.</h5>
+
 [![how_to_use](https://img.shields.io/badge/help menu-blue&?style=for-the-badge&color=blue)](#sos9533scr-english)  
 [![기능 및 사용법](https://img.shields.io/badge/한국어 도움말-blue&?style=for-the-badge&color=blue)](#sos9533scr-korean)  
 [![Note](https://img.shields.io/badge/Note-blue&?style=for-the-badge&color=blue)](#Note)
-<h5>위 버튼을 클릭하여 사용법을 확인하세요. <br> Click the button above to see how to use this.</h5>
 
 </div>
 <br>
@@ -18,9 +27,7 @@
 ### 2.1.1 UPDATE [12/31]
 sos9533scr has been renewed to 2.0. </br>
 Add `logging` </br>
-Fix `log.ts`
-
-
+Fix `log.ts` <br><br><br><br>
 
 
 -------------------------------------------------
@@ -372,4 +379,4 @@ Or indicate that you used sos9533scr in-gamer.`
 ## About sos9533
 - [`OmletArcade`](https://omlet.gg/profile/sos9533)
 - `Discord : sos9533#9533`
-
+- 
