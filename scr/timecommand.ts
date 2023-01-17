@@ -1,7 +1,7 @@
 import { CommandPermissionLevel } from "bdsx/bds/command";
 import { command } from "bdsx/command";
-import { ChangeTimeCommand_Day, ChangeTimeCommand_Night, language, runCommand, SystemMessageTitle } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
+import { ChangeTimeCommand_Day, ChangeTimeCommand_Night, language, runCommand, SystemMessageTitle } from "../setting";
 const levelname = serverProperties["level-name"];
 
 command.register(ChangeTimeCommand_Day, "Change world's time to day", CommandPermissionLevel.Operator).overload((input, corg) => {

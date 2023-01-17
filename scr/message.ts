@@ -2,8 +2,8 @@ import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
-import { gray } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { gray } from "colors";
 import {
     BlockColorWordTitle,
     ChatCutLongMessageLength,

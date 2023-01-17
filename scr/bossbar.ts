@@ -3,8 +3,8 @@ import { BossEventPacket } from "bdsx/bds/packets";
 import { ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { CxxString, float32_t } from "bdsx/nativetype";
-import { RemoveBossBarCommand, SetBossBarCommand } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
+import { RemoveBossBarCommand, SetBossBarCommand } from "../setting";
 const levelname = serverProperties["level-name"];
 
 command.register(RemoveBossBarCommand, "remove bossbar", CommandPermissionLevel.Operator).overload(

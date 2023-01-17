@@ -1,7 +1,17 @@
+import { ActorWildcardCommandSelector, CommandPermissionLevel } from "bdsx/bds/command";
+import { Form } from "bdsx/bds/form";
+import { MinecraftPacketIds } from "bdsx/bds/packetids";
+import { ServerPlayer } from "bdsx/bds/player";
+import { command } from "bdsx/command";
+import { CANCEL } from "bdsx/common";
+import { events } from "bdsx/event";
+import { CxxString } from "bdsx/nativetype";
+import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
+import * as fs from "fs";
 import { makeFile } from "../functions";
 import {
     BasicPrefix,
-    BlockColorWordTitle,
     language,
     PrefixChatOutputType,
     PrefixCommand,
@@ -11,20 +21,8 @@ import {
     Prefix_json,
     runCommand,
     SystemMessageTitle,
-    UseBlockColorWord,
     UsePrefix,
 } from "../setting";
-import * as fs from "fs";
-import { events } from "bdsx/event";
-import { MinecraftPacketIds } from "bdsx/bds/packetids";
-import { CANCEL } from "bdsx/common";
-import { command } from "bdsx/command";
-import { ActorWildcardCommandSelector, CommandPermissionLevel } from "bdsx/bds/command";
-import { CxxString } from "bdsx/nativetype";
-import { ServerPlayer } from "bdsx/bds/player";
-import { Form } from "bdsx/bds/form";
-import { red } from "colors";
-import { serverProperties } from "bdsx/serverproperties";
 const levelname = serverProperties["level-name"];
 
 makeFile(Prefix_json);
@@ -60,9 +58,9 @@ if (UsePrefix === true) {
                         const username = player.getNameTag();
                         const target = params.target.newResults(origin)!;
                         const Prefix = params.Prefix;
-                        const legnth = target.length;
+                        const length = target.length;
 
-                        for (let i = 0; i < legnth; i++) {
+                        for (let i = 0; i < length; i++) {
                             PrefixData[username] = Prefix;
                             savePrefix();
                             if (language === "english") {

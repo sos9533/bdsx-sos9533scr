@@ -2,9 +2,9 @@ import { NetworkIdentifier } from "bdsx/bds/networkidentifier";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { BuildPlatform } from "bdsx/common";
 import { events } from "bdsx/event";
-import { kick } from "../functions";
-import { green } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { green } from "colors";
+import { kick } from "../functions";
 import {
     AntiLongNicknameLength,
     AntiLongNicknameMessage,
@@ -24,11 +24,11 @@ export const playerList = new Map<NetworkIdentifier, string>();
 events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetId) => {
     const connreq = ptr.connreq;
     if (connreq === null) return;
-    const cert = connreq.cert;
+    const cert = connreq.getCertificate();
     const ip = networkIdentifier.getAddress();
     const xuid = cert.getXuid();
     const username = cert.getId();
-    const deviceid = connreq.getDeviceId();
+    const deviceId = connreq.getDeviceId();
     let deviceModel = connreq.getJsonValue()!["DeviceModel"];
 
     if (username) playerList.set(networkIdentifier, username);
@@ -51,8 +51,8 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
 
     if (deviceModel === "") deviceModel = "No Model";
 
-    console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`));
-    addlog(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceid}`);
+    console.log(green(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceId}`));
+    addlog(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceId}`);
 });
 
 console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - join.ts loaded`.gray);

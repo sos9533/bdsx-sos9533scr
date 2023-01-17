@@ -1,4 +1,7 @@
 import { command } from "bdsx/command";
+import { events } from "bdsx/event";
+import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
 import {
     basicitemA,
     basicitemB,
@@ -15,9 +18,6 @@ import {
     UseWelcomeMessage,
     WelcomeMessage,
 } from "../setting";
-import { red } from "colors";
-import { events } from "bdsx/event";
-import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 

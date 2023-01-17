@@ -1,7 +1,7 @@
 import { command } from "bdsx/command";
-import { runCommand, SpawnCommand, Spawncommandexplanation, SpawnCommandTitle, SpawnCoordinate, SystemMessageTitle, tpcommandA, tpcommandB, tpcommandC, tpcommandexplanationA, tpcommandexplanationB, tpcommandexplanationC, tpcommandtitleA, tpcommandtitleB, tpcommandtitleC, tpcoordinateA, tpcoordinateB, tpcoordinateC, UseSpawnCommand, usestpcommandA, usestpcommandB, usestpcommandC } from "../setting";
-import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
+import { runCommand, SpawnCommand, Spawncommandexplanation, SpawnCommandTitle, SpawnCoordinate, SystemMessageTitle, tpcommandA, tpcommandB, tpcommandC, tpcommandexplanationA, tpcommandexplanationB, tpcommandexplanationC, tpcommandtitleA, tpcommandtitleB, tpcommandtitleC, tpcoordinateA, tpcoordinateB, tpcoordinateC, UseSpawnCommand, usestpcommandA, usestpcommandB, usestpcommandC } from "../setting";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 

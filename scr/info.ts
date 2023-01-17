@@ -2,9 +2,9 @@ import { CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command"
 import { ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { BuildPlatform } from "bdsx/common";
-import { GetInfoCommand, language, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
-import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
+import { GetInfoCommand, language, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
 const levelname = serverProperties["level-name"];
 
 if (UseGetInfoCommand) {

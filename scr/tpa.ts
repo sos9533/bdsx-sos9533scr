@@ -1,7 +1,7 @@
 import { PlayerCommandSelector } from "bdsx/bds/command";
 import { command } from "bdsx/command";
-import { language, runCommand, SystemMessageTitle, TpacceptCommand, TpaCommand, UseTpaCommand } from "../setting";
 import { serverProperties } from "bdsx/serverproperties";
+import { language, runCommand, SystemMessageTitle, TpacceptCommand, TpaCommand, UseTpaCommand } from "../setting";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 

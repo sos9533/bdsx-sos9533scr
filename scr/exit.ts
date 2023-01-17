@@ -1,7 +1,7 @@
 import { events } from "bdsx/event";
-import { playerList } from "./join";
-import { red } from "colors";
 import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
+import { playerList } from "./join";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 

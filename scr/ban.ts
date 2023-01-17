@@ -1,14 +1,15 @@
+import { CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { MinecraftPacketIds } from "bdsx/bds/packetids";
 import { PlayerPermission, ServerPlayer } from "bdsx/bds/player";
+import { command } from "bdsx/command";
 import { CANCEL } from "bdsx/common";
 import { events } from "bdsx/event";
 import { bedrockServer } from "bdsx/launcher";
-import { dateWithZero, kick, makeDir } from "../functions";
-import { red, yellow } from "colors";
-import { command } from "bdsx/command";
-import { CommandPermissionLevel, PlayerCommandSelector } from "bdsx/bds/command";
 import { CxxString, int32_t } from "bdsx/nativetype";
+import { serverProperties } from "bdsx/serverproperties";
+import { red, yellow } from "colors";
 import * as fs from "fs";
+import { dateWithZero, kick, makeDir } from "../functions";
 import {
     BanTitle,
     DeviceBanCommand,
@@ -23,7 +24,6 @@ import {
     ShowBanListCommand,
     SystemMessageTitle,
 } from "../setting";
-import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
 
 const levelname = serverProperties["level-name"];

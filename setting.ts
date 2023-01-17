@@ -163,7 +163,7 @@ export const BanTitle = "§l§f[ §cBAN §f]\n\n§cYou are banned from this serv
 //정보확인 명령어
 
 
-//use get info command (true/false) (All OP can get user info(IP,Devcie ID,OS,Ping))
+//use get info command (true/false) (All OP can get user info(IP,Device ID,OS,Ping))
 //정보확인 명령어 사용여부 (true/false) (모든 op가 모든 어떤 유저든 정보 확인가능)
 export const UseGetInfoCommand: boolean = true;
 
@@ -175,7 +175,7 @@ export const GetInfoCommand = "getinfo";
 
 
 
-//use my info command (true/false) (All user can get their info(IP,Devcie ID,OS,Ping))
+//use my info command (true/false) (All user can get their info(IP,Device ID,OS,Ping))
 //내정보 명령어 사용여부 (true/false) (자신의 정보만 확인가능)
 export const UseMyInfoCommand: boolean = true;
 

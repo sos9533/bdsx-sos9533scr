@@ -1,9 +1,9 @@
 import { command } from "bdsx/command";
+import { serverProperties } from "bdsx/serverproperties";
+import { red } from "colors";
+import * as fs from "fs";
 import { makeFile } from "../functions";
 import { HomeCommand, language, runCommand, SethomeCommand, sethome_json, SystemMessageTitle, UseSethomeCommand } from "../setting";
-import * as fs from "fs";
-import { red } from "colors";
-import { serverProperties } from "bdsx/serverproperties";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 
