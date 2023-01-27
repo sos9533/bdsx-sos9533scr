@@ -6,7 +6,6 @@
 [![License](https://img.shields.io/github/license/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github)](LICENSE) <br>
 [![star](https://img.shields.io/github/stars/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](https://github.com/sos9533/bdsx-sos9533scr/stargazers)
 [![contributor](https://img.shields.io/github/contributors/sos9533/bdsx-sos9533scr?style=for-the-badge&logo=github&color=B8860B)](https://github.com/sos9533/bdsx-sos9533scr/graphs/contributors)<br><br>
-Made by [sos9533](https://omlet.gg/profile/sos9533)
 </div>
 
 ------------------------------------------------- 
@@ -18,7 +17,8 @@ Made by [sos9533](https://omlet.gg/profile/sos9533)
 
 [![how_to_use](https://img.shields.io/badge/help menu-blue&?style=for-the-badge&color=blue)](#sos9533scr-english)  
 [![기능 및 사용법](https://img.shields.io/badge/한국어 도움말-blue&?style=for-the-badge&color=blue)](#sos9533scr-korean)  
-[![Note](https://img.shields.io/badge/Note-blue&?style=for-the-badge&color=blue)](#Note)
+[![Note](https://img.shields.io/badge/Note-blue&?style=for-the-badge&color=blue)](#Note)<br><br>
+Need help? Click the Discord icon to come to our official support server!
 
 </div>
 <br>
@@ -359,15 +359,16 @@ let chinchatset = "D"
 # Note
 
 ## LICENSE
-`MIT LICENSE - Copyright (c) 2022 sos9533`
 
-`Can use it freely without any restrictions.
+```
+MIT LICENSE - Copyright (c) 2022 sos9533
+
+Can use it freely without any restrictions.
 But don't change the code that makes "/sos9533scr" visible in-game.
-Or indicate that you used sos9533scr in-gamer.`
 
-`어떠한 제한 없이 사용할수 있음.
+어떠한 제한 없이 사용할수 있음.
 하지만 "/sos9533scr"가 인게임에서 보이게 하는 코드를 변경하지 말것.
-또는 sos9533scr가 사용되었음을 해당 서버에서 누구나 쉽게 볼수 있는곳에 표시할것.`
+```
 
 ## Contributors
 - [`sos9533`](https://github.com/sos9533)
@@ -379,4 +380,3 @@ Or indicate that you used sos9533scr in-gamer.`
 ## About sos9533
 - [`OmletArcade`](https://omlet.gg/profile/sos9533)
 - `Discord : sos9533#9533`
-- 
