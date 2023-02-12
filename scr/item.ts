@@ -2,6 +2,7 @@ import { command } from "bdsx/command";
 import { events } from "bdsx/event";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
+import { Translate } from "..";
 import {
     basicitemA,
     basicitemB,
@@ -15,19 +16,17 @@ import {
     JoinGiveBasictem,
     runCommand,
     UseBasicitemCommand,
-    UseWelcomeMessage,
-    WelcomeMessage,
 } from "../setting";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 
 if (UseBasicitemCommand) {
-    command.register(BasicitemCommand, "기본템을 지급합니다.").overload((param, origin, output) => {
+    command.register(BasicitemCommand, Translate("command.ItemExplanation")).overload((param, origin, output) => {
         const username = origin.getName();
         const entity = origin.getEntity();
 
         if (!entity?.isPlayer()) {
-            console.log(red("You are the server console"));
+            console.log(red(Translate("error.ConsoleUseCommand")));
             return;
         }
 
@@ -45,10 +44,6 @@ if (UseBasicitemCommand) {
 
 events.playerJoin.on(ev => {
     const username = ev.player.getNameTag();
-
-    if (UseWelcomeMessage) {
-        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${WelcomeMessage}"}]}`);
-    }
 
     if (UseBasicitemCommand) {
         if (JoinGiveBasictem) {
