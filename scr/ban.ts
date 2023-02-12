@@ -9,6 +9,7 @@ import { CxxString, int32_t } from "bdsx/nativetype";
 import { serverProperties } from "bdsx/serverproperties";
 import { red, yellow } from "colors";
 import * as fs from "fs";
+import { Translate } from "..";
 import { dateWithZero, kick, makeDir } from "../functions";
 import {
     BanTitle,
@@ -47,27 +48,17 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (!getbantime) {
             kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
-                if (language === "english") {
-                    onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Name Ban Player]`);
-                }
-                if (language === "korean") {
-                    onlineops[i].sendMessage(`${SystemMessageTitle} §c${username}님이 접속을 시도하셨습니다. [Name Ban Player]`);
-                }
+                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionNameban")}`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
-            addlog("[ sos9533scr ] ${username} tried connection [Name Ban Player]");
+            addlog(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`);
             return CANCEL;
         }
         const ToString = String(getbantime);
         if (ToString == "null") {
             kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
-                if (language === "english") {
-                    onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Name Ban Player]`);
-                }
-                if (language === "korean") {
-                    onlineops[i].sendMessage(`${SystemMessageTitle} §c${username}님이 접속을 시도하셨습니다. [Name Ban Player]`);
-                }
+                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionNameban")}`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
             addlog(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`);
@@ -94,17 +85,11 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             fs.unlink(`./banDB/${username}`, err => {});
             return;
         }
-
-        if (language === "english") {
-            kick(ni, `${BanTitle}\n§fYour ban is expired on ${banTime}`);
-        }
-
-        if (language === "korean") {
-            kick(ni, `${BanTitle}\n§f차단은 ${banTime} 까지입니다.`);
-        }
+        
+        kick(ni, `${BanTitle}\n${Translate("ban.BanExpired")} ${banTime}`);
 
         for (let i = 0; i < op_count; i++) {
-            onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Name Ban Player]`);
+            onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionNameban")}`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`));
         addlog(`[ sos9533scr ] ${username} tried connection [Name Ban Player]`);
@@ -118,7 +103,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (!getbantime) {
             kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
-                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
+                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionDeviceban")} (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`);
@@ -128,7 +113,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
         if (ToString == "null") {
             kick(ni, BanTitle);
             for (let i = 0; i < op_count; i++) {
-                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
+                onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionDeviceban")} (${deviceId})`);
             }
             console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
             addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`);
@@ -156,16 +141,10 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
             return;
         }
 
-        if (language === "english") {
-            kick(ni, `${BanTitle}\n§fYour ban is expired on ${banTime}`);
-        }
-
-        if (language === "korean") {
-            kick(ni, `${BanTitle}\n§f차단은 ${banTime} 까지입니다.`);
-        }
+        kick(ni, `${BanTitle}\n${Translate("ban.BanExpired")} ${banTime}`);
 
         for (let i = 0; i < op_count; i++) {
-            onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} tried connection [Device Ban Player] (${deviceId})`);
+            onlineops[i].sendMessage(`${SystemMessageTitle} §c${username} ${Translate("ban.TriedConnectionDeviceban")} (${deviceId})`);
         }
         console.log(red(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`));
         addlog(`[ sos9533scr ] ${username} tried connection [Device Ban Player] (${deviceId})`);
@@ -173,7 +152,7 @@ events.packetAfter(MinecraftPacketIds.Login).on((pkt, ni) => {
     }
 });
 
-const cmd_unban = command.register(NameUnBanCommand, "unban player's name", CommandPermissionLevel.Operator);
+const cmd_unban = command.register(NameUnBanCommand, Translate("command.NameUnbanExplanation"), CommandPermissionLevel.Operator);
 
 const unbanenum = command.softEnum("player", fs.readdirSync("./banDB/"));
 const dunbanenum = command.softEnum("DeviceID", fs.readdirSync("./DbanDB/"));
@@ -183,61 +162,32 @@ cmd_unban.overload(
         const plname = ni.getName();
 
         if (plname === inputs.player) {
-            if (language === "english") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §eGood Luck"}]}`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §e행운을 빕니다. :)"}]}`);
-            }
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.Goodluck")}"}]}`);
             return 0;
         }
         if (inputs.player === "") {
-            if (language === "english") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: Please type name."}]}`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 이름을 적어주세요."}]}`);
-            }
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindName")}"}]}`);
             return;
         }
 
         let banlist = fs.readdirSync("./banDB/");
         if (banlist.includes(inputs.player) === false) {
             if (ni.isServerCommandOrigin() === true) {
-                if (language === "english") {
-                    console.log(red(`${inputs.player} is already unbanned\nYou can see banlist using banlist`));
-                    addlog(`${inputs.player} is already unbanned\nYou can see banlist using banlist`);
-                }
-                if (language === "korean") {
-                    console.log(red(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`));
-                    addlog(`${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`);
-                }
+                console.log(red(`${inputs.player}${Translate("ban.PlayerAlreadyUnBanned")}`));
+                addlog(`${inputs.player}${Translate("ban.PlayerAlreadyUnBanned")}`);
                 return CANCEL;
             } else {
-                if (language === "english") {
-                    runCommand(
-                        `tellraw ${plname} {"rawtext":[{"text":"${SystemMessageTitle} ${inputs.player} is already unbanned\n§cYou can see banlist using §e/banlist"}]}`,
-                    );
-                }
-                if (language === "korean") {
-                    runCommand(
-                        `tellraw ${plname} {"rawtext":[{"text":"${SystemMessageTitle} ${inputs.player}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요"}]}`,
-                    );
-                }
+                runCommand(
+                    `tellraw ${plname} {"rawtext":[{"text":"${SystemMessageTitle} ${inputs.player} ${Translate("ban.PlayerAlreadyUnBanned")}"}]}`,
+                );
                 return CANCEL;
             }
         } else {
             fs.unlink(`./banDB/${inputs.player}`, err => {});
-            if (language === "korean") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${inputs.player}(을)를 차단해제 했습니다"}]}`);
-                console.log(yellow(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`));
-                addlog(`${plname} : ${inputs.player}(을)를 차단해제 했습니다`);
-            }
-            if (language === "english") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Unbanned ${inputs.player}"}]}`);
-                console.log(yellow(`${plname} : Unbanned ${inputs.player}`));
-                addlog(`${plname} : Unbanned ${inputs.player}`);
-            }
+
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${inputs.player} ${Translate("ban.UnBanSuccess")}"}]}`);
+            console.log(yellow(`${plname} : ${inputs.player} ${Translate("ban.UnBanSuccess")}`));
+            addlog(`${plname} : ${inputs.player} ${Translate("ban.UnBanSuccess")}`);
 
             unbanenum.removeValues(inputs.player);
         }
@@ -247,54 +197,32 @@ cmd_unban.overload(
     },
 );
 
-command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Operator).overload(
+command.register(NameBanCommand, Translate("command.NamebanExplanation"), CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
         const plname = corg.getName();
         const Tname = inputs.player.getName();
         if (Tname === plname) {
-            if (language === "korean") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §e자기자신은 가장 소중한 존재입니다"}]}`);
-            }
-            if (language === "english") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §l§cYou can't ban yourself"}]}`);
-            }
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantBanYourself")}"}]}`);
             return CANCEL;
         }
 
         if (!Tname) {
-            if (language === "english") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: Please type name here."}]}`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 이름을 적어주세요"}]}`);
-            }
+            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindName")}"}]}`);
             return CANCEL;
         }
 
         let banlist = fs.readdirSync("./banDB/");
         if (banlist.includes(Tname)) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red(`${inputs.player.getName()} is already unbanned`));
-                    addlog(`${inputs.player.getName()} is already unbanned`);
-                }
-                if (language === "korean") {
-                    console.log(red(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`));
-                    addlog(`플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다`);
-                }
-
+                console.log(red(`${Tname} ${Translate("ban.PlayerAlreadyBanned")}`));
+                addlog(`${Tname} ${Translate("ban.PlayerAlreadyBanned")}`);
                 return CANCEL;
             } else {
-                if (language === "english") {
-                    runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${inputs.player.getName()} is already banned}]}`);
-                }
-                if (language === "korean") {
-                    runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${Tname}(은)는 이미 차단된 플레이어입니다"}]}`);
-                }
+                console.log(red(`${Tname} ${Translate("ban.PlayerAlreadyBanned")}`));
+                addlog(`${Tname} ${Translate("ban.PlayerAlreadyBanned")}`);
                 return CANCEL;
             }
         }
-
         inputs.minutes = inputs.minutes ?? 0;
 
         const date = new Date();
@@ -309,17 +237,9 @@ command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Ope
         const time_log = `${year}-${month}-${day}-${hours}-${minutes}`;
 
         fs.writeFileSync(`./banDB/${Tname}`, time_log);
-
-        if (language === "english") {
-            console.log(yellow(`${plname} : Banned ${inputs.player.getName()}`));
-            addlog(`${plname} : Banned ${inputs.player.getName()}`);
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Banned ${inputs.player.getName()}"}]}`);
-        }
-        if (language === "korean") {
-            console.log(yellow(`${plname} : ${Tname}(을)를 차단했습니다`));
-            addlog(`${plname} : ${Tname}(을)를 차단했습니다`);
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${Tname}(을)를 차단했습니다"}]}`);
-        }
+        console.log(yellow(`${plname} : ${inputs.player.getName()} ${Translate("ban.BanSuccess")}`));
+        addlog(`${plname} : ${inputs.player.getName()} ${Translate("ban.BanSuccess")}`);
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle}  §l${inputs.player.getName()} ${Translate("ban.BanSuccess")}"}]}`);
 
         unbanenum.addValues(Tname);
         if (runCommand(`testfor "${Tname}"`).isSuccess()) {
@@ -328,12 +248,7 @@ command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Ope
                 if (!inputs.minutes) {
                     kick(Ni, BanTitle);
                 } else {
-                    if (language === "english") {
-                        kick(Ni, `${BanTitle}\n§fYour ban is expired on ${time_title}`);
-                    }
-                    if (language === "korean") {
-                        kick(Ni, `${BanTitle}\n§f차단은 ${time_title}§r까지입니다`);
-                    }
+                    kick(Ni, `${BanTitle}\n${Translate("ban.BanExpired")} ${time_title}`);
                 }
                 return CANCEL;
             }
@@ -345,28 +260,18 @@ command.register(NameBanCommand, "ban player's name", CommandPermissionLevel.Ope
     },
 );
 
-command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLevel.Operator).overload(
+command.register(DeviceBanCommand, Translate("command.DevicebanExplanation"), CommandPermissionLevel.Operator).overload(
     async (inputs, corg) => {
         const originName = corg.getName();
         const targetName = inputs.player.getName();
 
         if (targetName === originName) {
-            if (language === "english") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cYou can't ban yourself"}]}`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §e자기자신은 가장 소중한 존재입니다"}]}`);
-            }
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantBanYourself")}"}]}`);
             return;
         }
 
         if (!targetName) {
-            if (language === "english") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: Please type name here."}]}`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 이름을 적어주세요"}]}`);
-            }
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindName")}}]}`);
             return;
         }
 
@@ -375,30 +280,14 @@ command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLe
         const deviceId = target.deviceId;
 
         if (!runCommand(`testfor "${targetName}"`).isSuccess()) {
-            if (language === "korean") {
-                runCommand(
-                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"}]}`,
-                );
-                runCommand(
-                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "/${OfflinePlayerDeviceBanCommand} <DeviceID>"로 차단 할 수 있습니다"}]}`,
-                );
-            }
-            if (language === "english") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: You can not use this command for offline player"}]}`);
-                runCommand(
-                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: If you know player deviceID use "/${OfflinePlayerDeviceBanCommand} <DeviceID>"}]}`,
-                );
-            }
+            runCommand(
+                `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindPlayer")}"}]}`,
+            );
 
             if (corg.isServerCommandOrigin()) {
-                if (language === "korean") {
-                    console.log(red("Error: 해당 명령어는 접속하지 않은 플레이어에겐 사용할 수 없습니다"));
-                    console.log(yellow(`접속하지 않은 플레이어의 디바이스를 이미 알고있고 차단하고싶다면 "${OfflinePlayerDeviceBanCommand} <DeviceID>"`));
-                }
-                if (language === "english") {
-                    console.log(red("Error: You can not use this command for offline player"));
-                    console.log(yellow(`If you know player device ID use "${OfflinePlayerDeviceBanCommand} <DeviceID>"`));
-                }
+                runCommand(
+                    `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindPlayer")}"}]}`,
+                );
             }
             return;
         }
@@ -409,20 +298,10 @@ command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLe
         const bannedDevices = fs.readdirSync("./DbanDB/");
         if (bannedPlayers.includes(targetName) || bannedDevices.includes(deviceId)) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red(`${targetName} is already banned`));
-                }
-                if (language === "korean") {
-                    console.log(red(`플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다`));
-                }
+                console.log(red(`${targetName} ${Translate("ban.PlayerAlreadyBanned")}`));
                 return;
             } else {
-                if (language === "english") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${targetName} is already banned"}]}`);
-                }
-                if (language === "korean") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${targetName}(은)는 이미 차단된 플레이어입니다"}]}`);
-                }
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${targetName} ${Translate("ban.PlayerAlreadyBanned")}"}]}`);
                 return;
             }
         }
@@ -441,28 +320,17 @@ command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLe
         fs.writeFileSync(`./DbanDB/${deviceId}`, title_log);
 
         runCommand(`execute as "${originName}" at "${originName}" run playsound random.orb ~ ~ ~ 1 1.5 1`);
-        if (language === "korean") {
-            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} 플레이어 ${targetName}(을)를 차단했습니다 (${deviceId})"}]}`);
-            console.log(yellow(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`));
-            addlog(`${originName} : ${targetName}(을)를 차단했습니다 (${deviceId})`);
-        }
-        if (language === "english") {
-            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} Banned ${targetName} (${deviceId})"}]}`);
-            console.log(yellow(`${originName} : Banned ${targetName} (${deviceId})`));
-            addlog(`${originName} : Banned ${targetName} (${deviceId})`);
-        }
+        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${targetName} ${Translate("ban.BanSuccess")} (${deviceId})"}]}`);
+        console.log(yellow(`${originName} : ${targetName} ${Translate("ban.BanSuccess")} (${deviceId})`));
+        addlog(`${originName} : ${targetName} ${Translate("ban.BanSuccess")} (${deviceId})`);
+
         dunbanenum.addValues(deviceId);
         for (const player of inputs.player.newResults(corg)) {
             const ni = player.getNetworkIdentifier();
             if (!inputs.minutes) {
                 kick(ni, BanTitle);
             } else {
-                if (language === "english") {
-                    kick(ni, `${BanTitle}\n§fYour ban is expired on ${time_title}`);
-                }
-                if (language === "korean") {
-                    kick(ni, `${BanTitle}\n§f차단은 ${time_title}§r까지입니다`);
-                }
+                kick(ni, `${BanTitle}\n${Translate("ban.BanExpired")} ${time_title}`);
             }
             return;
         }
@@ -473,35 +341,21 @@ command.register(DeviceBanCommand, "Ban player's Device ID", CommandPermissionLe
     },
 );
 
-command.register(DeviceUnbanCommand, "Unban player's device ID", CommandPermissionLevel.Operator).overload(
+command.register(DeviceUnbanCommand, Translate("command.DeviceUnbanExplanation"), CommandPermissionLevel.Operator).overload(
     (inputs, corg) => {
         const originName = corg.getName();
 
         if (inputs.DeviceID === "") {
-            if (language === "korean") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 이름을 적어주세요"}]}`);
-            }
-            if (language === "english") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: Please type device id here"}]}`);
-            }
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.error.CantFindDeviceID")}"}]}`);
             return;
         }
+
         if (inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH && inputs.DeviceID.length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red("Error: This command needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-                }
-                if (language === "korean") {
-                    console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-                }
+                console.log(red(`${Translate("ban.error.CantFinDeviceIDex")}`));
                 return;
             } else {
-                if (language === "english") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: This command needs only device ID"}]}`);
-                }
-                if (language === "korean") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
-                }
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c${Translate("ban.error.CantFindDeviceID")}"}]}`);
                 return;
             }
         }
@@ -509,37 +363,19 @@ command.register(DeviceUnbanCommand, "Unban player's device ID", CommandPermissi
         let Dbanlist = fs.readdirSync(`./DbanDB/`);
         if (!Dbanlist.includes(inputs.DeviceID)) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red(`${inputs.DeviceID} is already unbanned\nYou can see banlist using banlist`));
-                }
-                if (language === "korean") {
-                    console.log(red(`${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\nbanlist로 차단 목록을 확인하세요`));
-                }
+                console.log(red(`${inputs.DeviceID} ${Translate("ban.PlayerAlreadyUnBanned")}`));
                 return;
             } else {
-                if (language === "english") {
-                    runCommand(
-                        `tellraw "${originName}" { "rawtext": [{ "text": "${inputs.DeviceID} is already unbanned\n§cYou can see banlist using §e/banlist" }] }`,
-                    );
-                }
-                if (language === "korean") {
-                    runCommand(
-                        `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c${inputs.DeviceID}(은)는 이 서버에서 차단되어있지 않습니다\n§e/banlist §c로 차단 목록을 확인하세요"}]}`,
-                    );
-                }
+                runCommand(
+                    `tellraw "${originName}" { "rawtext": [{ "text": "${inputs.DeviceID} ${Translate("ban.PlayerAlreadyUnBanned")}" }] }`,
+                );
                 return;
             }
         } else {
-            if (language === "english") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"Unbanned device ID ${inputs.DeviceID}"}]}`);
-                console.log(yellow(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`));
-                addlog(`${originName} : ${inputs.DeviceID}(을)를 차단해제 했습니다`);
-            }
-            if (language === "korean") {
-                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} 디바이스 아이디 ${inputs.DeviceID}(을)를 차단해제 했습니다"}]}`);
-                console.log(yellow(`${originName} : Unbanned device ID ${inputs.DeviceID}`));
-                addlog(`${originName} : Unbanned device ID ${inputs.DeviceID}`);
-            }
+            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${inputs.DeviceID} ${Translate("ban.UnBanSuccess")}"}]}`);
+            console.log(yellow(`${originName} : ${inputs.DeviceID} ${Translate("ban.UnBanSuccess")}`));
+            addlog(`${originName} : ${inputs.DeviceID} ${Translate("ban.UnBanSuccess")}`);
+
             fs.unlink(`./DbanDB/${inputs.DeviceID}`, err => {});
             dunbanenum.removeValues(inputs.DeviceID);
         }
@@ -549,88 +385,47 @@ command.register(DeviceUnbanCommand, "Unban player's device ID", CommandPermissi
     },
 );
 
-command.register(ShowBanListCommand, "Shows server ban list", CommandPermissionLevel.Operator).overload((asdf, corg) => {
+command.register(ShowBanListCommand, Translate("command.BanListExplanation"), CommandPermissionLevel.Operator).overload((asdf, corg) => {
     const plname = corg.getName();
     const banlist = fs.readdirSync("./banDB/", { withFileTypes: false });
     const Dbanlist = fs.readdirSync("./DbanDB/", { withFileTypes: false });
     if (corg.isServerCommandOrigin()) {
-        if (language === "english") {
-            console.log(yellow(`Name ban list : ${banlist}`));
-            console.log(yellow(`Device ban list : ${Dbanlist}`));
-        }
-        if (language === "korean") {
-            console.log(yellow(`닉네임 차단된 플레이어 목록 : ${banlist}`));
-            console.log(yellow(`디바이스 차단된 플레이어 목록 : ${Dbanlist}`));
-        }
+        console.log(yellow(`${Translate("ban.BanList.Name")} ${banlist}`));
+        console.log(yellow(`${Translate("ban.BanList.DeviceID")} ${Dbanlist}`));
     } else {
-        if (language === "english") {
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Name ban list : ${banlist}"}]}`);
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} Device ban list : ${Dbanlist}"}]}`);
-        }
-        if (language === "korean") {
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 차단된 플레이어 목록 : ${banlist}"}]}`);
-            runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} 디바이스 차단된 플레이어 목록 : ${Dbanlist}"}]}`);
-        }
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.BanList.Name")} ${banlist}"}]}`);
+        runCommand(`tellraw "${plname}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("ban.BanList.DeviceID")} ${Dbanlist}"}]}`);
     }
 }, {});
 
-command.register(OfflinePlayerDeviceBanCommand, "device ban even if the player is offline", CommandPermissionLevel.Operator).overload(
+command.register(OfflinePlayerDeviceBanCommand, Translate("command.OfflinePlayerDeviceBanExplanation"), CommandPermissionLevel.Operator).overload(
     (input, corg) => {
         const originName = corg.getName();
         const input_length = input.deviceId.length;
         const targetDeviceId = input.deviceId;
         if (input_length !== DEVICE_ID_FMT_LENGTH && input_length !== DEVICE_ID_FMT_LENGTH_ANDROID) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red("Error: This commmand needs only device ID (Example : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-                }
-                if (language === "korean") {
-                    console.log(red("Error: 해당 명령어는 DeviceID만 입력할 수 있습니다 (DeviceID의 예시 : aa12aaa3-abc4-567a-b890-12c34dc567e8"));
-                }
-
+                console.log(red(Translate("ban.error.CantFinDeviceIDex")));
                 return CANCEL;
             } else {
-                if (language === "english") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: This commmand needs only device ID"}]}`);
-                }
-                if (language === "korean") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 해당 명령어는 DeviceID만 입력할 수 있습니다"}]}`);
-                }
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c${Translate("ban.error.CantFinDeviceIDex")}`);
                 return CANCEL;
             }
         }
         const banlist = fs.readdirSync("./DbanDB/");
         if (banlist.includes(targetDeviceId) === true) {
             if (corg.isServerCommandOrigin()) {
-                if (language === "english") {
-                    console.log(red(`${targetDeviceId} is already banned`));
-                }
-                if (language === "korean") {
-                    console.log(red(`디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다`));
-                }
+                console.log(red(`${targetDeviceId} ${Translate("ban.PlayerAlreadyBanned")}`));
                 return CANCEL;
             } else {
-                if (language === "english") {
-                    runCommand(`tellraw "${originName}" {"rawtext":[{"text":${SystemMessageTitle} "§cError: ${targetDeviceId} is already banned"}]}`);
-                }
-                if (language === "korean") {
-                    runCommand(
-                        `tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cError: 디바이스 ${targetDeviceId}(은)는 이미 차단되어있습니다"}]}`,
-                    );
-                }
+                runCommand(`tellraw "${originName}" {"rawtext":[{"text":${SystemMessageTitle} "§cError: ${targetDeviceId} ${Translate("ban.PlayerAlreadyBanned")}"}]}`);
                 return CANCEL;
             }
         }
 
         fs.writeFileSync(`./DbanDB/${targetDeviceId}`, "");
-        if (language === "english") {
-            console.log(yellow(`${originName} : banned ${targetDeviceId}`));
-            addlog(`${originName} : banned ${targetDeviceId}`);
-        }
-        if (language === "korean") {
-            console.log(yellow(`${originName} : ${targetDeviceId}(을)를 차단했습니다`));
-            addlog(`${originName} : ${targetDeviceId}(을)를 차단했습니다`);
-        }
+        console.log(yellow(`${originName} : ${targetDeviceId} ${Translate("ban.BanSuccess")}`));
+        addlog(`${originName} : ${targetDeviceId} ${Translate("ban.BanSuccess")}`);
     },
     {
         deviceId: CxxString,
@@ -639,34 +434,5 @@ command.register(OfflinePlayerDeviceBanCommand, "device ban even if the player i
 
 const RakPeer = bedrockServer.rakPeer;
 
-if (language === "english") {
-    command
-        .register("sos9533scr", "§r§l§fThis server is using sos9533scr - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal)
-        .overload((param, origin, output) => {
-            if (origin.isServerCommandOrigin()) {
-                output.success("");
-            } else {
-                runCommand(
-                    `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\nDiscord : sos9533#9533"}]}`,
-                );
-                output.success("");
-            }
-        }, {});
-}
-
-if (language === "korean") {
-    command
-        .register("sos9533scr", "§r§l§f이 서버는 sos9533scr 플러그인을 사용중입니다. - §cCopyright (c) 2022 sos9533§r", CommandPermissionLevel.Normal)
-        .overload((param, origin, output) => {
-            if (origin.isServerCommandOrigin()) {
-                output.success("");
-            } else {
-                runCommand(
-                    `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\n디스코드 : sos9533#9533"}]}`,
-                );
-                output.success("");
-            }
-        }, {});
-}
 
 console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - ban.ts loaded`.gray);
