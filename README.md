@@ -43,6 +43,7 @@ Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 │  ├ output join log
 │  ├ output join user INFO log
 │  ├ output exit log
+│  ├ OS tag
 │  └ welcome message
 │
 ├ chat event
@@ -80,6 +81,9 @@ Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 │
 ├ etc
 │  ├ logging
+│  ├ activity tag
+│     ├ sneak detection
+│     └ jump detection
 │  └ bossbar command
 └
 ```
@@ -206,6 +210,7 @@ let chinchatset = "D";
 │  ├ 참가 로그 출력
 │  ├ 참가자 정보 로그 출력
 │  ├ 퇴장 로그 출력
+│  ├ OS 태그
 │  └ 참가자 환영 메시지
 │
 ├ 채팅 이벤트
@@ -245,6 +250,9 @@ let chinchatset = "D";
 │
 ├ 기타기능
 │  ├ 로깅
+│  ├ 활동감지 태그
+│     ├ 웅크리기 감지
+│     └ 점프 감지
 │  └ 보스바 명령어
 └
 ```
