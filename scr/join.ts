@@ -15,6 +15,8 @@ import {
     SystemMessageTitle,
     UseAntiLongNickname,
     UseAntiToolbox,
+    UseWelcomeMessage,
+    WelcomeMessage,
 } from "../setting";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
@@ -55,4 +57,14 @@ events.packetAfter(MinecraftPacketIds.Login).on((ptr, networkIdentifier, packetI
     addlog(`${username}> IP:${ip}, XUID:${xuid}, OS:${BuildPlatform[connreq.getDeviceOS()] || "UNKNOWN"}, Model:${deviceModel}, DeviceID:${deviceId}`);
 });
 
+
+events.playerJoin.on(ev => {
+    const username = ev.player.getNameTag();
+
+    if (UseWelcomeMessage) {
+        runCommand(`tellraw @a[name="${username}"] {"rawtext":[{"text":"${WelcomeMessage}"}]}`);
+    }
+});
+
 console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - join.ts loaded`.gray);
+
