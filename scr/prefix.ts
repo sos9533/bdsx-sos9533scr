@@ -9,10 +9,10 @@ import { CxxString } from "bdsx/nativetype";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
 import * as fs from "fs";
+import { Translate } from "..";
 import { makeFile } from "../functions";
 import {
     BasicPrefix,
-    language,
     PrefixChatOutputType,
     PrefixCommand,
     PrefixCommandExplanation,
@@ -63,12 +63,7 @@ if (UsePrefix === true) {
                         for (let i = 0; i < length; i++) {
                             PrefixData[username] = Prefix;
                             savePrefix();
-                            if (language === "english") {
-                                runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"${SystemMessageTitle} §aprocessed successfully!"}]}`);
-                            }
-                            if (language === "korean") {
-                                runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"${SystemMessageTitle} §a해당유저에게 칭호가 적용됬습니다!"}]}`);
-                            }
+                            runCommand(`tellraw "${origin.getName()}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("prefix.SetSuccess")}"}]}`);
                             runCommand(`playsound random.levelup @a[name="${origin.getName()}"]`);
                         }
                     }
@@ -91,19 +86,9 @@ if (UsePrefix === true) {
                         PrefixData[originName] = Prefix;
                         savePrefix();
                         runCommand(`playsound random.levelup @a[name="${originName}"]`);
-                        if (language === "english") {
-                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §aprocessed successfully!"}]}`);
-                        }
-                        if (language === "korean") {
-                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §a칭호가 적용됬습니다!"}]}`);
-                        }
+                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("prefix.SetSuccess")}"}]}`);
                     } else {
-                        if (language === "english") {
-                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §cthe Prefix is too long!"}]}`);
-                        }
-                        if (language === "korean") {
-                            runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} §c칭호가 너무 깁니다!"}]}`);
-                        }
+                        runCommand(`tellraw "${originName}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("prefix.error.TooLongPrefix")}"}]}`);
                         runCommand(`playsound random.orb @a[name="${originName}"]`);
                     }
                 }
@@ -118,64 +103,36 @@ if (UsePrefix === true) {
         command.register(PrefixCommand, PrefixCommandExplanation).overload(async (params, origin, output) => {
             const actor = origin.getEntity();
             if (!actor?.isPlayer()) {
-                console.log(red("You are the server console"));
+                console.log(red(Translate("error.ConsoleUseCommand")));
                 return;
             }
             const ni = actor.getNetworkIdentifier();
             const username = actor.getNameTag();
-            if (language === "english") {
-                const res = await Form.sendTo(ni, {
-                    type: "custom_form",
-                    title: "§l§0Prefix",
-                    content: [
-                        {
-                            type: "input",
-                            text: "§l§7what is your Prefix! §l§0[ §gsos9533scr §0]§r ",
-                            default: "§7Member",
-                        },
-                    ],
-                });
 
-                if (res === null) return;
+            const res = await Form.sendTo(ni, {
+                type: "custom_form",
+                title: `§l§0${Translate("prefix.Form.Title")}`,
+                content: [
+                    {
+                        type: "input",
+                        text: `§l§7${Translate("prefix.Form.Text")} §l§0[ §gsos9533scr §0]§r `,
+                        default: `§7${Translate("prefix.Form.Default")}`,
+                    },
+                ],
+            });
 
-                if (res[0]?.length < PrefixLength && username) {
-                    const Prefix = res[0];
-                    PrefixData[username] = Prefix;
-                    savePrefix();
+            if (res === null) return;
 
-                    runCommand(`playsound random.levelup @a[name="${username}"]`);
-                    runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §aprocessed successfully"}]}`);
-                } else {
-                    runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §cthe Prefix is too long!"}]}`);
-                    runCommand(`playsound random.orb @a[name="${username}"]`);
-                }
-            }
-            if (language === "korean") {
-                const res = await Form.sendTo(ni, {
-                    type: "custom_form",
-                    title: "§0칭호",
-                    content: [
-                        {
-                            type: "input",
-                            text: "§7사용할 칭호를 입력하세요! §0[ §gsos9533scr §0]§r ",
-                            default: "§7일반인",
-                        },
-                    ],
-                });
+            if (res[0]?.length < PrefixLength && username) {
+                const Prefix = res[0];
+                PrefixData[username] = Prefix;
+                savePrefix();
 
-                if (res === null) return;
-
-                if (res[0]?.length < PrefixLength && username) {
-                    const Prefix = res[0];
-                    PrefixData[username] = Prefix;
-                    savePrefix();
-
-                    runCommand(`playsound random.levelup @a[name="${username}"]`);
-                    runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §a칭호가 적용됬습니다!"}]}`);
-                } else {
-                    runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §c칭호가 너무 깁니다!"}]}`);
-                    runCommand(`playsound random.orb @a[name="${username}"]`);
-                }
+                runCommand(`playsound random.levelup @a[name="${username}"]`);
+                runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("prefix.SetSuccess")}"}]}`);
+            } else {
+                runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("prefix.error.TooLongPrefix")}"}]}`);
+                runCommand(`playsound random.orb @a[name="${username}"]`);
             }
         }, {});
     }
