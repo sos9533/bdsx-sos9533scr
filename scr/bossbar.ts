@@ -4,10 +4,11 @@ import { ServerPlayer } from "bdsx/bds/player";
 import { command } from "bdsx/command";
 import { CxxString, float32_t } from "bdsx/nativetype";
 import { serverProperties } from "bdsx/serverproperties";
+import { Translate } from "..";
 import { RemoveBossBarCommand, SetBossBarCommand } from "../setting";
 const levelname = serverProperties["level-name"];
 
-command.register(RemoveBossBarCommand, "remove bossbar", CommandPermissionLevel.Operator).overload(
+command.register(RemoveBossBarCommand, Translate("command.RemoveBossbarExplanation"), CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
             target.removeBossBar();
@@ -19,7 +20,7 @@ command.register(RemoveBossBarCommand, "remove bossbar", CommandPermissionLevel.
     },
 );
 
-command.register(SetBossBarCommand, "set bossbar", CommandPermissionLevel.Operator).overload(
+command.register(SetBossBarCommand, Translate("command.SetBossbarExplanation"), CommandPermissionLevel.Operator).overload(
     (params, origin, output) => {
         for (const target of params.target.newResults(origin, ServerPlayer)) {
             let color: BossEventPacket.Colors = BossEventPacket.Colors.Purple;
