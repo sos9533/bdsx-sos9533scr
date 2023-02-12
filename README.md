@@ -24,10 +24,10 @@ Need help? Click the Discord icon to come to our official support server!
 <br>
 
 
-### 2.1.1 UPDATE [12/31]
+### 2.2.0 UPDATE [02/12]
 sos9533scr has been renewed to 2.0. </br>
-Add `logging` </br>
-Fix `log.ts` <br><br><br><br>
+Add `tag` </br>
+Add `Translate`<br><br><br><br>
 
 
 -------------------------------------------------
@@ -361,7 +361,7 @@ let chinchatset = "D"
 ## LICENSE
 
 ```
-MIT LICENSE - Copyright (c) 2022 sos9533
+MIT LICENSE - Copyright (c) 2023 sos9533
 
 Can use it freely without any restrictions.
 But don't change the code that makes "/sos9533scr" visible in-game.
