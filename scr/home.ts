@@ -2,18 +2,19 @@ import { command } from "bdsx/command";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
 import * as fs from "fs";
+import { Translate } from "..";
 import { makeFile } from "../functions";
-import { HomeCommand, language, runCommand, SethomeCommand, sethome_json, SystemMessageTitle, UseSethomeCommand } from "../setting";
+import { HomeCommand, runCommand, SethomeCommand, sethome_json, SystemMessageTitle, UseSethomeCommand } from "../setting";
 import { addlog } from "./log";
 const levelname = serverProperties["level-name"];
 
 if (UseSethomeCommand) {
     makeFile(sethome_json);
-    command.register(SethomeCommand, "set my home to here").overload((param, origin, output) => {
+    command.register(SethomeCommand, Translate("command.SetHomeExplanation")).overload((param, origin, output) => {
         const player = origin.getEntity();
 
         if (!player?.isPlayer()) {
-            console.log(red("You are the server console"));
+            console.log(red(Translate("error.ConsoleUseCommand")));
             return;
         }
 
@@ -25,18 +26,13 @@ if (UseSethomeCommand) {
         const homePos = `${pos?.x ?? "??"} ${pos?.y ?? "??"} ${pos?.z ?? "??"}`;
         jsonObj[deviceId] = homePos;
         fs.writeFileSync(sethome_json, JSON.stringify(jsonObj), "utf8");
-        if (language === "english") {
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §eSetted Home"}]}`);
-        }
-        if (language === "korean") {
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §a현재 위치가 집으로 설정되었습니다."}]}`);
-        }
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("sethome.SetHomeSuccess")}"}]}`);
     }, {});
 
-    command.register(HomeCommand, "go to home").overload((param, origin, output) => {
+    command.register(HomeCommand, Translate("command.HomeExplanation")).overload((param, origin, output) => {
         const player = origin.getEntity();
         if (!player?.isPlayer()) {
-            console.log(red("You are the server console"));
+            console.log(red(Translate("error.ConsoleUseCommand")));
             return;
         }
 
@@ -46,13 +42,7 @@ if (UseSethomeCommand) {
 
         runCommand(`tp @a[name="${username}"] ${jsonObj[deviceId]}`);
         addlog(`${username} tp to ${jsonObj[deviceId]}`);
-
-        if (language === "english") {
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §l§eWarp Complete!"}]}`);
-        }
-        if (language === "korean") {
-            runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} §a집으로 이동되었습니다!"}]}`);
-        }
+        runCommand(`tellraw "${username}" {"rawtext":[{"text":"${SystemMessageTitle} ${Translate("sethome.TeleportHomeSuccess")}"}]}`);
     }, {});
 }
 
