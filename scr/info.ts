@@ -4,14 +4,15 @@ import { command } from "bdsx/command";
 import { BuildPlatform } from "bdsx/common";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
-import { GetInfoCommand, language, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
+import { Translate } from "..";
+import { GetInfoCommand, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
 const levelname = serverProperties["level-name"];
 
 if (UseGetInfoCommand) {
-    command.register(GetInfoCommand, "get player's info", CommandPermissionLevel.Operator).overload(
+    command.register(GetInfoCommand, Translate("command.GetINFOExplanation"), CommandPermissionLevel.Operator).overload(
         (param, origin, output) => {
             if (!origin.getEntity()?.isPlayer()) {
-                console.log(red("You are the server console"));
+                console.log(red(Translate("error.ConsoleUseCommand")));
                 return;
             }
 
@@ -23,20 +24,11 @@ if (UseGetInfoCommand) {
                 const xuid = player.getXuid();
                 const os = player.getPlatform();
                 const address = player.getNetworkIdentifier().address;
-                if (language === "english") {
-                    runCommand(
-                        `tellraw @a[name="${originName}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b's INFO\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                            BuildPlatform[os] || "UNKNOWN"
-                        }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
-                    );
-                }
-                if (language === "korean") {
-                    runCommand(
-                        `tellraw @a[name="${originName}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b님의 정보\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                            BuildPlatform[os] || "UNKNOWN"
-                        }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
-                    );
-                }
+                runCommand(
+                    `tellraw @a[name="${originName}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b's INFO\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                        BuildPlatform[os] || "UNKNOWN"
+                    }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
+                );
             }
         },
         {
@@ -46,10 +38,10 @@ if (UseGetInfoCommand) {
 }
 
 if (UseMyInfoCommand) {
-    command.register(MyInfoCommand, "get my info").overload((param, origin, output) => {
+    command.register(MyInfoCommand, Translate("command.GetMyINFOExplanation")).overload((param, origin, output) => {
         const player = origin.getEntity();
         if (!player?.isPlayer()) {
-            console.log(red("You are the server console"));
+            console.log(red(Translate("error.ConsoleUseCommand")));
             return;
         }
 
@@ -59,21 +51,11 @@ if (UseMyInfoCommand) {
         const deviceId = player.deviceId;
         const xuid = player.getXuid();
         const os = player.getPlatform();
-
-        if (language === "english") {
-            runCommand(
-                `tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b's INFO\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                    BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
-            );
-        }
-        if (language === "korean") {
-            runCommand(
-                `tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b님의 정보\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
-                    BuildPlatform[os] || "UNKNOWN"
-                }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
-            );
-        }
+        runCommand(
+            `tellraw @a[name="${username}"] {"rawtext":[{"text":"${SystemMessageTitle} §b${username}§b's INFO\n\n§eIP §f: §7${ni}\n§eName §f: §7${username}\n§eOS §f: §7${
+                BuildPlatform[os] || "UNKNOWN"
+            }\n§eDeviceID §f: §7${deviceId}\n§eXuid §f: §7${xuid}\n§ePing §f: §7${RakPeer.GetAveragePing(address)}ms"}]}`,
+        );
     }, {});
 }
 
