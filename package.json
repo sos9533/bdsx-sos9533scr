@@ -20,5 +20,12 @@
   "bugs": {
     "url": "https://github.com/sos9533/sos9533scr/issues"
   },
-  "homepage": "https://github.com/sos9533/sos9533scr#readme"
+  "homepage": "https://github.com/sos9533/sos9533scr#readme",
+  "devDependencies": {
+    "@types/ini": "^1.3.31",
+    "bdsx": "file:../bdsx"
+  },
+  "dependencies": {
+    "ini": "^2.0.0"
+  }
 }
