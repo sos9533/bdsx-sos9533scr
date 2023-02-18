@@ -631,7 +631,6 @@ export const UseJumptag: boolean = true;
 // don't touch this part
 import { bedrockServer } from "bdsx/launcher";
 export const runCommand = bedrockServer.executeCommand;
-export const RakPeer = bedrockServer.rakPeer;
 export const DEVICE_ID_FMT_LENGTH = 36;
 export const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 export const Prefix_json = "Prefix.json";
