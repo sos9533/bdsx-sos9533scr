@@ -5,8 +5,10 @@ import { BuildPlatform } from "bdsx/common";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
 import { Translate } from "..";
-import { GetInfoCommand, MyInfoCommand, RakPeer, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
+import { GetInfoCommand, MyInfoCommand, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
 const levelname = serverProperties["level-name"];
+
+export const RakPeer = bedrockServer.rakPeer;
 
 if (UseGetInfoCommand) {
     command.register(GetInfoCommand, Translate("command.GetINFOExplanation"), CommandPermissionLevel.Operator).overload(
