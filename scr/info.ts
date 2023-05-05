@@ -5,6 +5,7 @@ import { BuildPlatform } from "bdsx/common";
 import { serverProperties } from "bdsx/serverproperties";
 import { red } from "colors";
 import { Translate } from "..";
+import { bedrockServer } from "bdsx/launcher";
 import { GetInfoCommand, MyInfoCommand, runCommand, SystemMessageTitle, UseGetInfoCommand, UseMyInfoCommand } from "../setting";
 const levelname = serverProperties["level-name"];
 
