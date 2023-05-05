@@ -24,11 +24,9 @@ Need help? Click the Discord icon to come to our official support server!
 <br>
 
 
-### 2.2.1 UPDATE [02/18]
+### 2.2.2 UPDATE [05/05]
 sos9533scr has been renewed to 2.0. </br>
-Add `tag` </br>
-Fix `info`</br>
-Add `Translate`<br><br><br><br>
+<br><br><br><br>
 
 
 -------------------------------------------------
