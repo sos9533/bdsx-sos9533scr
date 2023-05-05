@@ -6,7 +6,7 @@
 //      Y88888P     `8888P'     Y88888P    `8888P    d88888P   d88888P   d88888P   `88888P'   `88888P'   dP
 //
 
-//vr. 2.1.1
+//vr. 2.1.2
 
 //  Made by sos9533, mdisprgm, job-gut, Blue00123, kdg7313
 //  Recommend using 'visual studio code'(https://code.visualstudio.com/)
@@ -68,7 +68,7 @@ export const UseWelcomeMessage: boolean = true;
 
 //welcome message
 //참여 환영 메시지 - 참가한 플레이어의 채팅창에 출력
-export const WelcomeMessage = "§7welcome! \nEdit plugin's custom settings in 'plugins/bdsx-sos9533scr-main/setting'.\n\n'plugins/bdsx-sos9533scr-main/setting'에서 플러그인을 세팅해주세요.\n§cneed help? Discord : sos9533#9533\n도움이 필요하신가요? 디스코드 : sos9533#9533";
+export const WelcomeMessage = "§7welcome! \nEdit plugin's custom settings in 'plugins/bdsx-sos9533scr-main/setting'.\n\n'plugins/bdsx-sos9533scr-main/setting'에서 플러그인을 세팅해주세요.\n§cneed help? Discord : sos9533#3423\n도움이 필요하신가요? 디스코드 : sos9533#3423";
 
 
 
