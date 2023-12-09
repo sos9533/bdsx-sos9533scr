@@ -89,7 +89,7 @@ function Import(): void {
                     output.success("");
                 } else {
                     runCommand(
-                        `tellraw "${origin.getName()}" {"rawtext":[{"text":"${SystemMessageTitle}\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313, namacksin\nDiscord : sos9533#9533"}]}`,
+                        `tellraw "${origin.getName()}" {"rawtext":[{"text":"${SystemMessageTitle}\nDownload : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\nDiscord : sos9533#9533"}]}`,
                     );
                     output.success("");
                 }
@@ -104,7 +104,7 @@ function Import(): void {
                     output.success("");
                 } else {
                     runCommand(
-                        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313, namacksin\n디스코드 : sos9533#9533"}]}`,
+                        `tellraw "${origin.getName()}" {"rawtext":[{"text":"§l${SystemMessageTitle}§l\n다운로드 : https://github.com/sos9533/bdsx-sos9533scr \nMade by sos9533, mdisprgm, job-gut, Blue00123, kdg7313\n디스코드 : sos9533#9533"}]}`,
                     );
                     output.success("");
                 }

@@ -7,7 +7,6 @@ import { BackCommand, BackCommandDescription, UseBackCommand, back_json } from "
 import { Translate } from "..";
 import { command } from "bdsx/command";
 import { makeFile } from "../functions";
-import { serverProperties } from "bdsx/serverproperties";
 
 class Back {
     public position: Vec3;

@@ -18,21 +18,21 @@
 [![how_to_use](https://img.shields.io/badge/help menu-blue&?style=for-the-badge&color=blue)](#sos9533scr-english)  
 [![기능 및 사용법](https://img.shields.io/badge/한국어 도움말-blue&?style=for-the-badge&color=blue)](#sos9533scr-korean)  
 [![Note](https://img.shields.io/badge/Note-blue&?style=for-the-badge&color=blue)](#Note)<br><br>
-Need help? Click the Discord icon to come to our official support server!
 
 </div>
 <br>
 
 
-### 2.3.0 UPDATE [12/10]
-sos9533scr has been renewed to 2.3.0 </br>
+### 2.3.0 UPDATE [2023/12/10]
+sos9533scr has been renewed to 2.0. </br>
+Add back command </br>
 <br><br><br><br>
 
 
 -------------------------------------------------
 # sos9533scr-english
 
-Create by [`sos9533`](https://open.kakao.com/me/sos9533)
+Create by [`sos9533`](https://github.com/sos9533)
 
 ## Features
 
@@ -236,7 +236,8 @@ let chinchatset = "D";
 │  ├ 셋홈 명령어(sethome)
 │  ├ 티피요청 명령어(tpa)
 │  ├ 내정보 확인 명령어
-│  └ 기본템 명령어
+│  ├ 기본템 명령어
+│  └ 백 명령어
 │
 ├ 안전한 서버관리
 │  ├ 삼성 툴박스 유저 접속방지
@@ -383,8 +384,8 @@ But don't change the code that makes "/sos9533scr" visible in-game.
 - [`mdisprgm`](https://github.com/mdisprgm)
 - [`job-gut`](https://github.com/job-gut)
 - [`Blue00123`](https://github.com/Blue00123)
+- [`Namacksin1234`](https://github.com/Namacksin1234)
 
 
 ## About sos9533
-- [`OmletArcade`](https://omlet.gg/profile/sos9533)
-- `Discord : sos9533#9533`
+- `Discord : sos9533`
