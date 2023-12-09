@@ -5,7 +5,6 @@ import { bedrockServer } from "bdsx/launcher";
 import { serverProperties } from "bdsx/serverproperties";
 import "bdsx/bds/implements";
 import * as fs from "fs";
-import * as ini from "ini";
 import * as path from "path";
 import { language, runCommand, SystemMessageTitle } from "./setting";
 import { red } from "colors";
@@ -64,6 +63,7 @@ const levelname = serverProperties["level-name"];
 function Import(): void {
     console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - Plugin Strat Loading...`.gray);
     import("./scr/anticrasher");
+    import("./scr/back");
     import("./scr/ban");
     import("./scr/bossbar");
     import("./scr/exit");
