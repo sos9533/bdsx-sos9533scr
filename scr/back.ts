@@ -7,6 +7,7 @@ import { BackCommand, BackCommandDescription, UseBackCommand, back_json } from "
 import { Translate } from "..";
 import { command } from "bdsx/command";
 import { makeFile } from "../functions";
+import { serverProperties } from "bdsx/serverproperties";
 
 class Back {
     public position: Vec3;
@@ -63,3 +64,6 @@ if (UseBackCommand) {
     Back.setEvent();
     Back.setCommand();
 };
+
+const levelname = serverProperties["level-name"];
+console.info("[ " + "sos9533scr".yellow + " ] " + `${levelname}`.red + ` - back.ts loaded`.gray);
