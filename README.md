@@ -24,7 +24,7 @@ Need help? Click the Discord icon to come to our official support server!
 <br>
 
 
-### 2.2.2 UPDATE [05/05]
+### 2.3.0 UPDATE [12/10]
 sos9533scr has been renewed to 2.0. </br>
 <br><br><br><br>
 
@@ -66,7 +66,8 @@ Create by [`sos9533`](https://open.kakao.com/me/sos9533)
 │  ├ sethome command
 │  ├ tpa command
 │  ├ my INFO command
-│  └ basic item command
+│  ├ basic item command
+│  └ back command
 │
 ├ anti cheat
 │  ├ kick samsung toolbox user
