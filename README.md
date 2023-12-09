@@ -24,7 +24,7 @@ Need help? Click the Discord icon to come to our official support server!
 <br>
 
 
-### 2.2.3 UPDATE [12/10]
+### 2.3.0 UPDATE [12/10]
 sos9533scr has been renewed to 2.0. </br>
 <br><br><br><br>
 
