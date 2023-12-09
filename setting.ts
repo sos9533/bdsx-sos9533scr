@@ -6,9 +6,9 @@
 //      Y88888P     `8888P'     Y88888P    `8888P    d88888P   d88888P   d88888P   `88888P'   `88888P'   dP
 //
 
-//vr. 2.1.2
+//vr. 2.2.3
 
-//  Made by sos9533, mdisprgm, job-gut, Blue00123, kdg7313
+//  Made by sos9533, mdisprgm, job-gut, Blue00123, kdg7313, namacksin
 //  Recommend using 'visual studio code'(https://code.visualstudio.com/)
 
 
@@ -219,6 +219,19 @@ export const SpawnCoordinate = "0 10 0";
 export const SpawnCommandTitle = "§eWarp Complete!";
 
 
+//use back command (true/false)
+//백 명령어 사용여부 (true/false)
+export const UseBackCommand: boolean = true;
+
+
+//back command (with out /) - For User
+//백 명령어 (/빼고) - 일반유저 명령어
+export const BackCommand = "back";
+
+
+//back command description (with out /) - For User
+//백 명령어 설명 - 일반유저 명령어
+export const BackCommandDescription = "back command";
 
 
 //use tp command A (true/false)
@@ -638,3 +651,4 @@ export const DEVICE_ID_FMT_LENGTH_ANDROID = 32;
 export const Prefix_json = "Prefix.json";
 export const sethome_json = "sethome_pos.json";
 export const log_json = "server.log";
+export const back_json = "back.json";

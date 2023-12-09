@@ -1,6 +1,6 @@
 {
   "name": "@bdsx/bdsx-sos9533scr",
-  "version": "1.0.0",
+  "version": "2.2.3",
   "description": "sos9533scr, BDSX Basic setting plugin for beginner BDSX users",
   "main": "index.js",
   "scripts": {
