@@ -34,7 +34,8 @@ class Back {
 
     public static setEvent(): void {
         events.entityDie.on(ev => {
-            const player = ev.entity as ServerPlayer;
+            const player = ev.entity;
+            if (!player.isPlayer()) return;
             Back.setBackData(player);
         });
     };
